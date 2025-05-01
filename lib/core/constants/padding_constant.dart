@@ -20,3 +20,4 @@ EdgeInsets padding6V=EdgeInsets.symmetric(vertical:6.sp);
 EdgeInsets padding16b24=EdgeInsets.all(16.sp).copyWith(bottom: 24.sp);
 EdgeInsets paddingH16V6=EdgeInsets.symmetric(horizontal:16.sp,vertical: 6.sp);
 EdgeInsets paddingH16V8=EdgeInsets.symmetric(horizontal:16.sp,vertical: 8.sp);
+double radiusCommon = 12.r;

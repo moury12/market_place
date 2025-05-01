@@ -40,22 +40,15 @@ class CustomDrawerWidget extends StatelessWidget {
                             color: AppColors.kSplashBackgroundColor),
                         child: Padding(
                           padding: padding16,
-                          child: Image.asset(drawerImg),
+                          child: Image.asset(""),
                         )),
-                    DrawerContentWidget(
-                      icon: profileIcon,
-                      text: AppStaticStrings.myProfile,
-                      onTap: () {
-                        Navigator.pop(context);
-                        // Get.toNamed(ProfilePage.routeName);
-                      },
-                    ),
+
                     DrawerContentWidget(
                       onTap: () {
                         Navigator.pop(context);
                         // Get.toNamed(SettingPage.routeName);
                       },
-                      icon: settingsIcon,
+                      icon: settingIcon,
                       text: AppStaticStrings.settings,
                     ),
                     DrawerContentWidget(
@@ -63,7 +56,7 @@ class CustomDrawerWidget extends StatelessWidget {
                         Navigator.pop(context);
                         // Get.toNamed(FeedbackPage.routeName);
                       },
-                      icon: feedbackIcon,
+                      icon: "feedbackIcon",
                       text: AppStaticStrings.feedback,
                     ),
                     DrawerContentWidget(
@@ -72,7 +65,7 @@ class CustomDrawerWidget extends StatelessWidget {
                         // Get.toNamed(PrivacyTermsPage.routeName,
                         //     arguments: 'privacy');
                       },
-                      icon: privacyIcon,
+                      icon: privacyPolicyIcon,
                       text: AppStaticStrings.privacyPolicy,
                     ),
                     DrawerContentWidget(

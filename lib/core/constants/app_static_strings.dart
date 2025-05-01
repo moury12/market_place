@@ -142,9 +142,13 @@ class AppStaticStrings {
 
   // Order Details
   static const String cart = 'Cart';
+  static const String home = 'Home';
+  static const String myListings = 'My Listings';
+  static const String sellNow = 'Sell Now';
+  static const String messages = 'Messages';
+  static const String profile = 'Profile';
   static const String orders = 'Orders';
   static const String notifications = 'Notifications';
-  static const String home = 'Home';
 
   // Profile Details
   static const String userName = 'User Name';
