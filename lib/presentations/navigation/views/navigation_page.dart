@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/components/custom_button_tap.dart';
 import 'package:market_place/core/constants/color_constants.dart';
+import 'package:market_place/core/constants/custom_text.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 
 import '../controller/navigation_controller.dart';
@@ -89,12 +90,11 @@ class NavigationPage extends StatelessWidget {
                         ),
                     NavigationControllerMain.to.selectedNavIndex.value == index
                         ? SizedBox.shrink()
-                        : Text(
-                          NavigationControllerMain.to.labels[index],
-                          style: TextStyle(
-                            color: NavigationControllerMain.to.selectedNavIndex.value == index ? Colors.transparent : Colors.black54,
-                            fontSize: 12,
-                            fontWeight: NavigationControllerMain.to.selectedNavIndex.value == index ? FontWeight.bold : FontWeight.normal,
+                        : Padding(
+                          padding:EdgeInsets.only(top: 4.w),
+                          child: CustomText(
+                           text:  NavigationControllerMain.to.labels[index],
+
                           ),
                         ),
                   ],
