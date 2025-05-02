@@ -31,14 +31,14 @@ class CustomText extends StatelessWidget {
       text,
       textAlign: textAlign ?? TextAlign.start,
       maxLines: maxLines,
-      /*overflow: overflow ?? TextOverflow.ellipsis,*/
+      overflow: overflow ?? TextOverflow.ellipsis,
       style: style?.copyWith(
             color: color ?? style?.color,
             fontSize: fontSize ?? style?.fontSize,
             fontWeight: fontWeight ?? style?.fontWeight,
           ) ??
           TextStyle(
-            color: color ?? AppColors.kLightTextColor,
+            color: color ?? Colors.black,
             fontSize: fontSize ?? getFontSizeSemiSmall(),
             fontFamily: 'Poppins',
             fontWeight: fontWeight??FontWeight.w500,

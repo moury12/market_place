@@ -210,7 +210,7 @@ void showCustomSnackbar({
 })
 {
   Color backgroundColor= AppColors.kWhiteColor.withValues(alpha: .5);
-  Color textColor= AppColors.kTextDarkColor;
+  Color textColor= Colors.black;
 
   switch (type) {
     case SnackBarType.success:
