@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:market_place/core/constants/fontsize_constant.dart';
 
 
 class CustomText extends StatelessWidget {
@@ -21,7 +20,7 @@ class CustomText extends StatelessWidget {
     this.fontWeight,
     this.textAlign,
     this.overflow,
-    this.maxLines,
+    this.maxLines, // Now null by default (unlimited lines)
   });
 
   @override
@@ -29,18 +28,18 @@ class CustomText extends StatelessWidget {
     return Text(
       text,
       textAlign: textAlign ?? TextAlign.start,
-      maxLines: maxLines,
-      overflow: overflow ?? TextOverflow.ellipsis,
+      maxLines: maxLines, // null = unlimited lines
+      overflow: overflow, // null = no ellipsis
       style: style?.copyWith(
-            color: color ?? style?.color,
-            fontSize: fontSize ?? style?.fontSize,
-            fontWeight: fontWeight ?? style?.fontWeight,
-          ) ??
+        color: color,
+        fontSize: fontSize,
+        fontWeight: fontWeight,
+      ) ??
           TextStyle(
             color: color ?? Colors.black,
-            fontSize: fontSize ?? getFontSizeSemiSmall(),
+            fontSize: fontSize ?? 14, // Replace with your default
             fontFamily: 'Poppins',
-            fontWeight: fontWeight??FontWeight.w500,
+            fontWeight: fontWeight ?? FontWeight.normal,
           ),
     );
   }

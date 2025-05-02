@@ -36,7 +36,7 @@ class ProductCardItemWidget extends StatelessWidget {
               children: [
                 CustomNetworkImage(
                   imageUrl: imageUrl,
-                  height: 150.w,
+                  // height: 150.w,
                   radius: 4.r,
                 ),
                 Positioned(
@@ -83,11 +83,37 @@ class ProductCardItemWidget extends StatelessWidget {
     );
   }
 }
+class ProductGridWidget extends StatelessWidget {
+  const ProductGridWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      padding: EdgeInsets.zero,
+      shrinkWrap: true,
+      primary: false,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: 10,
+      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+        crossAxisSpacing: 8.w,
+        mainAxisSpacing: 12.w,
+        mainAxisExtent: 265.w,
+        // childAspectRatio: .5,
+        maxCrossAxisExtent: 210.w,
+      ),
+      itemBuilder:
+          (context, index) => ProductCardItemWidget(),
+    );
+  }
+}
 
 class GreenAccentContainerWidget extends StatelessWidget {
   final Widget child;
+  final double? radius;
   const GreenAccentContainerWidget({
-    super.key, required this.child,
+    super.key, required this.child, this.radius,
   });
 
   @override
@@ -97,7 +123,7 @@ class GreenAccentContainerWidget extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: AppColors.kPrimaryAccentColor,
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(radius??radiusCommon),
         border: Border.all(
           width: .5,
           color: AppColors.kPrimaryColor,

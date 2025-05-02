@@ -1,5 +1,9 @@
 import 'package:get/get.dart';
-import 'package:market_place/core/bindings/bindings.dart' show NavigationBinding;
+import 'package:market_place/core/bindings/bindings.dart'
+    show HomeBinding, NavigationBinding, NotificationBinding;
+import 'package:market_place/presentations/home/views/category_page.dart';
+import 'package:market_place/presentations/home/views/search_page.dart';
+import 'package:market_place/presentations/notification/views/notification_page.dart';
 
 import '../../presentations/navigation/views/navigation_page.dart';
 // import 'package:market_place/core/bindings/bindings.dart';
@@ -25,24 +29,34 @@ import '../../presentations/navigation/views/navigation_page.dart';
 
 class AppRoutes {
   static route() => [
-        // GetPage(name: SplashPage.routeName, page: () => SplashPage(), binding: SplashBinding()),
-        // GetPage(name: LoginPage.routeName, page: () => LoginPage(), binding: AuthBinding()),
-        // GetPage(name: SignupPage.routeName, page: () => SignupPage(), binding: AuthBinding()),
-        // GetPage(name: ForgetPassPage.routeName, page: () => ForgetPassPage(), binding: AuthBinding()),
-        // GetPage(name: OtpPage.routeName, page: () => OtpPage(), binding: AuthBinding()),
-        // GetPage(name: SetNewPasswordPage.routeName, page: () => SetNewPasswordPage(), binding: AuthBinding()),
-        GetPage(name: NavigationPage.routeName, page: () => NavigationPage(), binding: NavigationBinding()),
-        // GetPage(name: ProfilePage.routeName, page: () => ProfilePage(), binding: ProfileBinding()),
-        // GetPage(name: SettingPage.routeName, page: () => SettingPage(), binding: SettingsBinding()),
-        // GetPage(name: FeedbackPage.routeName, page: () => FeedbackPage(), binding: SettingsBinding()),
-        // GetPage(name: ChangePassPage.routeName, page: () => ChangePassPage(), binding: SettingsBinding()),
-        // GetPage(name: PrivacyTermsPage.routeName, page: () => PrivacyTermsPage(), binding: SettingsBinding()),
-        // GetPage(name: CategoryListPage.routeName, page: () => CategoryListPage(), binding: HomeBinding()),
-        // GetPage(name: ProductListPage.routeName, page: () => ProductListPage(), binding: HomeBinding()),
-        // GetPage(name: ProductDetailsPage.routeName, page: () => ProductDetailsPage(), binding: ProductBinding()),
-        // GetPage(name: EditAddressPage.routeName, page: () => EditAddressPage(), binding: ProductBinding()),
-        // GetPage(name: PaymentScreen.routeName, page: () => PaymentScreen(), binding: ProductBinding()),
-        // GetPage(name: PickupAddressPage.routeName, page: () => PickupAddressPage(), binding: ProductBinding()),
-        // GetPage(name: DeliverAddressPage.routeName, page: () => DeliverAddressPage(), binding: ProductBinding()),
-      ];
+    // GetPage(name: SplashPage.routeName, page: () => SplashPage(), binding: SplashBinding()),
+    // GetPage(name: LoginPage.routeName, page: () => LoginPage(), binding: AuthBinding()),
+    // GetPage(name: SignupPage.routeName, page: () => SignupPage(), binding: AuthBinding()),
+    // GetPage(name: ForgetPassPage.routeName, page: () => ForgetPassPage(), binding: AuthBinding()),
+    // GetPage(name: OtpPage.routeName, page: () => OtpPage(), binding: AuthBinding()),
+    GetPage(
+      name: CategoryPage.routeName,
+      page: () => CategoryPage(),
+      binding: HomeBinding(),
+    ),
+    GetPage(
+      name: NavigationPage.routeName,
+      page: () => NavigationPage(),
+      binding: NavigationBinding(),
+    ),
+    GetPage(name: SearchPage.routeName, page: () => SearchPage(),
+        binding: HomeBinding()),
+   GetPage(name: NotificationPage.routeName,
+       page: () => NotificationPage(), binding: NotificationBinding()),
+    // GetPage(name: FeedbackPage.routeName, page: () => FeedbackPage(), binding: SettingsBinding()),
+    // GetPage(name: ChangePassPage.routeName, page: () => ChangePassPage(), binding: SettingsBinding()),
+    // GetPage(name: PrivacyTermsPage.routeName, page: () => PrivacyTermsPage(), binding: SettingsBinding()),
+    // GetPage(name: CategoryListPage.routeName, page: () => CategoryListPage(), binding: HomeBinding()),
+    // GetPage(name: ProductListPage.routeName, page: () => ProductListPage(), binding: HomeBinding()),
+    // GetPage(name: ProductDetailsPage.routeName, page: () => ProductDetailsPage(), binding: ProductBinding()),
+    // GetPage(name: EditAddressPage.routeName, page: () => EditAddressPage(), binding: ProductBinding()),
+    // GetPage(name: PaymentScreen.routeName, page: () => PaymentScreen(), binding: ProductBinding()),
+    // GetPage(name: PickupAddressPage.routeName, page: () => PickupAddressPage(), binding: ProductBinding()),
+    // GetPage(name: DeliverAddressPage.routeName, page: () => DeliverAddressPage(), binding: ProductBinding()),
+  ];
 }

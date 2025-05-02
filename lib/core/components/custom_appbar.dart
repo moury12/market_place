@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:market_place/core/components/custom_network_image.dart';
 import 'package:market_place/core/constants/image_constants.dart';
+import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/core/constants/color_constants.dart';
 import 'package:market_place/core/constants/custom_text.dart';
@@ -10,10 +12,7 @@ import 'package:market_place/core/constants/fontsize_constant.dart';
 
 class CustomAuthAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  const CustomAuthAppbar({
-    super.key,
-    required this.title,
-  });
+  const CustomAuthAppbar({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -35,27 +34,37 @@ class CustomAuthAppbar extends StatelessWidget implements PreferredSizeWidget {
 
 class CustomDefaultAppbar extends StatelessWidget
     implements PreferredSizeWidget {
-  final String title;
+  final String? title;
   final Widget? leading;
+  final Widget? titleWidget;
   final List<Widget>? action;
   const CustomDefaultAppbar({
     super.key,
-    required this.title, this.leading, this.action,
+     this.title,
+    this.leading,
+    this.action, this.titleWidget,
   });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: AppColors.kPrimaryColor,
-      foregroundColor: AppColors.kWhiteColor,
+      // backgroundColor: AppColors.kPrimaryColor,
+      // foregroundColor: AppColors.kWhiteColor,
       centerTitle: true,
-      leading:leading ,
+      leading: GestureDetector(
+          onTap: () {
+            Get.back();
+          },
+          child: Padding(
+            padding:padding12,
+            child: SvgPicture.asset(backIcon),
+          )),
       actions: action,
-      title: CustomText(
-        text: title,
+      title:titleWidget?? CustomText(
+        text: title??"",
         style: poppinsMedium,
-        fontSize: getFontSizeExtraLarge(),
-        color: AppColors.kWhiteColor,
+        fontSize: getFontSizeDefault(),
+        color: Colors.black,
       ),
     );
   }
@@ -67,10 +76,7 @@ class CustomDefaultAppbar extends StatelessWidget
 
 class CustomHomeAppbar extends StatelessWidget {
   final Function()? onActionTap;
-  const CustomHomeAppbar({
-    super.key,
-    this.onActionTap,
-  });
+  const CustomHomeAppbar({super.key, this.onActionTap});
 
   @override
   Widget build(BuildContext context) {
@@ -82,37 +88,39 @@ class CustomHomeAppbar extends StatelessWidget {
       title: Row(
         spacing: 12.w,
         children: [
-         SvgPicture.asset(
-                 logoIcon,
+          SvgPicture.asset(
+            logoIcon,
 
-                  height: kToolbarHeight - 6,
-                  width: kToolbarHeight - 6,
-                ),
+            height: kToolbarHeight - 6,
+            width: kToolbarHeight - 6,
+          ),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-               CustomText(
-                        text:'Hello Ely Mohammed',
-              style: poppinsBold,
-fontSize: getFontSizeSemiSmall(),
-                      ),
                 CustomText(
-                        text: 'Welcome to Bazarya',
+                  text: 'Hello Ely Mohammed',
+                  style: poppinsBold,
+                  fontSize: getFontSizeSemiSmall(),
+                ),
+                CustomText(
+                  text: 'Welcome to Bazarya',
 
-                        style: poppinsRegular,
-                        fontSize: getFontSizeSmall(),
-                        maxLines: 1,
-                      )
+                  style: poppinsRegular,
+                  fontSize: getFontSizeSmall(),
+                  maxLines: 1,
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
       actions: [
-        IconButton(onPressed: onActionTap, icon: SvgPicture.asset(notificationIcon))
+        IconButton(
+          onPressed: onActionTap,
+          icon: SvgPicture.asset(notificationIcon),
+        ),
       ],
     );
   }
 }
-

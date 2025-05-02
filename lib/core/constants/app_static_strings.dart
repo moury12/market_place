@@ -63,6 +63,7 @@ class AppStaticStrings {
   static const String password = 'Password';
   static const String confirmPassword = 'Confirm Password';
   static const String age = 'Age';
+  static const String clearAll = 'Clear all';
   static const String searchHistory = 'Search history';
   static const String recentlyAdded = 'Recently Added';
   static const String productCategories = 'Product Categories';

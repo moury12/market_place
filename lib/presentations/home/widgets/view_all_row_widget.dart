@@ -8,9 +8,10 @@ import '../../../core/constants/text_style_constant.dart';
 
 class ViewAllRow extends StatelessWidget {
   final String title;
+  final String? buttonText;
   final Function() onPressed;
   const ViewAllRow({
-    super.key, required this.title, required this.onPressed,
+    super.key, required this.title, required this.onPressed, this.buttonText,
   });
 
   @override
@@ -24,7 +25,7 @@ class ViewAllRow extends StatelessWidget {
             style: poppinsMedium,
           ),
         ),
-        CustomTextButton(onPressed: onPressed, title: AppStaticStrings.viewAll, )
+        CustomTextButton(onPressed: onPressed, title: buttonText?? AppStaticStrings.viewAll, )
       ],
     );
   }

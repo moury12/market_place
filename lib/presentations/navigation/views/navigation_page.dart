@@ -4,7 +4,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/constants/color_constants.dart';
 import 'package:market_place/core/constants/custom_text.dart';
+import 'package:market_place/core/constants/fontsize_constant.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
+import 'package:market_place/core/constants/text_style_constant.dart';
+import 'package:market_place/presentations/notification/views/notification_page.dart';
 
 import '../../../core/components/custom_appbar.dart';
 import '../controller/navigation_controller.dart';
@@ -25,7 +28,7 @@ class NavigationPage extends StatelessWidget {
                 builder: (context) {
                   return CustomHomeAppbar(
                     onActionTap: () {
-                      Scaffold.of(context).openDrawer();
+                      Get.toNamed(NotificationPage.routeName);
                     },
                   );
                 },
@@ -62,7 +65,7 @@ class NavigationPage extends StatelessWidget {
       ),
       bottomNavigationBar: SafeArea(
         child: Container(
-          padding: padding14.copyWith(bottom: 6.h),
+          padding: padding6,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.vertical(
@@ -144,6 +147,10 @@ class NavigationPage extends StatelessWidget {
                               Padding(
                                 padding: EdgeInsets.only(top: 4.w),
                                 child: CustomText(
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  fontSize: getFontSizeSmall(),
+                                  style: poppinsMedium,
                                   text:
                                       NavigationControllerMain.to.labels[index],
                                 ),

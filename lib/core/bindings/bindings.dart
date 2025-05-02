@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
 import 'package:market_place/core/utils/common_controller.dart' show CommonController;
 import 'package:market_place/presentations/navigation/controller/navigation_controller.dart';
+import 'package:market_place/presentations/notification/controller/notification_controller.dart';
+
+import '../../presentations/home/controller/home_controller.dart';
 // import 'package:market_place/presentations/auth/controllers/auth_controller.dart';
 // import 'package:market_place/presentations/cart/controllers/cart_controller.dart';
 // import 'package:market_place/presentations/navigation/controllers/home_controller.dart';
@@ -48,12 +51,12 @@ class NavigationBinding extends Bindings {
     // Get.lazyPut(()=>CartController());
   }
 }
-// class HomeBinding extends Bindings {
-//   @override
-//   void dependencies() {
-//     Get.put(HomeController());
-//   }
-// }
+class HomeBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.put(HomeController());
+  }
+}
 //
 // class ProfileBinding extends Bindings {
 //   @override
@@ -62,9 +65,9 @@ class NavigationBinding extends Bindings {
 //   }
 // }
 //
-// class SettingsBinding extends Bindings {
-//   @override
-//   void dependencies() {
-//     Get.put(SettingsController());
-//   }
-// }
+class NotificationBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.put(NotificationController());
+  }
+}
