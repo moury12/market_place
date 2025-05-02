@@ -16,7 +16,8 @@ class CustomTextField extends StatefulWidget {
       this.focusNode,
       this.keyboardType = TextInputType.text,
       this.textInputAction = TextInputAction.next,
-      this.cursorColor = AppColors.kPrimaryExtraLightColor,
+      this.cursorColor = AppColors.kPrimaryColor,
+      this.borderColor = Colors.black,
       this.inputTextStyle,
       this.textAlignVertical = TextAlignVertical.center,
       this.textAlign = TextAlign.start,
@@ -38,7 +39,7 @@ class CustomTextField extends StatefulWidget {
       this.border,
       this.focusedBorder,
       this.enabledBorder,
-      this.fillColor = AppColors.kTextFieldColor,
+      this.fillColor = AppColors.kPrimaryAccentColor,
       this.contentPadding = const EdgeInsets.only(left: 10),
       this.title,
       this.isEnable = true,
@@ -65,6 +66,7 @@ class CustomTextField extends StatefulWidget {
 
   final Color? suffixIconColor;
   final Color? fillColor;
+  final Color? borderColor;
 
   final Widget? suffixIcon;
   final Widget? prefixIcon;
@@ -181,17 +183,17 @@ class _CustomTextFieldState extends State<CustomTextField> {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(widget.borderRadius ?? 8.r),
                 borderSide: BorderSide(
-                    color: widget.fillColor ?? Colors.transparent, width: 1),
+                    color: widget.borderColor ?? Colors.transparent, width: .5),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(widget.borderRadius ?? 8.r),
                 borderSide: BorderSide(
-                    color: widget.fillColor ?? Colors.transparent, width: 1),
+                    color: widget.borderColor ?? Colors.transparent, width: .5),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(widget.borderRadius ?? 8.r),
                 borderSide: BorderSide(
-                    color: widget.fillColor ?? Colors.transparent, width: 1),
+                    color: widget.borderColor ?? Colors.transparent, width: .5),
               ),
             ),
           ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   static const Color kPrimaryColor = Color(0xff16A34A);
-  static  Color kPrimaryAccentColor = Color(0xff16A34A).withValues(alpha: 0.4);
+  static const Color kPrimaryAccentColor = Color(0xffF0FDF4);
   static const Color kWhiteColor = Colors.white;
   static const Color kPrimaryDarkColor = Color(0xff224490);
   static const Color kPrimaryCartColor = Color(0xffEBF1FE);

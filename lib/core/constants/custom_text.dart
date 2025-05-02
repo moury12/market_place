@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:market_place/core/constants/color_constants.dart';
 import 'package:market_place/core/constants/fontsize_constant.dart';
 
 
 class CustomText extends StatelessWidget {
   final String text;
-  final TextStyle? style; // Allows full dynamic styling
-  final Color? color; // Overrides for individual style properties
+  final TextStyle? style;
+  final Color? color;
   final double? fontSize;
   final FontWeight? fontWeight;
   final TextAlign? textAlign;

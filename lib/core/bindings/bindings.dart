@@ -3,7 +3,7 @@ import 'package:market_place/core/utils/common_controller.dart' show CommonContr
 import 'package:market_place/presentations/navigation/controller/navigation_controller.dart';
 // import 'package:market_place/presentations/auth/controllers/auth_controller.dart';
 // import 'package:market_place/presentations/cart/controllers/cart_controller.dart';
-// import 'package:market_place/presentations/navigation/controllers/navigation_controller.dart';
+// import 'package:market_place/presentations/navigation/controllers/home_controller.dart';
 // import 'package:market_place/presentations/product/controllers/product_controller.dart';
 // import 'package:market_place/presentations/profile/controllers/profile_controller.dart';
 // import 'package:market_place/presentations/settings/controllers/settings_controller.dart';

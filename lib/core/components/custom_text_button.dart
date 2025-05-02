@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:market_place/core/constants/color_constants.dart';
 import 'package:market_place/core/constants/fontsize_constant.dart';
+import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
 
 class CustomTextButton extends StatelessWidget {
@@ -31,17 +32,24 @@ class CustomTextButton extends StatelessWidget {
         style: TextButton.styleFrom(
           foregroundColor: textColor,
           backgroundColor: backgroundColor,
-          padding: padding,
+          padding: EdgeInsets.zero,
+          minimumSize: Size.zero,
+          overlayColor: AppColors.kPrimaryColor,// Remove minimum tap area
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius ?? 8.0),
             side: border ?? BorderSide.none,
           ),
         ),
         onPressed: onPressed ?? () {},
-        child: Text(title,
-            style: poppinsRegular.copyWith(
-              fontSize: fontSize ?? getFontSizeSemiSmall(),
-              fontWeight: fontWeight ?? FontWeight.w500,
-            )));
+        child: Padding(
+          padding: padding8,
+          child: Text(title,
+              style: poppinsRegular.copyWith(
+                fontSize: fontSize ?? getFontSizeSemiSmall(),
+                fontWeight: fontWeight ?? FontWeight.w500,
+                color: AppColors.kPrimaryColor
+              )),
+        ));
   }
 }

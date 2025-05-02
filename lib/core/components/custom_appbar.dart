@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:market_place/core/components/custom_network_image.dart';
+import 'package:market_place/core/constants/image_constants.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/core/constants/color_constants.dart';
 import 'package:market_place/core/constants/custom_text.dart';
@@ -60,3 +64,55 @@ class CustomDefaultAppbar extends StatelessWidget
   // TODO: implement preferredSize
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
+
+class CustomHomeAppbar extends StatelessWidget {
+  final Function()? onActionTap;
+  const CustomHomeAppbar({
+    super.key,
+    this.onActionTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      automaticallyImplyLeading: false,
+      actionsPadding: EdgeInsets.zero,
+      // backgroundColor: AppColors.kPrimaryColor,
+      // foregroundColor: AppColors.kWhiteColor,
+      title: Row(
+        spacing: 12.w,
+        children: [
+         SvgPicture.asset(
+                 logoIcon,
+
+                  height: kToolbarHeight - 6,
+                  width: kToolbarHeight - 6,
+                ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+               CustomText(
+                        text:'Hello Ely Mohammed',
+              style: poppinsBold,
+fontSize: getFontSizeSemiSmall(),
+                      ),
+                CustomText(
+                        text: 'Welcome to Bazarya',
+
+                        style: poppinsRegular,
+                        fontSize: getFontSizeSmall(),
+                        maxLines: 1,
+                      )
+              ],
+            ),
+          )
+        ],
+      ),
+      actions: [
+        IconButton(onPressed: onActionTap, icon: SvgPicture.asset(notificationIcon))
+      ],
+    );
+  }
+}
+
