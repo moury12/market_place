@@ -4,6 +4,7 @@ import 'package:market_place/presentations/navigation/controller/navigation_cont
 import 'package:market_place/presentations/notification/controller/notification_controller.dart';
 
 import '../../presentations/home/controller/home_controller.dart';
+import '../../presentations/my-listings/controller/listings_controller.dart';
 // import 'package:market_place/presentations/auth/controllers/auth_controller.dart';
 // import 'package:market_place/presentations/cart/controllers/cart_controller.dart';
 // import 'package:market_place/presentations/navigation/controllers/home_controller.dart';
@@ -48,6 +49,12 @@ class NavigationBinding extends Bindings {
   @override
   void dependencies() {
     Get.put(NavigationController());
+    // Get.lazyPut(()=>CartController());
+  }
+}class ListingsBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.put(ListingsController());
     // Get.lazyPut(()=>CartController());
   }
 }

@@ -2,7 +2,7 @@ import 'package:logger/logger.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/core/constants/image_constants.dart';
 
-String dummyProfile =
+String dummyProfileImage =
     'https://www.webxcreation.com/event-recruitment/images/profile-1.jpg';
 // String dummyImgImg ='https://images.pexels.com/photos/62613/heliconius-melpomene-butterfly-exotic-62613.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
 // String dummyCatImg ='https://site-images.similarcdn.com/image?url=fpoimg.com&t=4&s=1&h=1449187c387db98af0e1271f320f3e5714296230aef41d228ed0c7fd47ea936c';

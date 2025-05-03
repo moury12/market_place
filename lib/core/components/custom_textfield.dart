@@ -143,7 +143,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 TextStyle(
                     color: AppColors.kLightTextColor,
                     fontWeight: FontWeight.w400,
-                    fontSize: getFontSizeSmall()),
+                    fontSize: getFontSizeSemiSmall()),
             onChanged: widget.onChanged,
             maxLines: widget.maxLines,
             obscureText: widget.isPassword ? obscureText : false,
@@ -159,7 +159,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   TextStyle(
                       color: AppColors.kExtraLightTextColor,
                       fontWeight: FontWeight.w400,
-                      fontSize: getFontSizeSmall()),
+                      fontSize: getFontSizeSemiSmall()),
               filled: true,
               prefixIcon: widget.prefixIcon,
               suffixIcon: widget.isPassword

@@ -8,12 +8,13 @@ class ButtonTapWidget extends StatelessWidget {
     required this.child,
     this.onTap,
     this.radius,
-    this.shape,
+    this.shape, this.color=AppColors.kPrimaryColor,
   });
 
   final Widget child;
   final Function()? onTap;
   final double? radius;
+  final Color? color;
   final ShapeBorder? shape;
 
   @override
@@ -22,7 +23,7 @@ class ButtonTapWidget extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         customBorder: shape,
-        splashColor: AppColors.kPrimaryColor.withValues(alpha: .2),
+        splashColor: color!.withValues(alpha: .2),
         onTap: onTap,
         borderRadius: BorderRadius.circular(radius ?? 12.r),
         child: child,
