@@ -94,7 +94,8 @@ class FilterDrawerWidget extends StatelessWidget {
                   CustomButton(onTap: () {
             
                   },
-                  title:AppStaticStrings.applyFilter ,),  CustomButton(
+                  title:AppStaticStrings.applyFilter ,),
+                  CustomButton(
                     fillColor: Colors.transparent,
                     textColor: AppColors.kPrimaryColor,
                     onTap: () {

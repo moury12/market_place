@@ -17,6 +17,10 @@ import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/core/helper/helper_function.dart';
 import 'package:market_place/presentations/sell-now/controller/sell_controller.dart';
 
+import '../../../core/components/custom_drop_down_button.dart';
+import '../../../core/components/custom_textfield.dart';
+import '../../../core/utils/variable.dart';
+
 class SellNowPage extends StatelessWidget {
   static const String routeName = "/sell-now";
   const SellNowPage({super.key});
@@ -25,21 +29,14 @@ class SellNowPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: padding12,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-
-          children: [
-            Column(
+        padding: padding12.copyWith(top: 0),
+        child: Obx(
+         () {
+            return SellController.to.addProductInfo.value? Column(
               spacing: 12.h,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomText(
-                  text: "Upload Product Images",
-                  style: poppinsSemiBold,
-                  color: Colors.black,
-                  fontSize: getFontSizeDefault(),
-                ),
+                titleBold(title:  "Upload Product Images"),
                 Obx(() {
                   return Wrap(
                     spacing: 8.w,
@@ -59,7 +56,7 @@ class SellNowPage extends StatelessWidget {
                           Positioned(
                             top: -10,
                             right:-10,
-
+                        
                             child: IconButton(
                               onPressed: () {
                                 removeImage(
@@ -110,12 +107,81 @@ class SellNowPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                CustomButton(onTap: () {}, title: AppStaticStrings.next),
+                CustomButton(onTap: () {
+                  SellController.to.addProductInfo.value= true;
+                }, title: AppStaticStrings.next),
               ],
-            ),
-          ],
+            )
+            :Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 12.h,
+              children: [
+                titleBold(title: "Product Information "),
+                CustomTextField(
+                  fillColor: AppColors.kWhiteColor,
+                  title:"Product Title",
+
+                ),
+                CustomDropdown(
+                  title: AppStaticStrings.category,
+                  items: category,
+                  selectedValue: SellController.to.selectedCategory.value,
+                ),
+                CustomDropdown(
+                  title: AppStaticStrings.subCategory,
+                  items: category,
+                  selectedValue: SellController.to.selectedSubCategory.value,
+                ),
+                CustomDropdown(
+                  title: AppStaticStrings.condition,
+                  items: condition,
+                  selectedValue: SellController.to.selectedCondition.value,
+                ),
+                CustomTextField(
+                  fillColor: AppColors.kWhiteColor,
+                  title:AppStaticStrings.price,
+
+                ),
+                CustomTextField(
+                  fillColor: AppColors.kWhiteColor,
+                  title:"Product Description",
+                  maxLines: 6,
+
+                ),
+                Row(
+                  spacing: 12.w,
+                  children: [
+
+                    Expanded(
+                      child: CustomButton(
+                        fillColor: Colors.transparent,
+                        textColor: AppColors.kPrimaryColor,
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        title:"Previous" ,),
+                    ),  Expanded(
+                      child: CustomButton(onTap: () {
+
+                      },
+                        title:AppStaticStrings.next ,),
+                    ),
+                  ],
+                )
+              ],
+            );
+          }
         ),
       ),
     );
+  }
+
+  CustomText titleBold({required String title}) {
+    return CustomText(
+                text:title,
+                style: poppinsSemiBold,
+                color: Colors.black,
+                fontSize: getFontSizeDefault(),
+              );
   }
 }
