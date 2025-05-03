@@ -98,10 +98,23 @@ class AppStaticStrings {
   // Notes & Warnings
   static const String notesAgeRequirement = 'Notes: You have to be over 21';
   static const String confirmOver21 = 'I’m more than 21';
+  static const String loginToContinue = 'Log in to continue. Enter your credentials to access your account.';
+  static const String createYourAccount = 'Create Your Account';
+  static const String joinUsToday = 'Join us today and start planning your events or managing your services seamlessly!';
+  static const String verifyYourEmail = 'Verify Your Email';
+  static const String verifyEmailInfo = "We'll send a verification code to this email to confirm your account.";
+  static const String sixDigitCode = '6-digit code';
+  static const String enterCodePrompt = "Please enter the code we've sent to michelle.rivera@example.com";
+  static const String discoverUniqueFinds = 'Discover a World of Unique Finds';
+  static const String browseThousandsOfItems = 'Browse thousands of items from trusted local sellers, all in one app.';
+  static const String sellAnythingAnytime = 'Sell Anything, Anytime';
+  static const String sellingMadeSimple = 'Snap, post, and connect with buyers instantly — selling has never been this simple.';
+  static const String chatDealTrade = 'Chat. Deal. Trade with Confidence.';
+  static const String chatTrustMessage = 'Built-in chat, verified users, and secure profiles — your trust matters most.';
 
   // Additional Messages
   static const String taxIdDescription = 'Add your tax id for buying wholesaling products';
-  static const String uploadImage = 'upload your image';
+  static const String uploadImage = 'upload image';
   static const String showIdOnPickup = 'I Don’t wanna put my ID here. I will show my ID when I pick up the products';
 
   // Account Related
@@ -110,6 +123,7 @@ class AppStaticStrings {
 
   // Actions
   static const String send = 'Send';
+  static const String next = 'Next';
   static const String update = 'Update';
   static const String enter = 'enter';
   static const String confirm = 'Confirm';
@@ -170,6 +184,7 @@ class AppStaticStrings {
   static const String sellNow = 'Sell Now';
   static const String messages = 'Messages';
   static const String profile = 'Profile';
+  static const String addNewListing = ' Add New Listing';
   static const String orders = 'Orders';
   static const String notifications = 'Notifications';
 
