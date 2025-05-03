@@ -22,6 +22,11 @@ String notifySettingIcon = 'assets/icons/notify_setting_icon.svg';
 String privacyPolicyIcon = 'assets/icons/privacy_policy_icon.svg';
 String settingIcon = 'assets/icons/setting_icon.svg';
 String termsIcon = 'assets/icons/terms_icon.svg';
+String activeProductIcon = 'assets/icons/active_product_icon.svg';
+String archiveProductIcon = 'assets/icons/archive_product_icon.svg';
+String rejectedProductIcon = 'assets/icons/rejected_product_icon.svg';
+String soldoutProductIcon = 'assets/icons/soldout_product_icon.svg';
+String unsupportProductIcon = 'assets/icons/unsupport_product_icon.svg';
 
 // Image Assets
 String loadingImg = 'assets/images/loading.gif';

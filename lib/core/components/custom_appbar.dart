@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:market_place/core/components/custom_button_tap.dart';
 import 'package:market_place/core/components/custom_network_image.dart';
 import 'package:market_place/core/constants/image_constants.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
@@ -51,12 +52,13 @@ class CustomDefaultAppbar extends StatelessWidget
       // backgroundColor: AppColors.kPrimaryColor,
       // foregroundColor: AppColors.kWhiteColor,
       centerTitle: true,
-      leading: GestureDetector(
+      leading: ButtonTapWidget(
+        shape:CircleBorder(),
           onTap: () {
             Get.back();
           },
           child: Padding(
-            padding:padding12,
+            padding:padding8,
             child: SvgPicture.asset(backIcon),
           )),
       actions: action,

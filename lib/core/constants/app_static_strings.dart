@@ -21,7 +21,11 @@ class AppStaticStrings {
   // OTP Verification
   static const String  currentPass= "Current Password";
   static const String newPass = "New Password";
-
+  static const String activeListings = 'Active Listings';
+  static const String soldOutListings = 'Sold Out Listings';
+  static const String archivedListings = 'Archived Listings';
+  static const String unapprovedListings = 'Unapproved Listings';
+  static const String rejectedListings = 'Rejected Listings';
   static const String changePass = "Change Password";
   static const String deleteAcc = "Delete Account";
   static const String yes = "Yes";
@@ -48,7 +52,9 @@ class AppStaticStrings {
   static const String enterOtp = 'enter 6 digit code that mentioned in the email';
   static const String resendOtp = 'Resend OTP';
   static const String sendCode = 'Send Code';
+  static const String wilaya = 'Wilaya';
   static const String category = 'Category';
+  static const String subCategory = 'Sub Category';
   static const String viewAll = 'View all';
 
   // Password Reset
@@ -143,6 +149,12 @@ class AppStaticStrings {
   static const String deliveryAddress = 'Delivery Address';
   static const String editAddress = 'Edit Address';
   static const String location = 'Location';
+  static const String city = 'City';
+  static const String close = 'Close';
+  static const String applyFilter = ' Apply filter';
+  static const String condition = 'Condition';
+  static const String sortBy = 'Sort By';
+  static const String priceRange = 'Price Range';
 
   // Order Details
   static const String cart = 'Cart';

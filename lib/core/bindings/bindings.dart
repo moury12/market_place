@@ -47,7 +47,7 @@ class CommonBinding extends Bindings {
 class NavigationBinding extends Bindings {
   @override
   void dependencies() {
-    Get.put(NavigationControllerMain());
+    Get.put(NavigationController());
     // Get.lazyPut(()=>CartController());
   }
 }

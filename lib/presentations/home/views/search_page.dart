@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/components/custom_appbar.dart';
 import 'package:market_place/core/components/custom_button_tap.dart';
+import 'package:market_place/core/components/filter_drawer_widget.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/core/constants/color_constants.dart';
 import 'package:market_place/core/constants/custom_text.dart';
@@ -25,6 +26,7 @@ class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      endDrawer: FilterDrawerWidget(),
       body: Column(
         children: [
           Padding(
@@ -35,7 +37,9 @@ class SearchPage extends StatelessWidget {
             child: Row(
               spacing: 8.w,
               children: [
-                GestureDetector(
+                ButtonTapWidget(
+                  shape: CircleBorder(),
+
                   onTap: () {
                     Get.back();
                   },
@@ -49,11 +53,17 @@ class SearchPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: SvgPicture.asset(filterIcon),
+                Builder(
+                  builder: (context) {
+                    return ButtonTapWidget(
+
+
+                      onTap: () {
+                        Scaffold.of(context).openEndDrawer();
+                      },
+                      child: SvgPicture.asset(filterIcon),
+                    );
+                  }
                 ),
               ],
             ),

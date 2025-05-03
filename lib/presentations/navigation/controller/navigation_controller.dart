@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/core/constants/image_constants.dart';
+import 'package:market_place/presentations/my-listings/views/my-listings_page.dart';
 
 import '../../home/views/home_page.dart';
 
-class NavigationControllerMain extends GetxController {
-  static NavigationControllerMain get to => Get.find();
+class NavigationController extends GetxController {
+  static NavigationController get to => Get.find();
   RxInt selectedNavIndex = 0.obs;
 
   List<Widget> getPages() {
-    return [HomePage(),HomePage(),HomePage(),HomePage(),HomePage(),];
+    return [HomePage(),MyListingsPage(),HomePage(),HomePage(),HomePage(),];
   }
   List<String> appbarTitle= [
     AppStaticStrings.addToCard,

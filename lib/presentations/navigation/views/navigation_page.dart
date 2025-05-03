@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:market_place/core/components/custom_button_tap.dart';
 import 'package:market_place/core/constants/color_constants.dart';
 import 'package:market_place/core/constants/custom_text.dart';
 import 'package:market_place/core/constants/fontsize_constant.dart';
@@ -23,7 +24,7 @@ class NavigationPage extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: Obx(() {
-          return NavigationControllerMain.to.selectedNavIndex.value == 0
+          return NavigationController.to.selectedNavIndex.value == 0
               ? Builder(
                 builder: (context) {
                   return CustomHomeAppbar(
@@ -36,14 +37,14 @@ class NavigationPage extends StatelessWidget {
               : CustomDefaultAppbar(
                 leading: IconButton(
                   onPressed: () {
-                    NavigationControllerMain.to.selectedNavIndex.value = 0;
+                    NavigationController.to.selectedNavIndex.value = 0;
                   },
                   icon: Icon(Icons.arrow_back_rounded),
                 ),
                 title:
-                    NavigationControllerMain
+                    NavigationController
                         .to
-                        .appbarTitle[NavigationControllerMain
+                        .appbarTitle[NavigationController
                             .to
                             .selectedNavIndex
                             .value -
@@ -56,8 +57,8 @@ class NavigationPage extends StatelessWidget {
           Expanded(
             child: Obx(() {
               return IndexedStack(
-                index: NavigationControllerMain.to.selectedNavIndex.value,
-                children: NavigationControllerMain.to.getPages(),
+                index: NavigationController.to.selectedNavIndex.value,
+                children: NavigationController.to.getPages(),
               );
             }),
           ),
@@ -65,7 +66,7 @@ class NavigationPage extends StatelessWidget {
       ),
       bottomNavigationBar: SafeArea(
         child: Container(
-          padding: padding6,
+          padding: padding6H,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.vertical(
@@ -73,7 +74,7 @@ class NavigationPage extends StatelessWidget {
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: .1),
+                color: Colors.black.withValues(alpha: .2),
                 blurRadius: 20.r,
               ),
             ],
@@ -82,82 +83,108 @@ class NavigationPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children:
                 List.generate(
-                  NavigationControllerMain.to.icons.length,
+                  NavigationController.to.icons.length,
                   (index) => Expanded(
                     // Add Expanded to distribute space evenly
-                    child: GestureDetector(
+                    child: ButtonTapWidget(
                       onTap: () {
-                        NavigationControllerMain.to.selectedNavIndex.value =
+                        NavigationController.to.selectedNavIndex.value =
                             index;
                       },
-                      child: Obx(() {
-                        bool isSelected =
-                            NavigationControllerMain
-                                .to
-                                .selectedNavIndex
-                                .value ==
-                            index;
-                        return Column(
-                          mainAxisSize:
-                              MainAxisSize
-                                  .min, // Use min to prevent column from expanding
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            if (isSelected)
-                              AnimatedContainer(
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeInOut,
-                                padding: padding12,
-                                transform: Matrix4.translationValues(0, -20, 0),
-                                decoration: BoxDecoration(
-                                  color:
-                                      isSelected
-                                          ? Colors.green
-                                          : Colors.transparent,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    width: 6.w,
-                                    color: AppColors.kWhiteColor,
+                      child: Padding(
+                        padding: padding6V,
+                        child: Obx(() {
+                          bool isSelected =
+                              NavigationController
+                                  .to
+                                  .selectedNavIndex
+                                  .value ==
+                              index;
+                          return Column(
+                            mainAxisSize:
+                                MainAxisSize
+                                    .min, // Use min to prevent column from expanding
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              if (isSelected)
+                                AnimatedContainer(
+                                  duration: const Duration(microseconds: 10),
+                                  curve: Curves.linear,
+
+                                  transform: Matrix4.translationValues(0, -20, 0),
+                                  decoration: BoxDecoration(
+                                    color:
+                                 Colors.white,
+                                    shape: BoxShape.circle,
+
+                                    // border: Border.all(
+                                    //   width: 6.w,
+                                    //   color: AppColors.kWhiteColor,
+                                    // ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: AppColors.kPrimaryColor.withValues(alpha: .2),
+                                        blurRadius: 4.r,
+                                        offset: Offset(0, 4),
+                                      ),
+                                    ],
                                   ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: AppColors.kPrimaryAccentColor,
-                                      blurRadius: 4.r,
-                                      offset: Offset(0, 4),
+                                  padding: padding6,
+                                  child: Container(
+                                    padding: padding12,
+                                    // transform: Matrix4.translationValues(0, -20, 0),
+                                    decoration: BoxDecoration(
+                                      color:
+                                          isSelected
+                                              ? Colors.green
+                                              : Colors.transparent,
+                                      shape: BoxShape.circle,
+
+                                      // border: Border.all(
+                                      //   width: 6.w,
+                                      //   color: AppColors.kWhiteColor,
+                                      // ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: AppColors.kPrimaryColor.withValues(alpha: .2),
+                                          blurRadius: 4.r,
+                                          offset: Offset(0, 4),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                                child: SvgPicture.asset(
-                                  NavigationControllerMain.to.icons[index],
+                                    child: SvgPicture.asset(
+                                      NavigationController.to.icons[index],
+                                      colorFilter: ColorFilter.mode(
+                                        isSelected ? Colors.white : Colors.black,
+                                        BlendMode.srcIn,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              else
+                                SvgPicture.asset(
+                                  NavigationController.to.icons[index],
                                   colorFilter: ColorFilter.mode(
-                                    isSelected ? Colors.white : Colors.black,
+                                    Colors.black,
                                     BlendMode.srcIn,
                                   ),
                                 ),
-                              )
-                            else
-                              SvgPicture.asset(
-                                NavigationControllerMain.to.icons[index],
-                                colorFilter: ColorFilter.mode(
-                                  Colors.black,
-                                  BlendMode.srcIn,
+                              if (!isSelected)
+                                Padding(
+                                  padding: EdgeInsets.only(top: 4.w),
+                                  child: CustomText(
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    fontSize: getFontSizeSmall(),
+                                    style: poppinsMedium,
+                                    text:
+                                        NavigationController.to.labels[index],
+                                  ),
                                 ),
-                              ),
-                            if (!isSelected)
-                              Padding(
-                                padding: EdgeInsets.only(top: 4.w),
-                                child: CustomText(
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  fontSize: getFontSizeSmall(),
-                                  style: poppinsMedium,
-                                  text:
-                                      NavigationControllerMain.to.labels[index],
-                                ),
-                              ),
-                          ],
-                        );
-                      }),
+                            ],
+                          );
+                        }),
+                      ),
                     ),
                   ),
                 ).toList(),
