@@ -110,6 +110,7 @@ class AppStaticStrings {
 
   // Actions
   static const String send = 'Send';
+  static const String update = 'Update';
   static const String enter = 'enter';
   static const String confirm = 'Confirm';
 

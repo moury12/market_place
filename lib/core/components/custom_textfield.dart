@@ -104,8 +104,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 children: [
                   Text(
                     widget.title ?? '',
-                    style: poppinsRegular.copyWith(
-                      color: AppColors.kLightTextColor,
+                    style: poppinsSemiBold.copyWith(
+                      color: AppColors.kBlackColor,
                         fontSize: getFontSizeSemiSmall()),
                   ),
                   widget.isRequired == true

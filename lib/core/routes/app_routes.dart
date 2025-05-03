@@ -11,8 +11,11 @@ import 'package:market_place/presentations/profile/views/account_settings_page.d
 import 'package:market_place/presentations/profile/views/account_settings_page.dart';
 import 'package:market_place/presentations/profile/views/change_password_page.dart';
 import 'package:market_place/presentations/profile/views/change_password_page.dart';
+import 'package:market_place/presentations/profile/views/edit_profile_page.dart';
+import 'package:market_place/presentations/profile/views/edit_profile_page.dart';
 
 import '../../presentations/navigation/views/navigation_page.dart';
+import '../../presentations/profile/views/term_policy_help_page.dart';
 // import 'package:market_place/core/bindings/bindings.dart';
 // import 'package:market_place/presentations/auth/views/forget_pass_page.dart';
 // import 'package:market_place/presentations/auth/views/login_page.dart';
@@ -59,6 +62,8 @@ class AppRoutes {
     GetPage(name: ChattingPage.routeName, page: () => ChattingPage(), /*binding: SettingsBinding()*/),
     GetPage(name: AccountSettingsPage.routeName, page: () => AccountSettingsPage(), /*binding: SettingsBinding()*/),
     GetPage(name: ChangePasswordPage.routeName, page: () => ChangePasswordPage(), /*binding: SettingsBinding()*/),
+    GetPage(name: TermsPolicyHelpPage.routeName, page: () => TermsPolicyHelpPage(), /*binding: SettingsBinding()*/),
+    GetPage(name: EditProfilePage.routeName, page: () => EditProfilePage(), /*binding: SettingsBinding()*/),
     // GetPage(name: PrivacyTermsPage.routeName, page: () => PrivacyTermsPage(), binding: SettingsBinding()),
     // GetPage(name: CategoryListPage.routeName, page: () => CategoryListPage(), binding: HomeBinding()),
     // GetPage(name: ProductListPage.routeName, page: () => ProductListPage(), binding: HomeBinding()),
