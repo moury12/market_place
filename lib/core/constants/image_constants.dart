@@ -23,6 +23,7 @@ String privacyPolicyIcon = 'assets/icons/privacy_policy_icon.svg';
 String settingIcon = 'assets/icons/setting_icon.svg';
 String termsIcon = 'assets/icons/terms_icon.svg';
 String imgIcon = 'assets/icons/image_icon.svg';
+String arrowForwardIcon = 'assets/icons/arrow_forward_icon.svg';
 String sendMessageIcon = 'assets/icons/send_message_icon.svg';
 String activeProductIcon = 'assets/icons/active_product_icon.svg';
 String archiveProductIcon = 'assets/icons/archive_product_icon.svg';

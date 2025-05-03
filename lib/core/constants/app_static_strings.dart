@@ -17,7 +17,16 @@ class AppStaticStrings {
   static const String  quantity= 'Quantity';
   static const String  ageMu= 'Age must be more then 21';
   static const String  noInternet= 'No internet connection';
-
+  static const String editProfile = 'Edit Profile';
+  static const String accountSetting = 'Account Setting';
+  static const String favoriteItems = 'Favorite Items';
+  static const String notification = 'Notification';
+  static const String more = 'More';
+  static const String viewAll = 'View All';
+  static const String termsAndCondition = 'Terms & Condition';
+  static const String privacyPolicy = 'Privacy policy';
+  static const String helpSupport = 'Help/Support';
+  static const String logOut = 'Log Out';
   // OTP Verification
   static const String  currentPass= "Current Password";
   static const String newPass = "New Password";
@@ -55,7 +64,6 @@ class AppStaticStrings {
   static const String wilaya = 'Wilaya';
   static const String category = 'Category';
   static const String subCategory = 'Sub Category';
-  static const String viewAll = 'View all';
 
   // Password Reset
   static const String setNewPassword = 'Set New Password';
@@ -130,9 +138,7 @@ class AppStaticStrings {
   static const String myProfile = 'My Profile';
   static const String settings = 'Settings';
   static const String feedback = 'Feedback';
-  static const String privacyPolicy = 'Privacy Policy';
   static const String termsOfUse = 'Terms of use';
-  static const String logOut = 'Log Out';
   static const String changePassword = 'Change Password';
   static const String deleteAccount = 'Delete Account';
 

@@ -6,6 +6,7 @@ import 'package:market_place/presentations/home/controller/home_controller.dart'
 import 'package:market_place/presentations/message/controllers/message_controller.dart';
 import 'package:market_place/presentations/message/views/message_page.dart';
 import 'package:market_place/presentations/my-listings/views/my-listings_page.dart';
+import 'package:market_place/presentations/profile/views/profile_page.dart';
 
 import '../../home/views/home_page.dart';
 
@@ -14,13 +15,13 @@ class NavigationController extends GetxController {
   RxInt selectedNavIndex = 0.obs;
 
   List<Widget> getPages() {
-    return [HomePage(),MyListingsPage(),HomePage(),MessageListPage(),HomePage(),];
+    return [HomePage(),MyListingsPage(),HomePage(),MessageListPage(),ProfilePage(),];
   }
   List<String> appbarTitle= [
     AppStaticStrings.myListings,
     AppStaticStrings.myListings,
-    AppStaticStrings.orders,
-    AppStaticStrings.notifications,
+    AppStaticStrings.messages,
+    AppStaticStrings.profile,
   ];
 @override
   void onInit() {
