@@ -13,8 +13,10 @@ import 'package:market_place/core/utils/variable.dart';
 import 'package:market_place/presentations/product/views/product_details_page.dart';
 
 class ProductCardItemWidget extends StatelessWidget {
+  final bool fromSeller;
+
   const ProductCardItemWidget({
-    super.key,
+    super.key,  this.fromSeller =false,
   });
 
   @override
@@ -34,7 +36,7 @@ class ProductCardItemWidget extends StatelessWidget {
       child: ButtonTapWidget(
         radius: 4.r,
         onTap: () {
-          Get.toNamed(ProductDetailsPage.routeName);
+          Get.toNamed(ProductDetailsPage.routeName, arguments: fromSeller);
         },
         child: Padding(
           padding: padding4,
@@ -96,8 +98,10 @@ class ProductCardItemWidget extends StatelessWidget {
   }
 }
 class ProductGridWidget extends StatelessWidget {
+  final bool fromSeller;
   const ProductGridWidget({
-    super.key,
+
+    super.key,  this.fromSeller=false,
   });
 
   @override
@@ -107,7 +111,7 @@ class ProductGridWidget extends StatelessWidget {
       shrinkWrap: true,
       primary: false,
       physics: NeverScrollableScrollPhysics(),
-      itemCount: 10,
+      itemCount: 4,
       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
         crossAxisSpacing: 8.w,
         mainAxisSpacing: 12.w,
@@ -116,7 +120,7 @@ class ProductGridWidget extends StatelessWidget {
         maxCrossAxisExtent: 210.w,
       ),
       itemBuilder:
-          (context, index) => ProductCardItemWidget(),
+          (context, index) => ProductCardItemWidget(fromSeller: fromSeller,),
     );
   }
 }

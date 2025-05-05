@@ -82,7 +82,7 @@ class CustomButton extends StatelessWidget {
                     Text(
                         textAlign: TextAlign.center,
                         title,
-                        style: poppinsRegular.copyWith(
+                        style: poppinsSemiBold.copyWith(
                             color: textColor,
                             fontSize:
                                 fontSize ?? getFontSizeSemiSmall())),

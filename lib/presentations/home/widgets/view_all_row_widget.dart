@@ -22,7 +22,7 @@ class ViewAllRow extends StatelessWidget {
           child: CustomText(
             text: title,
             fontSize: getFontSizeDefault(),
-            style: poppinsMedium,
+            style: poppinsSemiBold,
           ),
         ),
         CustomTextButton(onPressed: onPressed, title: buttonText?? AppStaticStrings.viewAll, )

@@ -9,15 +9,22 @@ class AppStaticStrings {
   static const String signInToYourAccount = 'Sign in to Your \nAccount';
   static const String forgetPassword = 'Forget password?';
   static const String verifyEmail = 'Verify Your Email';
-  static const String confirmYourEmail = 'First, confirm your email to create your account.';
+  static const String confirmYourEmail =
+      'First, confirm your email to create your account.';
   static const String forgetPasswordAppbar = 'Forget password';
-  static const String enterYourEmail = 'Enter your email and we will send you a verification code';
-  static const String  description= "Description";
-  static const String  failed= 'Failed';
-  static const String  submit= 'Submit';
-  static const String  quantity= 'Quantity';
-  static const String  ageMu= 'Age must be more then 21';
-  static const String  noInternet= 'No internet connection';
+  static const String enterYourEmail =
+      'Enter your email and we will send you a verification code';
+  static const String description = "Description";
+  static const String failed = 'Failed';
+  static const String deletePermanently = 'Delete Permanently';
+  static const String archiveListings = 'Archive Listing';
+  static const String markAsSold = 'Mark as Sold Out';
+  static const String editListingInfo = ' Edit Listing Info';
+
+  static const String submit = 'Submit';
+  static const String quantity = 'Quantity';
+  static const String ageMu = 'Age must be more then 21';
+  static const String noInternet = 'No internet connection';
   static const String editProfile = 'Edit Profile';
   static const String accountSetting = 'Account Setting';
   static const String favoriteItems = 'Favorite Items';
@@ -29,7 +36,7 @@ class AppStaticStrings {
   static const String helpSupport = 'Help/Support';
   static const String logOut = 'Log Out';
   // OTP Verification
-  static const String  currentPass= "Current Password";
+  static const String currentPass = "Current Password";
   static const String newPass = "New Password";
   static const String activeListings = 'Active Listings';
   static const String soldOutListings = 'Sold Out Listings';
@@ -51,15 +58,18 @@ class AppStaticStrings {
   static const String enterValidEmail = "Enter a valid email.";
   static const String passMustbe6 = "Password must be at least 8 characters.";
   static const String passNotMatch = "Passwords do not match.";
-  static const String passMustContain = "Password must contain at least one uppercase letter";
+  static const String passMustContain =
+      "Password must contain at least one uppercase letter";
   static const String otp = 'OTP';
   static const String documentation = 'Documentations:';
   static const String save = 'Save';
   static const String buyNow = 'Buy Now';
   static const String selectColor = 'Select Color:';
   static const String checkYourEmail = 'Check your email';
-  static const String otpSentMessage = 'We sent a reset link to contact@dscode...com';
-  static const String enterOtp = 'enter 6 digit code that mentioned in the email';
+  static const String otpSentMessage =
+      'We sent a reset link to contact@dscode...com';
+  static const String enterOtp =
+      'enter 6 digit code that mentioned in the email';
   static const String resendOtp = 'Resend OTP';
   static const String sendCode = 'Send Code';
   static const String wilaya = 'Wilaya';
@@ -68,8 +78,10 @@ class AppStaticStrings {
 
   // Password Reset
   static const String setNewPassword = 'Set New Password';
-  static const String otpDescription = 'We sent a reset link to 6 digit code that mentioned in the email';
-  static const String createNewPasswordMessage = 'Create a new password. Ensure it differs from previous ones for security';
+  static const String otpDescription =
+      'We sent a reset link to 6 digit code that mentioned in the email';
+  static const String createNewPasswordMessage =
+      'Create a new password. Ensure it differs from previous ones for security';
 
   // Form Labels
   static const String fullName = 'Full Name';
@@ -99,24 +111,33 @@ class AppStaticStrings {
   // Notes & Warnings
   static const String notesAgeRequirement = 'Notes: You have to be over 21';
   static const String confirmOver21 = 'I’m more than 21';
-  static const String loginToContinue = 'Log in to continue. Enter your credentials to access your account.';
+  static const String loginToContinue =
+      'Log in to continue. Enter your credentials to access your account.';
   static const String createYourAccount = 'Create Your Account';
-  static const String joinUsToday = 'Join us today and start planning your events or managing your services seamlessly!';
+  static const String joinUsToday =
+      'Join us today and start planning your events or managing your services seamlessly!';
   static const String verifyYourEmail = 'Verify Your Email';
-  static const String verifyEmailInfo = "We'll send a verification code to this email to confirm your account.";
+  static const String verifyEmailInfo =
+      "We'll send a verification code to this email to confirm your account.";
   static const String sixDigitCode = '6-digit code';
-  static const String enterCodePrompt = "Please enter the code we've sent to michelle.rivera@example.com";
+  static const String enterCodePrompt =
+      "Please enter the code we've sent to michelle.rivera@example.com";
   static const String discoverUniqueFinds = 'Discover a World of Unique Finds';
-  static const String browseThousandsOfItems = 'Browse thousands of items from trusted local sellers, all in one app.';
+  static const String browseThousandsOfItems =
+      'Browse thousands of items from trusted local sellers, all in one app.';
   static const String sellAnythingAnytime = 'Sell Anything, Anytime';
-  static const String sellingMadeSimple = 'Snap, post, and connect with buyers instantly — selling has never been this simple.';
+  static const String sellingMadeSimple =
+      'Snap, post, and connect with buyers instantly — selling has never been this simple.';
   static const String chatDealTrade = 'Chat. Deal. Trade with Confidence.';
-  static const String chatTrustMessage = 'Built-in chat, verified users, and secure profiles — your trust matters most.';
+  static const String chatTrustMessage =
+      'Built-in chat, verified users, and secure profiles — your trust matters most.';
 
   // Additional Messages
-  static const String taxIdDescription = 'Add your tax id for buying wholesaling products';
+  static const String taxIdDescription =
+      'Add your tax id for buying wholesaling products';
   static const String uploadImage = 'upload image';
-  static const String showIdOnPickup = 'I Don’t wanna put my ID here. I will show my ID when I pick up the products';
+  static const String showIdOnPickup =
+      'I Don’t wanna put my ID here. I will show my ID when I pick up the products';
 
   // Account Related
   static const String alreadyHaveAccount = 'already have an account?';
@@ -143,7 +164,8 @@ class AppStaticStrings {
   static const String price = 'Price';
   static const String total = 'Total';
   static const String totalAmount = 'Total Amount';
-  static const String simplyDummyText = 'Simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy see more...';
+  static const String simplyDummyText =
+      'Simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy see more...';
 
   // Payment
   static const String payment = 'Payment';
@@ -209,10 +231,10 @@ class AppStaticStrings {
   static const String defaultDeliveryTime = "mm:hh";
   static const String defaultProduct = "THC Gummy";
   static const String defaultPrice = "Price: \$120";
-  static const String defaultProductInfo = "Simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy ";
+  static const String defaultProductInfo =
+      "Simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy ";
   static const String seeMore = "see more...";
   static const String defaultTotal = "\$771.00";
-  static const String pickUpDummyAddress = "13th Street. 47 W 13th St, New York, NY 10011";
-
-
+  static const String pickUpDummyAddress =
+      "13th Street. 47 W 13th St, New York, NY 10011";
 }

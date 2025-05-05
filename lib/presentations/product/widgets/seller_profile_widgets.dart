@@ -49,39 +49,3 @@ class CallAndChatButtons extends StatelessWidget {
   }
 }
 
-class SellerRatingWidget extends StatelessWidget {
-  const SellerRatingWidget({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(width: 70.w,
-      child: GreenAccentContainerWidget(
-        color: AppColors.kYellowColor,
-        radius: 4.r,
-        child: Padding(
-          padding: padding2,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            spacing: 4.w,
-            children: [
-              Icon(
-                Icons.star_rounded,
-                color: AppColors.kYellowColor,
-                size: 15.r,
-              ),
-              CustomText(
-                text: "4.9",
-                style: poppinsSemiBold,
-                fontSize: 10.sp,
-                color: AppColors.kYellowColor,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}

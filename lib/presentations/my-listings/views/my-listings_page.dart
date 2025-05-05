@@ -20,7 +20,7 @@ class MyListingsPage extends StatelessWidget {
     return GridView.builder(
 
       itemCount: listingData.length,
-      padding: padding12,
+      padding: padding12.copyWith(top: 0),
       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
         mainAxisSpacing: 12.w,
         crossAxisSpacing: 12.w,

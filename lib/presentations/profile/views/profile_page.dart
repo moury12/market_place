@@ -31,7 +31,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: padding16,
+        padding: padding12.copyWith(top: 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 12.h,
@@ -51,87 +51,7 @@ class ProfilePage extends StatelessWidget {
               ),
               child: Padding(
                 padding: padding6,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: 12.w,
-                  children: [
-                    CustomNetworkImage(
-                      imageUrl: dummyProfileImage,
-                      height: 80.w,
-                      width: 80.w,
-                    ),
-                    Expanded(
-                      child: Column(
-                        spacing: 4.w,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-
-                        children: [
-                          CustomText(
-                            text: "Ely Mohammed",
-                            style: poppinsMedium,
-                          ),
-                          Row(
-                            spacing: 4.w,
-                            children: [
-                              SvgPicture.asset(mainIcon),
-                              CustomText(
-                                text: "Marvin@gmail.com",
-                                style: poppinsRegular,
-                                fontSize: 10.sp,
-                              ),
-                            ],
-                          ),
-                          Row(
-                            spacing: 4.w,
-                            children: [
-                              SvgPicture.asset(
-                                callIcon,
-                                colorFilter: ColorFilter.mode(
-                                  AppColors.kPrimaryColor,
-                                  BlendMode.srcIn,
-                                ),
-                              ),
-                              CustomText(
-                                text: "(555) 123-4567",
-                                style: poppinsRegular,
-                                fontSize: 10.sp,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    ButtonTapWidget(
-                      onTap: () {
-                        Get.toNamed(EditProfilePage.routeName);
-                      },
-                      child: GreenAccentContainerWidget(
-                        radius: 4.r,
-                        child: Padding(
-                          padding: padding2,
-                          child: Row(
-                            spacing: 4.w,
-                            children: [
-                              SvgPicture.asset(
-                                editIcon,
-                                colorFilter: ColorFilter.mode(
-                                  AppColors.kPrimaryColor,
-                                  BlendMode.srcIn,
-                                ),
-                              ),
-                              CustomText(
-                                text: AppStaticStrings.editProfile,
-                                style: poppinsRegular,
-                                color: AppColors.kPrimaryColor,
-                                fontSize: 10.sp,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                child: ProfileInfoDetailsWidget(),
               ),
             ),
             ProfileActionItemWidget(
@@ -204,6 +124,98 @@ class ProfilePage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class ProfileInfoDetailsWidget extends StatelessWidget {
+  final bool isEdit;
+  const ProfileInfoDetailsWidget({
+    super.key,  this.isEdit = true,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 12.w,
+      children: [
+        CustomNetworkImage(
+          imageUrl: dummyProfileImage,
+          height: 80.w,
+          width: 80.w,
+        ),
+        Expanded(
+          child: Column(
+            spacing: 4.w,
+            crossAxisAlignment: CrossAxisAlignment.start,
+
+            children: [
+              CustomText(
+                text: "Ely Mohammed",
+                style: poppinsMedium,
+              ),
+              Row(
+                spacing: 4.w,
+                children: [
+                  SvgPicture.asset(mainIcon),
+                  CustomText(
+                    text: "Marvin@gmail.com",
+                    style: poppinsRegular,
+                    fontSize: 10.sp,
+                  ),
+                ],
+              ),
+              Row(
+                spacing: 4.w,
+                children: [
+                  SvgPicture.asset(
+                    callIcon,
+                    colorFilter: ColorFilter.mode(
+                      AppColors.kPrimaryColor,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                  CustomText(
+                    text: "(555) 123-4567",
+                    style: poppinsRegular,
+                    fontSize: 10.sp,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+     isEdit?   ButtonTapWidget(
+          onTap: () {
+            Get.toNamed(EditProfilePage.routeName);
+          },
+          child: GreenAccentContainerWidget(
+            radius: 4.r,
+            child: Padding(
+              padding: padding2,
+              child: Row(
+                spacing: 4.w,
+                children: [
+                  SvgPicture.asset(
+                    editIcon,
+                    colorFilter: ColorFilter.mode(
+                      AppColors.kPrimaryColor,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                  CustomText(
+                    text: AppStaticStrings.editProfile,
+                    style: poppinsRegular,
+                    color: AppColors.kPrimaryColor,
+                    fontSize: 10.sp,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ):SizedBox.shrink(),
+      ],
     );
   }
 }
