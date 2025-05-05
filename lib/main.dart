@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:market_place/core/bindings/bindings.dart';
 import 'package:market_place/core/routes/app_routes.dart';
 import 'package:market_place/core/theme/app_theme.dart';
-import 'package:market_place/presentations/navigation/views/navigation_page.dart';
 import 'package:device_preview/device_preview.dart';
-import 'core/utils/variable.dart';
+import 'package:market_place/presentations/splash/views/splash_page.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,7 +39,7 @@ class MyApp extends StatelessWidget {
         title: 'Market Place',
         theme: AppTheme.lightTheme,
         themeMode: ThemeMode.light,
-        initialRoute: NavigationPage.routeName,
+        initialRoute: SplashPage.routeName,
         getPages: AppRoutes.route(),
         initialBinding: CommonBinding(),
         debugShowCheckedModeBanner: false,
