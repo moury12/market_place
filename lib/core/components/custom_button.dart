@@ -25,7 +25,7 @@ class CustomButton extends StatelessWidget {
       this.icon,
       this.fontSize,
       this.radius,
-      this.isLoading = false, this.padding, this.loadingColor});
+      this.isLoading = false, this.padding, this.loadingColor, this.prefixWidget});
 
   final double? height;
   final double? radius;
@@ -41,6 +41,7 @@ class CustomButton extends StatelessWidget {
 
   final String title;
   final Widget? child;
+  final Widget? prefixWidget;
   final String? img;
   final IconData? icon;
   final EdgeInsets? padding;
@@ -77,6 +78,7 @@ class CustomButton extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    prefixWidget??SizedBox.shrink(),
                     Text(
                         textAlign: TextAlign.center,
                         title,

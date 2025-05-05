@@ -5,6 +5,7 @@ import 'package:market_place/presentations/notification/controller/notification_
 
 import '../../presentations/home/controller/home_controller.dart';
 import '../../presentations/my-listings/controller/listings_controller.dart';
+import '../../presentations/product/controller/product_controller.dart';
 // import 'package:market_place/presentations/auth/controllers/auth_controller.dart';
 // import 'package:market_place/presentations/cart/controllers/cart_controller.dart';
 // import 'package:market_place/presentations/navigation/controllers/home_controller.dart';
@@ -31,12 +32,12 @@ class CommonBinding extends Bindings {
   }
 }
 //
-// class ProductBinding extends Bindings {
-//   @override
-//   void dependencies() {
-//     Get.put(ProductController());
-//   }
-// }
+class ProductBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.put(ProductController());
+  }
+}
 //
 // class AuthBinding extends Bindings {
 //   @override

@@ -7,6 +7,10 @@ import 'package:market_place/presentations/message/views/chatting_page.dart';
 import 'package:market_place/presentations/my-listings/views/listing_product_page.dart';
 import 'package:market_place/presentations/my-listings/views/listing_product_page.dart';
 import 'package:market_place/presentations/notification/views/notification_page.dart';
+import 'package:market_place/presentations/product/views/product_details_page.dart';
+import 'package:market_place/presentations/product/views/product_details_page.dart';
+import 'package:market_place/presentations/product/views/seller_profile_page.dart';
+import 'package:market_place/presentations/product/views/seller_profile_page.dart';
 import 'package:market_place/presentations/profile/views/account_settings_page.dart';
 import 'package:market_place/presentations/profile/views/account_settings_page.dart';
 import 'package:market_place/presentations/profile/views/change_password_page.dart';
@@ -64,7 +68,8 @@ class AppRoutes {
     GetPage(name: ChangePasswordPage.routeName, page: () => ChangePasswordPage(), /*binding: SettingsBinding()*/),
     GetPage(name: TermsPolicyHelpPage.routeName, page: () => TermsPolicyHelpPage(), /*binding: SettingsBinding()*/),
     GetPage(name: EditProfilePage.routeName, page: () => EditProfilePage(), /*binding: SettingsBinding()*/),
-    // GetPage(name: PrivacyTermsPage.routeName, page: () => PrivacyTermsPage(), binding: SettingsBinding()),
+     GetPage(name: ProductDetailsPage.routeName, page: () => ProductDetailsPage(), binding: ProductBinding()),
+     GetPage(name: SellerProfilePage.routeName, page: () => SellerProfilePage(), binding: ProductBinding()),
     // GetPage(name: CategoryListPage.routeName, page: () => CategoryListPage(), binding: HomeBinding()),
     // GetPage(name: ProductListPage.routeName, page: () => ProductListPage(), binding: HomeBinding()),
     // GetPage(name: ProductDetailsPage.routeName, page: () => ProductDetailsPage(), binding: ProductBinding()),
