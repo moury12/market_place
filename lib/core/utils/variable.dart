@@ -28,7 +28,7 @@ List<OnboardingModel> onboardingData = [
   OnboardingModel(
       title: AppStaticStrings.discoverUniqueFinds,
       message: AppStaticStrings.browseThousandsOfItems,
-      backgroundImgUrl: onboardImg1),
+      frontImgUrl: onboardImg1),
   OnboardingModel(
       title: AppStaticStrings.sellAnythingAnytime,
       message: AppStaticStrings.sellingMadeSimple,
@@ -36,7 +36,7 @@ List<OnboardingModel> onboardingData = [
   OnboardingModel(
     title: AppStaticStrings.chatDealTrade,
     message: AppStaticStrings.chatTrustMessage,
-    backgroundImgUrl: onboardImg3,
+    frontImgUrl: onboardImg3,
   ),
 ];
 class OnboardingModel {

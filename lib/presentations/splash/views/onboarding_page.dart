@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:market_place/core/components/custom_text_button.dart';
+import 'package:market_place/presentations/auth/views/login_page.dart';
 
 import '../../../core/utils/variable.dart';
 import '../controller/splash_controller.dart';
@@ -11,24 +13,38 @@ class OnboardingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: [CustomTextButton(title: 'Skip',onPressed: () {
+    return PopScope(
+       canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+if(SplashController.to.currentIndex.value>0){
+  SplashController.to.pageController!.value.animateToPage(
+      SplashController.to.currentIndex.value - 1,
+      duration: Duration(milliseconds: 300),
+      curve: Easing.linear);
+}else{
+  Get.back();
+}
+      },
+      child: Scaffold(
+        appBar: AppBar(
 
-        },)],
-      ),
-      body: PageView.builder(
-        controller: SplashController.to.pageController!.value,
-        onPageChanged: (value) {
+          actions: [CustomTextButton(title: 'Skip',onPressed: () {
+      Get.offAllNamed( LoginPage.routeName);
+          },)],
+        ),
+        body: PageView.builder(
+          controller: SplashController.to.pageController!.value,
+          onPageChanged: (value) {
 
-          SplashController.to.currentIndex.value=value;
-        },
-        itemCount: onboardingData.length,
-        itemBuilder: (context, index) {
-          return OnboardingItemContentWidget(
-            onboardingModel: onboardingData[index],
-          );
-        },
+            SplashController.to.currentIndex.value=value;
+          },
+          itemCount: onboardingData.length,
+          itemBuilder: (context, index) {
+            return OnboardingItemContentWidget(
+              onboardingModel: onboardingData[index],
+            );
+          },
+        ),
       ),
     );
   }

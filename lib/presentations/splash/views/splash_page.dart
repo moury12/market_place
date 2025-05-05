@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/constants/image_constants.dart';
+import 'package:market_place/core/utils/hive_boxes.dart';
+import 'package:market_place/core/utils/variable.dart';
 import 'package:market_place/presentations/auth/views/login_page.dart';
 import 'package:market_place/presentations/splash/views/onboarding_page.dart';
 
@@ -17,7 +19,12 @@ class SplashPage extends StatelessWidget {
         child: 
         GestureDetector(
           onTap: () {
-            Get.toNamed(OnboardingPage.routeName);
+           if(Boxes.getUserData().get(initialKey)==true) {
+              Get.offAllNamed(LoginPage.routeName);
+            }else{
+             Get.toNamed(OnboardingPage.routeName);
+
+           }
           },
           child: Column(
             spacing: 8.h,
