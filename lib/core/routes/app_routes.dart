@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:market_place/core/bindings/bindings.dart';
+import 'package:market_place/presentations/auth/views/set_new_password_page.dart';
+import 'package:market_place/presentations/auth/views/set_new_password_page.dart';
 import 'package:market_place/presentations/auth/views/subscription_page.dart';
 import 'package:market_place/presentations/auth/views/subscription_page.dart';
 import 'package:market_place/presentations/auth/views/verify_email_page.dart';
@@ -14,6 +16,8 @@ import 'package:market_place/presentations/product/views/seller_profile_page.dar
 import 'package:market_place/presentations/profile/views/account_settings_page.dart';
 import 'package:market_place/presentations/profile/views/change_password_page.dart';
 import 'package:market_place/presentations/profile/views/edit_profile_page.dart';
+import 'package:market_place/presentations/splash/views/onboarding_page.dart';
+import 'package:market_place/presentations/splash/views/onboarding_page.dart';
 
 import '../../presentations/auth/views/login_page.dart';
 import '../../presentations/auth/views/signup_page.dart';
@@ -26,6 +30,10 @@ class AppRoutes {
     GetPage(
       name: SplashPage.routeName,
       page: () => SplashPage(),
+      binding: SplashBinding(),
+    ),  GetPage(
+      name: OnboardingPage.routeName,
+      page: () => OnboardingPage(),
       binding: SplashBinding(),
     ),
     GetPage(
@@ -50,6 +58,10 @@ class AppRoutes {
     GetPage(
       name: VerifyOtpPage.routeName,
       page: () => VerifyOtpPage(),
+      binding: AuthBinding(),
+    ),GetPage(
+      name: SetNewPasswordPage.routeName,
+      page: () => SetNewPasswordPage(),
       binding: AuthBinding(),
     ),
     GetPage(

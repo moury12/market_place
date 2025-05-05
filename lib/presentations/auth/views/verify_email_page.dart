@@ -11,8 +11,8 @@ import '../../../core/constants/custom_space.dart';
 import '../widgets/auth_title_widget.dart';
 class VerifyEmailPage extends StatelessWidget {
   static const String routeName ="/verify-email";
-  const VerifyEmailPage({super.key});
-
+   VerifyEmailPage({super.key});
+final arg= Get.arguments;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +30,7 @@ class VerifyEmailPage extends StatelessWidget {
               space4H,
               CustomButton(
                 onTap: () {
-                  Get.toNamed(VerifyOtpPage.routeName);
+                  Get.toNamed(VerifyOtpPage.routeName,arguments: arg);
                 },
                 title: AppStaticStrings.continueButton,
               ),],

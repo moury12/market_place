@@ -65,7 +65,7 @@ class LoginPage extends StatelessWidget {
                     ),
 
                     CustomTextButton(title: AppStaticStrings.forgetPassword,onPressed: () {
-                      Get.toNamed(VerifyEmailPage.routeName);
+                      Get.toNamed(VerifyEmailPage.routeName,arguments: true);
                     },),
                   ],
                 ),

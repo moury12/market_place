@@ -10,6 +10,7 @@ var logger = Logger(printer: PrettyPrinter());
 String imageUrl =
     'https://images.pexels.com/photos/27781997/pexels-photo-27781997/free-photo-of-a-blue-butterfly-is-sitting-on-top-of-a-plant.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
 String userBoxName = 'user';
+String initialKey = 'initial';
 String verifyEmail = 'verify email';
 String tokenKey = 'token';
 String verifyTokenKey = 'verify token';
@@ -23,7 +24,33 @@ final List<String> sortBy = [
   'Price: High to Low',
   'Most Viewed',
 ];
+List<OnboardingModel> onboardingData = [
+  OnboardingModel(
+      title: AppStaticStrings.discoverUniqueFinds,
+      message: AppStaticStrings.browseThousandsOfItems,
+      backgroundImgUrl: onboardImg1),
+  OnboardingModel(
+      title: AppStaticStrings.sellAnythingAnytime,
+      message: AppStaticStrings.sellingMadeSimple,
+      frontImgUrl: onboardImg2),
+  OnboardingModel(
+    title: AppStaticStrings.chatDealTrade,
+    message: AppStaticStrings.chatTrustMessage,
+    backgroundImgUrl: onboardImg3,
+  ),
+];
+class OnboardingModel {
+  final String title;
+  final String message;
+  final String? backgroundImgUrl;
+  final String? frontImgUrl;
 
+  OnboardingModel(
+      {required this.title,
+        required this.message,
+        this.backgroundImgUrl,
+        this.frontImgUrl});
+}
 // Category options
 final List<String> category = [
   'Electronics',

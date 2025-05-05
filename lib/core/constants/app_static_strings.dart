@@ -16,6 +16,12 @@ class AppStaticStrings {
   static const String weWillSendACode = 'We\'ll send a verification code to this email to confirm your account.';
   static const String continueButton = 'Continue';
   static const String enterCodeSent = 'Please enter the code we’ve sent to';
+  static const String resetYourPassword = 'Reset Your Password';
+  static const String newPassword = 'New Password';
+  static const String confirmNewPassword = 'Confirm New Password';
+  static const String resetPassword = 'Reset Password';
+  static const String createAnewPassword = 'Create a new password to secure your account.';
+
   // Subscription
   static const String chooseSubscriptionPlan = 'Choose Your Subscription Plan';
   static const String subscriptionDescription = 'Get the best features to grow your business!';
