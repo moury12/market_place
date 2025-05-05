@@ -1,7 +1,7 @@
 class AppStaticStrings {
   // Common Auth Labels
   static const String signUp = 'Sign Up';
-  static const String signIn = 'Sign In';
+  static const String signIn = 'Log In';
   static const String addToCard = 'Add to cart';
   static const String checkout = 'Check Out';
   static const String welcomeBack = 'Welcome Back!!!';
@@ -9,6 +9,14 @@ class AppStaticStrings {
   static const String signInToYourAccount = 'Sign in to Your \nAccount';
   static const String forgetPassword = 'Forget password?';
   static const String verifyEmail = 'Verify Your Email';
+  static const String logInToContinue = 'Log in to continue. Enter your credentials to access your account.';
+  static const String rememberMe = 'Remember me';
+  static const String signUpToGetStarted = 'Sign up to get started. Fill in your details to create an account.';
+  static const String phoneNumber = 'Phone Number';
+  static const String weWillSendACode = 'We\'ll send a verification code to this email to confirm your account.';
+  static const String continueButton = 'Continue';
+  static const String enterCodeSent = 'Please enter the code we’ve sent to';
+
   static const String confirmYourEmail =
       'First, confirm your email to create your account.';
   static const String forgetPasswordAppbar = 'Forget password';
