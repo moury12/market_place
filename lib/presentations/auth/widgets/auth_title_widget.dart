@@ -28,7 +28,7 @@ class AuthTitleTextWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomText(
       text: title,
-      style: poppinsBold,
+      style: poppinsMedium,
       fontSize: getFontSizeExtraLarge(),
     );
   }

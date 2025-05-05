@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../core/constants/app_static_strings.dart';
+
 class AuthController extends GetxController{
   static AuthController get to => Get.find();
   RxBool isRememberMe = false.obs;
   final List<Rx<TextEditingController>> controllers = List.generate(6, (index) => TextEditingController().obs);
   final List<FocusNode> focusNodes = List.generate(6, (index) => FocusNode());
+  RxList<String> tabLabels =
+      [
+        AppStaticStrings.monthly,
+        AppStaticStrings.yearly,
 
+      ].obs;
+  var tabContent = <Widget>[].obs;
   /// Handles user input
   void onOtpChanged(String value, int index) {
     if (value.isNotEmpty) {

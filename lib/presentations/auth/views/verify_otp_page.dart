@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
+import 'package:market_place/presentations/auth/views/subscription_page.dart';
 import 'package:market_place/presentations/auth/views/verify_otp_page.dart';
 import 'package:market_place/presentations/profile/views/change_password_page.dart';
 
@@ -33,7 +34,7 @@ class VerifyOtpPage extends StatelessWidget {
               space4H,
               CustomButton(
                 onTap: () {
-                  Get.toNamed(ChangePasswordPage.routeName);
+                  Get.toNamed(SubscriptionPage.routeName);
                 },
                 title: AppStaticStrings.confirm,
               ),

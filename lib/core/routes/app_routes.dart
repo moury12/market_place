@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:market_place/core/bindings/bindings.dart';
+import 'package:market_place/presentations/auth/views/subscription_page.dart';
+import 'package:market_place/presentations/auth/views/subscription_page.dart';
 import 'package:market_place/presentations/auth/views/verify_email_page.dart';
 import 'package:market_place/presentations/auth/views/verify_otp_page.dart';
 import 'package:market_place/presentations/home/views/category_page.dart';
@@ -29,6 +31,10 @@ class AppRoutes {
     GetPage(
       name: LoginPage.routeName,
       page: () => LoginPage(),
+      binding: AuthBinding(),
+    ), GetPage(
+      name: SubscriptionPage.routeName,
+      page: () => SubscriptionPage(),
       binding: AuthBinding(),
     ),
     GetPage(

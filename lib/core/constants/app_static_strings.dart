@@ -16,7 +16,9 @@ class AppStaticStrings {
   static const String weWillSendACode = 'We\'ll send a verification code to this email to confirm your account.';
   static const String continueButton = 'Continue';
   static const String enterCodeSent = 'Please enter the code we’ve sent to';
-
+  // Subscription
+  static const String chooseSubscriptionPlan = 'Choose Your Subscription Plan';
+  static const String subscriptionDescription = 'Get the best features to grow your business!';
   static const String confirmYourEmail =
       'First, confirm your email to create your account.';
   static const String forgetPasswordAppbar = 'Forget password';
@@ -38,6 +40,8 @@ class AppStaticStrings {
   static const String favoriteItems = 'Favorite Items';
   static const String notification = 'Notification';
   static const String more = 'More';
+  static const String monthly = 'Monthly';
+  static const String yearly = 'Yearly';
   static const String viewAll = 'View All';
   static const String termsAndCondition = 'Terms & Condition';
   static const String privacyPolicy = 'Privacy policy';
