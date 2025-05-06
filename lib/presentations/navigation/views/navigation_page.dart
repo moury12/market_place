@@ -11,6 +11,8 @@ import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/presentations/notification/views/notification_page.dart';
 
 import '../../../core/components/custom_appbar.dart';
+import '../../../core/constants/app_static_strings.dart';
+import '../../../core/utils/variable.dart';
 import '../controller/navigation_controller.dart';
 
 class NavigationPage extends StatelessWidget {
@@ -20,6 +22,19 @@ class NavigationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<String> appbarTitle= [
+      AppStaticStrings.myListings.tr,
+      AppStaticStrings.addNewListing.tr,
+      AppStaticStrings.messages.tr,
+      AppStaticStrings.profile.tr,
+    ];
+    List<String> labels = [
+      AppStaticStrings.home.tr,
+      AppStaticStrings.myListings.tr,
+      AppStaticStrings.sellNow.tr,
+      AppStaticStrings.messages.tr,
+      AppStaticStrings.profile.tr,
+    ];
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
@@ -42,9 +57,7 @@ class NavigationPage extends StatelessWidget {
                   icon: Icon(Icons.arrow_back_rounded),
                 ),
                 title:
-                    NavigationController
-                        .to
-                        .appbarTitle[NavigationController
+                    appbarTitle[NavigationController
                             .to
                             .selectedNavIndex
                             .value -
@@ -178,7 +191,7 @@ class NavigationPage extends StatelessWidget {
                                     fontSize: getFontSizeSmall(),
                                     style: poppinsMedium,
                                     text:
-                                        NavigationController.to.labels[index],
+                                        labels[index],
                                   ),
                                 ),
                             ],

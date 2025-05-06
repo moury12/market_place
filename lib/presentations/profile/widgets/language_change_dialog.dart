@@ -5,7 +5,6 @@ import 'package:market_place/core/utils/variable.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:market_place/presentations/splash/views/splash_page.dart';
 
 class LanguageChangeDialog extends StatelessWidget {
   const LanguageChangeDialog({
@@ -25,9 +24,7 @@ class LanguageChangeDialog extends StatelessWidget {
               title: CustomText(text:lang.name,style: poppinsMedium,),
               onChanged: (_) async{
                 await CommonController.to.changeLanguage(Locale(lang.code));
-               
-                Get.offAllNamed(SplashPage.routeName); 
-                // Close dialog after selecting
+               Get.back();
               },
             );
           }).toList(),

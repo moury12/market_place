@@ -4,13 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/components/custom_button.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
-import 'package:market_place/core/constants/color_constants.dart';
-import 'package:market_place/core/constants/custom_text.dart';
 import 'package:market_place/core/constants/image_constants.dart';
-import 'package:market_place/core/constants/padding_constant.dart';
-import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/core/helper/helper_function.dart';
-import 'package:market_place/presentations/home/widgets/product_card_item_widget.dart';
 import 'package:market_place/presentations/navigation/controller/navigation_controller.dart';
 import 'package:market_place/presentations/navigation/views/navigation_page.dart';
 class CallAndChatButtons extends StatelessWidget {
@@ -32,7 +27,7 @@ class CallAndChatButtons extends StatelessWidget {
             onTap: () {
               callOnPhone(phoneNumber: "01716");
             },
-            title: AppStaticStrings.cancel,
+            title: AppStaticStrings.cancel.tr,
           ),
         ),
         Expanded(

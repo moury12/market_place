@@ -4,12 +4,9 @@ import 'package:get/get.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/presentations/auth/views/set_new_password_page.dart';
 import 'package:market_place/presentations/auth/views/subscription_page.dart';
-import 'package:market_place/presentations/auth/views/verify_otp_page.dart';
-import 'package:market_place/presentations/profile/views/change_password_page.dart';
 
 import '../../../core/components/custom_button.dart';
 import '../../../core/components/custom_otp_field.dart';
-import '../../../core/components/custom_textfield.dart';
 import '../../../core/constants/app_static_strings.dart';
 import '../../../core/constants/custom_space.dart';
 import '../widgets/auth_title_widget.dart';
@@ -29,8 +26,8 @@ class VerifyOtpPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              AuthTitleTextWidget(title: AppStaticStrings.sixDigitCode),
-              AuthSubTextWidget(text: AppStaticStrings.enterCodeSent),
+              AuthTitleTextWidget(title: AppStaticStrings.sixDigitCode.tr),
+              AuthSubTextWidget(text: AppStaticStrings.enterCodeSent.tr),
               space6H,
               OtpTextField(),
               space4H,
@@ -41,7 +38,7 @@ class VerifyOtpPage extends StatelessWidget {
                   }else{
                   Get.toNamed(SubscriptionPage.routeName);}
                 },
-                title: AppStaticStrings.confirm,
+                title: AppStaticStrings.confirm.tr,
               ),
             ],
           ),

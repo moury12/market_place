@@ -54,7 +54,7 @@ class ProductCardItemWidget extends StatelessWidget {
                     Positioned(
                       bottom: 10,left: 6,
                       child: GreenAccentContainerWidget(child: CustomText(
-                        text: AppStaticStrings.newLabel,
+                        text: AppStaticStrings.newLabel.tr,
                         style: poppinsSemiBold,
                         color: AppColors.kPrimaryColor,
                         fontSize: getFontSizeSmall(),
@@ -71,7 +71,7 @@ class ProductCardItemWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
-                        text: AppStaticStrings.productCategories * 2,
+                        text: AppStaticStrings.productCategories.tr * 2,
                         maxLines: 2,
                         style: poppinsSemiBold,
                       ),

@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/core/constants/image_constants.dart';
@@ -26,19 +27,20 @@ final List<String> sortBy = [
 ];
 List<OnboardingModel> onboardingData = [
   OnboardingModel(
-      title: AppStaticStrings.discoverUniqueFinds,
-      message: AppStaticStrings.browseThousandsOfItems,
+      title: AppStaticStrings.discoverUniqueFinds.tr,
+      message: AppStaticStrings.browseThousandsOfItems.tr,
       frontImgUrl: onboardImg1),
   OnboardingModel(
-      title: AppStaticStrings.sellAnythingAnytime,
-      message: AppStaticStrings.sellingMadeSimple,
+      title: AppStaticStrings.sellAnythingAnytime.tr,
+      message: AppStaticStrings.sellingMadeSimple.tr,
       frontImgUrl: onboardImg2),
   OnboardingModel(
-    title: AppStaticStrings.chatDealTrade,
-    message: AppStaticStrings.chatTrustMessage,
+    title: AppStaticStrings.chatDealTrade.tr,
+    message: AppStaticStrings.chatTrustMessage.tr,
     frontImgUrl: onboardImg3,
   ),
 ];
+
 class OnboardingModel {
   final String title;
   final String message;
@@ -81,23 +83,23 @@ final List<String> category = [
 final List<MyListingsModel> listingData = [
   MyListingsModel(
     img: activeProductIcon,
-    title: AppStaticStrings.activeListings,
+    title: AppStaticStrings.activeListings.tr,
   ),
   MyListingsModel(
     img: soldoutProductIcon,
-    title: AppStaticStrings.soldOutListings,
+    title: AppStaticStrings.soldOutListings.tr,
   ),
   MyListingsModel(
     img: archiveProductIcon,
-    title: AppStaticStrings.archivedListings,
+    title: AppStaticStrings.archivedListings.tr,
   ),
   MyListingsModel(
     img: unsupportProductIcon,
-    title: AppStaticStrings.unapprovedListings,
+    title: AppStaticStrings.unapprovedListings.tr,
   ),
   MyListingsModel(
     img: rejectedProductIcon,
-    title: AppStaticStrings.rejectedListings,
+    title: AppStaticStrings.rejectedListings.tr,
   ),
 ];
 

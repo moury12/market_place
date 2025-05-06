@@ -26,7 +26,7 @@ class EditProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomDefaultAppbar(title: AppStaticStrings.editProfile),
+      appBar: CustomDefaultAppbar(title: AppStaticStrings.editProfile.tr),
       body: SingleChildScrollView(
         child: Center(
           child: Padding(
@@ -97,18 +97,18 @@ class EditProfilePage extends StatelessWidget {
                 }),
                 CustomTextField(
                   fillColor: AppColors.kWhiteColor,
-                  title: AppStaticStrings.name,
+                  title: AppStaticStrings.name.tr,
                 ),
                 CustomTextField(
                   fillColor: AppColors.kWhiteColor,
-                  title: AppStaticStrings.email,
+                  title: AppStaticStrings.email.tr,
                 ),
                 CustomTextField(
                   fillColor: AppColors.kWhiteColor,
-                  title: AppStaticStrings.contactNumber,
+                  title: AppStaticStrings.contactNumber.tr,
                 ),
                 space8H,
-                CustomButton(onTap: () {}, title: AppStaticStrings.update),
+                CustomButton(onTap: () {}, title: AppStaticStrings.update.tr),
               ],
             ),
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:market_place/core/components/custom_button.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
 
@@ -107,7 +108,7 @@ dropdownColor: AppColors.kWhiteColor,
               fontSize: getFontSizeSemiSmall(),
             ),
             hint: Text(
-              widget.hintText ??AppStaticStrings.selectOne ,
+              widget.hintText ??AppStaticStrings.selectOne.tr ,
               style: poppinsMedium.copyWith(
                   color: widget.hintColor ?? AppColors.kLightTextColor,
                   fontWeight: FontWeight.w400,

@@ -1,13 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:market_place/core/bindings/bindings.dart';
+import 'package:market_place/core/helper/helper_function.dart';
 import 'package:market_place/core/routes/app_routes.dart';
 import 'package:market_place/core/theme/app_theme.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:market_place/core/utils/hive_boxes.dart';
 import 'package:market_place/presentations/navigation/views/navigation_page.dart';
 import 'package:market_place/presentations/splash/views/splash_page.dart';
 
@@ -15,30 +18,26 @@ import 'core/services/app_strings.dart';
 import 'core/utils/common_controller.dart';
 import 'core/utils/variable.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ScreenUtil.ensureScreenSize();
   await Hive.initFlutter();
   await Hive.openBox(userBoxName);
+  await Hive.openBox(settingBox);
   final translations = AppTranslations();
   await translations.init();
-
-  // Register with GetX
   Get.put<AppTranslations>(translations);
-
-  // Initialize controller after translations
-  Get.put(CommonController());
 
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  runApp(DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context) =>const MyApp()));
+  // runApp(
+  //   DevicePreview(enabled: !kReleaseMode, builder: (context) => const MyApp()),
+  // );
 
-  // runApp(const MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -51,18 +50,40 @@ class MyApp extends StatelessWidget {
       designSize: const Size(375, 888),
       minTextAdapt: true,
       // useInheritedMediaQuery: true,
-      builder: (context, child) => GetMaterialApp(
-        title: 'Market Place',
-        theme: AppTheme.lightTheme,
-        themeMode: ThemeMode.light,
-        initialRoute: SplashPage.routeName,
-        translations: Get.find<AppTranslations>(), // Get the initialized translations
-        locale: Locale(CommonController.to.selectedLanguageCode.value),
-        fallbackLocale: const Locale('en', 'US'),
-        getPages: AppRoutes.route(),
-        initialBinding: CommonBinding(),
-        debugShowCheckedModeBanner: false,
-      ),
+      builder:
+          (context, child) => GetMaterialApp(
+            title: 'Market Place',
+            theme: AppTheme.lightTheme,
+            themeMode: ThemeMode.light,
+            initialRoute: SplashPage.routeName,
+            translations:
+                Get.find<AppTranslations>(), // Get the initialized translations
+            locale:getLocaleFromHive(),
+            fallbackLocale: const Locale("en", "US"),
+            supportedLocales: const [
+              Locale('en', 'US'), // English
+              Locale('ar'),       // Arabic
+              Locale('fr'),       // French
+            ],
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],localeResolutionCallback: (locale, supportedLocales) {
+            logger.d("Locale changed to: ${locale?.languageCode}");
+            logger.d("Locale saved to: ${Boxes.getSettingsData().get(
+              languageKey,
+              defaultValue:"en",
+            )}");
+            return locale;
+          },
+            getPages: AppRoutes.route(),
+            initialBinding: CommonBinding(),
+            debugShowCheckedModeBanner: false,
+          ),
     );
   }
+
+
+
 }

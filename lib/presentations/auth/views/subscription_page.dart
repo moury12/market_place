@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/presentations/auth/controller/auth_controller.dart';
 import 'package:market_place/presentations/auth/widgets/auth_title_widget.dart';
@@ -29,9 +30,9 @@ class SubscriptionPage extends StatelessWidget {
             spacing: 8.h,
             children: [
               AuthTitleTextWidget(
-                title: AppStaticStrings.chooseSubscriptionPlan,
+                title: AppStaticStrings.chooseSubscriptionPlan.tr,
               ),
-              AuthSubTextWidget(text: AppStaticStrings.subscriptionDescription),
+              AuthSubTextWidget(text: AppStaticStrings.subscriptionDescription.tr),
               DynamicTabWidget(
                 tabs: AuthController.to.tabLabels,
                 tabContent: AuthController.to.tabContent,

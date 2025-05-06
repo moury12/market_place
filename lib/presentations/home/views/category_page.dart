@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:market_place/core/components/custom_appbar.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
@@ -14,7 +15,7 @@ class CategoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomDefaultAppbar(title: AppStaticStrings.productCategories),
+      appBar: CustomDefaultAppbar(title: AppStaticStrings.productCategories.tr),
       body: SingleChildScrollView(
         child: Padding(
           padding: padding12,

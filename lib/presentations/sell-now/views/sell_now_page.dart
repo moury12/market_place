@@ -39,7 +39,7 @@ class SellNowPage extends StatelessWidget {
                 spacing: 12.h,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  titleBold(title:AppStaticStrings.uploadProductImages),
+                  titleBold(title:AppStaticStrings.uploadProductImages.tr),
                   Obx(() {
                     return Wrap(
                       spacing: 8.w,
@@ -103,7 +103,7 @@ class SellNowPage extends StatelessWidget {
                           children: [
                             SvgPicture.asset(imgIcon),
                             CustomText(
-                              text: AppStaticStrings.uploadImage,
+                              text: AppStaticStrings.uploadImage.tr,
                               color: AppColors.kPrimaryColor,
                             ),
                           ],
@@ -115,7 +115,7 @@ class SellNowPage extends StatelessWidget {
                     onTap: () {
                       SellController.to.addProductInfo.value = true;
                     },
-                    title: AppStaticStrings.next,
+                    title: AppStaticStrings.next.tr,
                   ),
                 ],
               )
@@ -124,33 +124,33 @@ class SellNowPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 12.h,
                 children: [
-                  titleBold(title:AppStaticStrings.productInformation),
+                  titleBold(title:AppStaticStrings.productInformation.tr),
                   CustomTextField(
                     fillColor: AppColors.kWhiteColor,
-                    title: AppStaticStrings.productTitle,
+                    title: AppStaticStrings.productTitle.tr,
                   ),
                   CustomDropdown(
-                    title: AppStaticStrings.category,
+                    title: AppStaticStrings.category.tr,
                     items: category,
                     selectedValue: SellController.to.selectedCategory.value,
                   ),
                   CustomDropdown(
-                    title: AppStaticStrings.subCategory,
+                    title: AppStaticStrings.subCategory.tr,
                     items: category,
                     selectedValue: SellController.to.selectedSubCategory.value,
                   ),
                   CustomDropdown(
-                    title: AppStaticStrings.condition,
+                    title: AppStaticStrings.condition.tr,
                     items: condition,
                     selectedValue: SellController.to.selectedCondition.value,
                   ),
                   CustomTextField(
                     fillColor: AppColors.kWhiteColor,
-                    title: AppStaticStrings.price,
+                    title: AppStaticStrings.price.tr,
                   ),
                   CustomTextField(
                     fillColor: AppColors.kWhiteColor,
-                    title:AppStaticStrings.productDescription,
+                    title:AppStaticStrings.productDescription.tr,
                     maxLines: 6,
                   ),
                   Row(
@@ -163,7 +163,7 @@ class SellNowPage extends StatelessWidget {
                           onTap: () {
                             SellController.to.addProductInfo.value = false;
                           },
-                          title: AppStaticStrings.previous,
+                          title: AppStaticStrings.previous.tr,
                         ),
                       ),
                       Expanded(
@@ -172,7 +172,7 @@ class SellNowPage extends StatelessWidget {
                             SellController.to.addProductInfo.value = false;
                             SellController.to.addLocationInfo.value = true;
                           },
-                          title: AppStaticStrings.next,
+                          title: AppStaticStrings.next.tr,
                         ),
                       ),
                     ],
@@ -183,15 +183,15 @@ class SellNowPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 12.h,
                 children: [
-                  titleBold(title: AppStaticStrings.productInformation),
+                  titleBold(title: AppStaticStrings.productInformation.tr),
 
                   CustomDropdown(
-                    title: AppStaticStrings.wilaya,
+                    title: AppStaticStrings.wilaya.tr,
                     items: category,
                     selectedValue: SellController.to.selectedWilaya.value,
                   ),
                   CustomDropdown(
-                    title: AppStaticStrings.city,
+                    title: AppStaticStrings.city.tr,
                     items: category,
                     selectedValue: SellController.to.selectedCity.value,
                   ),
@@ -207,7 +207,7 @@ class SellNowPage extends StatelessWidget {
                             SellController.to.addLocationInfo.value = false;
                             SellController.to.addProductInfo.value = true;
                           },
-                          title: AppStaticStrings.previous,
+                          title: AppStaticStrings.previous.tr,
                         ),
                       ),
                       Expanded(
@@ -225,7 +225,7 @@ class SellNowPage extends StatelessWidget {
                                           "assets/lottie/success.json",
                                         ),
                                         CustomText(
-                                          text: AppStaticStrings.success,
+                                          text: AppStaticStrings.success.tr,
                                           style: poppinsMedium,
                                           fontSize: getFontSizeDefault(),
                                         ),
@@ -233,7 +233,7 @@ class SellNowPage extends StatelessWidget {
                                           textAlign: TextAlign.center,
                                           text:
                                               AppStaticStrings
-                                                  .yourItemHasBeenSubmitted,
+                                                  .yourItemHasBeenSubmitted.tr,
                                           color: AppColors.kExtraLightTextColor,
                                           fontSize: getFontSizeSemiSmall(),
                                         ),
@@ -269,7 +269,7 @@ class SellNowPage extends StatelessWidget {
                                   ),
                             );
                           },
-                          title: AppStaticStrings.submit,
+                          title: AppStaticStrings.submit.tr,
                         ),
                       ),
                     ],

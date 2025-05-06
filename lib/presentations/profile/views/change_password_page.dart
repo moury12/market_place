@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:market_place/core/components/custom_appbar.dart';
 import 'package:market_place/core/components/custom_button.dart';
 import 'package:market_place/core/components/custom_textfield.dart';
@@ -16,7 +17,7 @@ class ChangePasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomDefaultAppbar(title: AppStaticStrings.changePassword),
+      appBar: CustomDefaultAppbar(title: AppStaticStrings.changePassword.tr),
       body: SingleChildScrollView(
         child: Padding(
           padding: padding16,
@@ -28,21 +29,21 @@ class ChangePasswordPage extends StatelessWidget {
 
               CustomTextField(
                 fillColor: AppColors.kWhiteColor,
-                title: AppStaticStrings.currentPass,
+                title: AppStaticStrings.currentPass.tr,
                 isPassword: true,
               ),
               CustomTextField(
                 fillColor: AppColors.kWhiteColor,
-                title: AppStaticStrings.newPass,
+                title: AppStaticStrings.newPass.tr,
                 isPassword: true,
               ),
               CustomTextField(
                 fillColor: AppColors.kWhiteColor,
-                title: AppStaticStrings.confirmPassword,
+                title: AppStaticStrings.confirmPassword.tr,
                 isPassword: true,
               ),
               space8H,
-              CustomButton(onTap: () {}, title: AppStaticStrings.save),
+              CustomButton(onTap: () {}, title: AppStaticStrings.save.tr),
             ],
           ),
         ),

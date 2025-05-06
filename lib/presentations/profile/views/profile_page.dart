@@ -52,73 +52,73 @@ class ProfilePage extends StatelessWidget {
             ),
             ProfileActionItemWidget(
               img: settingIcon,
-              title: AppStaticStrings.accountSetting,
+              title: AppStaticStrings.accountSetting.tr,
               onTap: () {
                 Get.toNamed(AccountSettingsPage.routeName);
               },
             ),
             ProfileActionItemWidget(
               img: favItemIcon,
-              title: AppStaticStrings.favoriteItems,
+              title: AppStaticStrings.favoriteItems.tr,
               onTap: () {
                 Get.toNamed(
                   ListingProductPage.routeName,
-                  arguments: AppStaticStrings.favoriteItems,
+                  arguments: AppStaticStrings.favoriteItems.tr,
                 );
               },
             ),
             ProfileActionItemWidget(
               img: languageIcon,
-              title: AppStaticStrings.language,
+              title: AppStaticStrings.language.tr,
               onTap: () {
                showDialog(context: context, builder: (context) => LanguageChangeDialog(),);
               },
             ), ProfileActionItemWidget(
               img: notificationOutlineIcon,
-              title: AppStaticStrings.notification,
+              title: AppStaticStrings.notification.tr,
               onTap: () {
                 Get.toNamed(NotificationPage.routeName);
               },
             ),
 
             CustomText(
-              text: AppStaticStrings.more,
+              text: AppStaticStrings.more.tr,
               fontSize: getFontSizeDefault(),
               style: poppinsSemiBold,
             ),
             ProfileActionItemWidget(
               img: termsIcon,
-              title: AppStaticStrings.termsAndCondition,
+              title: AppStaticStrings.termsAndCondition.tr,
               onTap: () {
                 Get.toNamed(
                   TermsPolicyHelpPage.routeName,
-                  arguments: AppStaticStrings.termsAndCondition,
+                  arguments: AppStaticStrings.termsAndCondition.tr,
                 );
               },
             ),
             ProfileActionItemWidget(
               img: privacyPolicyIcon,
-              title: AppStaticStrings.privacyPolicy,
+              title: AppStaticStrings.privacyPolicy.tr,
               onTap: () {
                 Get.toNamed(
                   TermsPolicyHelpPage.routeName,
-                  arguments: AppStaticStrings.privacyPolicy,
+                  arguments: AppStaticStrings.privacyPolicy.tr,
                 );
               },
             ),
             ProfileActionItemWidget(
               img: helpIcon,
-              title: AppStaticStrings.helpSupport,
+              title: AppStaticStrings.helpSupport.tr,
               onTap: () {
                 Get.toNamed(
                   TermsPolicyHelpPage.routeName,
-                  arguments: AppStaticStrings.helpSupport,
+                  arguments: AppStaticStrings.helpSupport.tr,
                 );
               },
             ),
             ProfileActionItemWidget(
               img: logoutIcon,
-              title: AppStaticStrings.logOut,
+              title: AppStaticStrings.logOut.tr,
               onTap: () {
                 Get.offAllNamed(LoginPage.routeName);
               },

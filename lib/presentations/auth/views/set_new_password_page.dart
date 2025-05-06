@@ -25,16 +25,16 @@ class SetNewPasswordPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              AuthTitleTextWidget(title: AppStaticStrings.resetYourPassword),
-              AuthSubTextWidget(text: AppStaticStrings.createAnewPassword),
+              AuthTitleTextWidget(title: AppStaticStrings.resetYourPassword.tr),
+              AuthSubTextWidget(text: AppStaticStrings.createAnewPassword.tr),
               space6H,
               CustomTextField(
                   fillColor: Colors.transparent,
-                  title: AppStaticStrings.newPassword, isPassword: true),
+                  title: AppStaticStrings.newPassword.tr, isPassword: true),
               CustomTextField(
                 fillColor: Colors.transparent,
 
-                title: AppStaticStrings.confirmNewPassword,
+                title: AppStaticStrings.confirmNewPassword.tr,
                 isPassword: true,
               ),
               space4H,
@@ -42,7 +42,7 @@ class SetNewPasswordPage extends StatelessWidget {
                 onTap: () {
                   Get.offAllNamed(LoginPage.routeName);
                 },
-                title: AppStaticStrings.confirm,
+                title: AppStaticStrings.confirm.tr,
               ),
             ],
           ),

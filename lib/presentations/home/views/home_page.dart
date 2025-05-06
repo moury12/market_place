@@ -34,7 +34,7 @@ class HomePage extends StatelessWidget {
               ),
             ),
             ViewAllRow(
-              title: AppStaticStrings.productCategories,
+              title: AppStaticStrings.productCategories.tr,
               onPressed: () {
                 Get.toNamed(CategoryPage.routeName);
               },
@@ -46,7 +46,7 @@ class HomePage extends StatelessWidget {
 
               children: List.generate(8, (index) => CategoryCardItemWidget()),
             ),
-            ViewAllRow(title: AppStaticStrings.recentlyAdded, onPressed: () {}),
+            ViewAllRow(title: AppStaticStrings.recentlyAdded.tr, onPressed: () {}),
             ProductGridWidget(),
           ],
         ),

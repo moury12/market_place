@@ -31,7 +31,7 @@ class ProductDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomDefaultAppbar(
-        title: fromSeller ?  AppStaticStrings.manageProduct: "",
+        title: fromSeller ?  AppStaticStrings.manageProduct.tr: "",
         action: [
           fromSeller
               ? SizedBox.shrink()
@@ -123,7 +123,7 @@ class ProductDetailsPage extends StatelessWidget {
                                 onTap: () {
                                   Get.toNamed(SellerProfilePage.routeName);
                                 },
-                                title: AppStaticStrings.viewProfile,
+                                title: AppStaticStrings.viewProfile.tr,
                               ),
                             ),
                           ],
@@ -133,7 +133,7 @@ class ProductDetailsPage extends StatelessWidget {
                   ),
 
               CustomText(
-                text: AppStaticStrings.productDetails,
+                text: AppStaticStrings.productDetails.tr,
                 style: poppinsSemiBold,
                 fontSize: getFontSizeDefault(),
               ),
@@ -151,7 +151,7 @@ class ProductDetailsPage extends StatelessWidget {
                 title: "Product Category ",
                 value: "Jewelary",
               ),
-              CustomText(text: AppStaticStrings.productDescription),
+              CustomText(text: AppStaticStrings.productDescription.tr),
               space8H,
               CustomText(text: dummyDesc, fontSize: getFontSizeSmall()),
               space8H,
@@ -160,25 +160,25 @@ class ProductDetailsPage extends StatelessWidget {
                 spacing: 8.h,
                     children: [
                       ManageOptionWidget(
-                        title: AppStaticStrings.editListingInfo,
+                        title: AppStaticStrings.editListingInfo.tr,
                         color: AppColors.kPrimaryColor,
                         icon: editIcon,
                         action: () {},
                       ),
                       ManageOptionWidget(
-                        title: AppStaticStrings.markAsSold,
+                        title: AppStaticStrings.markAsSold.tr,
                         color: AppColors.kPrimaryColor,
                         icon: markSoldIcon,
                         action: () {},
                       ),
                       ManageOptionWidget(
-                        title: AppStaticStrings.archiveListings,
+                        title: AppStaticStrings.archiveListings.tr,
                         color: AppColors.kYellowColor,
                         icon: archiveListingsIcon,
                         action: () {},
                       ),
                       ManageOptionWidget(
-                        title: AppStaticStrings.deletePermanently,
+                        title: AppStaticStrings.deletePermanently.tr,
                         color: AppColors.kRedColor,
                         icon: deleteIcon,
                         action: () {},

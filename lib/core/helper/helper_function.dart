@@ -11,6 +11,9 @@ import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../utils/hive_boxes.dart';
+import '../utils/variable.dart';
+
 
 void showPopupMenu(BuildContext context, Offset offset) async {
 
@@ -21,7 +24,12 @@ void showPopupMenu(BuildContext context, Offset offset) async {
   // }
 }
 
-
+Locale getLocaleFromHive() {
+  final localeString = Boxes.getSettingsData().get(languageKey, defaultValue: "en");
+  if (localeString == "ar") return const Locale('ar');
+  if (localeString == "fr") return const Locale('fr');
+  return const Locale('en', 'US');
+}
 List<PopupMenuEntry<dynamic>> items = [
   PopupMenuItem(
     value: "Red",

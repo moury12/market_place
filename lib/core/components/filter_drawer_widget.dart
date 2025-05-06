@@ -30,27 +30,27 @@ class FilterDrawerWidget extends StatelessWidget {
                 spacing: 12.h,
                 children: [
                   CustomDropdown(
-                    title: AppStaticStrings.category,
+                    title: AppStaticStrings.category.tr,
                     items: category,
                     selectedValue: HomeController.to.selectedCategory.value,
                   ),
                   CustomDropdown(
-                    title: AppStaticStrings.subCategory,
+                    title: AppStaticStrings.subCategory.tr,
                     items: category,
                     selectedValue: HomeController.to.selectedSubCategory.value,
                   ),
                   CustomDropdown(
-                    title: AppStaticStrings.wilaya,
+                    title: AppStaticStrings.wilaya.tr,
                     items: category,
                     selectedValue: HomeController.to.selectedWilaya.value,
                   ),
                   CustomDropdown(
-                    title: AppStaticStrings.city,
+                    title: AppStaticStrings.city.tr,
                     items: category,
                     selectedValue: HomeController.to.selectedCity.value,
                   ),
                   Text(
-                    AppStaticStrings.priceRange,
+                    AppStaticStrings.priceRange.tr,
                     style: poppinsSemiBold.copyWith(
                       color: AppColors.kBlackColor,
                       fontSize: getFontSizeSemiSmall(),
@@ -82,26 +82,26 @@ class FilterDrawerWidget extends StatelessWidget {
                     );
                   }),
                   CustomDropdown(
-                    title: AppStaticStrings.condition,
+                    title: AppStaticStrings.condition.tr,
                     items: condition,
                     selectedValue: HomeController.to.selectedCondition.value,
                   ),
                   CustomDropdown(
-                    title: AppStaticStrings.sortBy,
+                    title: AppStaticStrings.sortBy.tr,
                     items: sortBy,
                     selectedValue: HomeController.to.selectedSortBy.value,
                   ),
                   CustomButton(onTap: () {
             
                   },
-                  title:AppStaticStrings.applyFilter ,),
+                  title:AppStaticStrings.applyFilter.tr ,),
                   CustomButton(
                     fillColor: Colors.transparent,
                     textColor: AppColors.kPrimaryColor,
                     onTap: () {
             Navigator.pop(context);
                   },
-                  title:AppStaticStrings.close ,),
+                  title:AppStaticStrings.close.tr ,),
                 ],
               );
             }),

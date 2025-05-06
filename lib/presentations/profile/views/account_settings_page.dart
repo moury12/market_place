@@ -1,4 +1,4 @@
-import 'package:market_place/core/constants/app_static_strings.dart' show AppStaticStrings;
+import 'package:market_place/core/constants/app_static_strings.dart' ;
 import 'package:market_place/core/constants/image_constants.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/presentations/profile/views/change_password_page.dart';
@@ -16,7 +16,7 @@ class AccountSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomDefaultAppbar(title: AppStaticStrings.accountSetting),
+      appBar: CustomDefaultAppbar(title: AppStaticStrings.accountSetting.tr),
       body: SingleChildScrollView(
         child: Padding(
           padding: padding12,
@@ -26,7 +26,7 @@ class AccountSettingsPage extends StatelessWidget {
 
               ProfileActionItemWidget(
                 img: chngPassIcon,
-                title: AppStaticStrings.changePassword,
+                title: AppStaticStrings.changePassword.tr,
                 onTap: () => Get.toNamed(ChangePasswordPage.routeName),
               ),
             ],

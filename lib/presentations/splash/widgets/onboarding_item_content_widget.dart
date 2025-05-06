@@ -5,14 +5,9 @@ import 'package:get/get.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/utils/variable.dart';
 import 'package:market_place/presentations/auth/views/login_page.dart';
-import 'package:market_place/presentations/auth/views/verify_otp_page.dart';
-import 'package:market_place/presentations/splash/controller/splash_controller.dart';
-import 'package:market_place/presentations/splash/controller/splash_controller.dart';
-import 'package:market_place/presentations/splash/controller/splash_controller.dart';
 import 'package:market_place/presentations/splash/controller/splash_controller.dart';
 
 import '../../../core/components/custom_button.dart';
-import '../../../core/components/custom_textfield.dart';
 import '../../../core/constants/app_static_strings.dart';
 import '../../../core/constants/color_constants.dart';
 import '../../../core/constants/custom_space.dart';
@@ -84,7 +79,7 @@ class OnboardingItemContentWidget extends StatelessWidget {
         Padding(
           padding: padding16H,
           child: CustomButton(
-            title:AppStaticStrings.next,
+            title:AppStaticStrings.next.tr,
             onTap: () {
               if (SplashController.to.currentIndex.value <
                   onboardingData.length - 1) {

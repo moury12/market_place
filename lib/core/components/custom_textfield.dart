@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/core/constants/color_constants.dart';
 import 'package:market_place/core/constants/custom_space.dart';
@@ -155,7 +156,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               isCollapsed: widget.isCollapsed,
               isDense: widget.isDense,
               errorMaxLines: 2,
-              hintText: widget.hintText??AppStaticStrings.typeHere,
+              hintText: widget.hintText??AppStaticStrings.typeHere.tr,
               hintStyle: widget.hintStyle ??
                   TextStyle(
                       color: AppColors.kExtraLightTextColor,

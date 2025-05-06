@@ -37,15 +37,15 @@ class LoginPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                AuthTitleTextWidget(title: AppStaticStrings.welcomeBack),
-                AuthSubTextWidget(text: AppStaticStrings.logInToContinue),
+                AuthTitleTextWidget(title: AppStaticStrings.welcomeBack.tr),
+                AuthSubTextWidget(text: AppStaticStrings.logInToContinue.tr),
                 space12H,
                 CustomTextField(
                   fillColor: Colors.transparent,
-                  title: AppStaticStrings.email,),
+                  title: AppStaticStrings.email.tr,),
                 CustomTextField(
                     fillColor: Colors.transparent,
-                    title: AppStaticStrings.password, isPassword: true),
+                    title: AppStaticStrings.password.tr, isPassword: true),
                 Row(
                   children: [
                     Expanded(
@@ -56,7 +56,7 @@ class LoginPage extends StatelessWidget {
                           ),
                           Expanded(
                             child: CustomText(
-                              text: AppStaticStrings.rememberMe,
+                              text: AppStaticStrings.rememberMe.tr,
                               // fontSize: getFontSizeSmall(),
                             ),
                           ),
@@ -64,7 +64,7 @@ class LoginPage extends StatelessWidget {
                       ),
                     ),
 
-                    CustomTextButton(title: AppStaticStrings.forgetPassword,onPressed: () {
+                    CustomTextButton(title: AppStaticStrings.forgetPassword.tr,onPressed: () {
                       Get.toNamed(VerifyEmailPage.routeName,arguments: true);
                     },),
                   ],
@@ -74,14 +74,14 @@ class LoginPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CustomText(
-                      text: AppStaticStrings.dontHaveAccount,
+                      text:AppStaticStrings.dontHaveAccount.tr.tr,
                       style: poppinsRegular,
                     ),
                     CustomTextButton(
                       onPressed: () {
                         Get.toNamed(SignUpPage.routeName);
                       },
-                      title: AppStaticStrings.signUp,
+                      title: AppStaticStrings.signUp.tr,
                       fontSize: getFontSizeSemiSmall(),
                       textColor: AppColors.kPrimaryColor,
                       fontWeight: FontWeight.w600,
@@ -90,7 +90,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 CustomButton(onTap: () {
                   Get.offAllNamed(NavigationPage.routeName);
-                }, title: AppStaticStrings.signIn),
+                }, title: AppStaticStrings.signIn.tr),
               ],
             ),
           ),

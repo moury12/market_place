@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:market_place/core/components/custom_appbar.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/core/constants/color_constants.dart';
@@ -17,7 +18,7 @@ class NotificationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomDefaultAppbar(title: AppStaticStrings.notifications),
+      appBar: CustomDefaultAppbar(title: AppStaticStrings.notifications.tr),
       body: SingleChildScrollView(
         physics: AlwaysScrollableScrollPhysics(),
         child: Padding(

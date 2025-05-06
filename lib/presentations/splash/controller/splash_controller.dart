@@ -8,6 +8,7 @@ class SplashController extends GetxController{
   @override
   void onInit() {
     pageController = PageController(initialPage: currentIndex.value).obs;
+
     super.onInit();
   }
 }

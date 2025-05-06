@@ -23,16 +23,16 @@ final arg= Get.arguments;
             spacing: 8.h,
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [  AuthTitleTextWidget(title: AppStaticStrings.verifyYourEmail),
-              AuthSubTextWidget(text: AppStaticStrings.weWillSendACode),
-              CustomTextField(title: AppStaticStrings.email,fillColor: Colors.transparent,),
+            children: [  AuthTitleTextWidget(title: AppStaticStrings.verifyYourEmail.tr),
+              AuthSubTextWidget(text: AppStaticStrings.weWillSendACode.tr),
+              CustomTextField(title: AppStaticStrings.email.tr,fillColor: Colors.transparent,),
 
               space4H,
               CustomButton(
                 onTap: () {
                   Get.toNamed(VerifyOtpPage.routeName,arguments: arg);
                 },
-                title: AppStaticStrings.continueButton,
+                title: AppStaticStrings.continueButton.tr,
               ),],
           ),
         ),

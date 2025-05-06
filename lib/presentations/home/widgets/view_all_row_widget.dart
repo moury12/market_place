@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:market_place/core/constants/custom_text.dart';
 import 'package:market_place/core/constants/fontsize_constant.dart';
 
@@ -25,7 +26,7 @@ class ViewAllRow extends StatelessWidget {
             style: poppinsSemiBold,
           ),
         ),
-        CustomTextButton(onPressed: onPressed, title: buttonText?? AppStaticStrings.viewAll, )
+        CustomTextButton(onPressed: onPressed, title: buttonText?? AppStaticStrings.viewAll.tr, )
       ],
     );
   }

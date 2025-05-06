@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:market_place/core/components/custom_appbar.dart';
 import 'package:market_place/core/components/custom_button_tap.dart';
 import 'package:market_place/core/components/filter_drawer_widget.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/core/constants/color_constants.dart';
 import 'package:market_place/core/constants/custom_text.dart';
-import 'package:market_place/core/constants/fontsize_constant.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/presentations/home/controller/home_controller.dart';
 import 'package:market_place/presentations/home/widgets/product_card_item_widget.dart';
@@ -83,9 +81,9 @@ class SearchPage extends StatelessWidget {
                               spacing: 6.h,
                               children: [
                                 ViewAllRow(
-                                  title: AppStaticStrings.searchHistory,
+                                  title: AppStaticStrings.searchHistory.tr,
                                   onPressed: () {},
-                                  buttonText: AppStaticStrings.clearAll,
+                                  buttonText: AppStaticStrings.clearAll.tr,
                                 ),
                                 Wrap(
                                   spacing: 8.w,

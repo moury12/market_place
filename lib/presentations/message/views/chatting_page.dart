@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:market_place/core/components/custom_appbar.dart';
 import 'package:market_place/core/components/custom_network_image.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
@@ -70,7 +71,7 @@ class ChattingPage extends StatelessWidget {
                 IconButton(onPressed: () {}, icon: SvgPicture.asset(imgIcon)),
                 Expanded(
                   child: CustomTextField(
-                    hintText: AppStaticStrings.typeMessage,
+                    hintText: AppStaticStrings.typeMessage.tr,
 
                     borderColor: AppColors.kPrimaryColor,
                     fillColor: AppColors.kWhiteColor,

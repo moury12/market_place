@@ -97,7 +97,7 @@ class ProfileInfoDetailsWidget extends StatelessWidget {
                     ),
                   ),
                   CustomText(
-                    text: AppStaticStrings.editProfile,
+                    text: AppStaticStrings.editProfile.tr,
                     style: poppinsRegular,
                     color: AppColors.kPrimaryColor,
                     fontSize: 10.sp,

@@ -33,28 +33,28 @@ class SignUpPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                AuthTitleTextWidget(title: AppStaticStrings.createYourAccount),
-                AuthSubTextWidget(text: AppStaticStrings.signUpToGetStarted),
+                AuthTitleTextWidget(title: AppStaticStrings.createYourAccount.tr),
+                AuthSubTextWidget(text: AppStaticStrings.signUpToGetStarted.tr),
                 CustomTextField(
                     fillColor: Colors.transparent,
-                    title: AppStaticStrings.fullName),
+                    title: AppStaticStrings.fullName.tr),
                 CustomTextField(
                     fillColor: Colors.transparent,
-                    title: AppStaticStrings.email),
+                    title: AppStaticStrings.email.tr),
                 CustomTextField(
                   fillColor: Colors.transparent,
 
-                  title: AppStaticStrings.phoneNumber,
+                  title: AppStaticStrings.phoneNumber.tr,
                   keyboardType: TextInputType.number,
                 ),
           
                 CustomTextField(
                     fillColor: Colors.transparent,
-                    title: AppStaticStrings.password, isPassword: true),
+                    title: AppStaticStrings.password.tr, isPassword: true),
                 CustomTextField(
                   fillColor: Colors.transparent,
 
-                  title: AppStaticStrings.confirmPassword,
+                  title: AppStaticStrings.confirmPassword.tr,
                   isPassword: true,
                 ),
                 SvgPicture.asset(orImg, width: ScreenUtil().screenWidth),
@@ -62,14 +62,14 @@ class SignUpPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CustomText(
-                      text: AppStaticStrings.alreadyHaveAccount,
+                      text: AppStaticStrings.alreadyHaveAccount.tr,
                       style: poppinsRegular,
                     ),
                     CustomTextButton(
                       onPressed: () {
                         Get.toNamed(LoginPage.routeName);
                       },
-                      title: AppStaticStrings.signIn,
+                      title: AppStaticStrings.signIn.tr,
                       fontSize: getFontSizeSemiSmall(),
                       textColor: AppColors.kPrimaryColor,
                       fontWeight: FontWeight.w600,
@@ -78,7 +78,7 @@ class SignUpPage extends StatelessWidget {
                 ),
                 CustomButton(onTap: () {
                   Get.toNamed(VerifyEmailPage.routeName);
-                }, title: AppStaticStrings.createAccount),
+                }, title: AppStaticStrings.createAccount.tr),
                 space12H,
               ],
             ),
