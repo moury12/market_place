@@ -47,10 +47,12 @@ class ProfileInfoDetailsWidget extends StatelessWidget {
                 spacing: 4.w,
                 children: [
                   SvgPicture.asset(mainIcon),
-                  CustomText(
-                    text: "Marvin@gmail.com",
-                    style: poppinsRegular,
-                    fontSize: 10.sp,
+                  Expanded(
+                    child: CustomText(
+                      text: "Marvin@gmail.com",
+                      style: poppinsRegular,
+                      fontSize: 10.sp,
+                    ),
                   ),
                 ],
               ),
@@ -64,10 +66,12 @@ class ProfileInfoDetailsWidget extends StatelessWidget {
                       BlendMode.srcIn,
                     ),
                   ),
-                  CustomText(
-                    text: "(555) 123-4567",
-                    style: poppinsRegular,
-                    fontSize: 10.sp,
+                  Expanded(
+                    child: CustomText(
+                      text: "(555) 123-4567",
+                      style: poppinsRegular,
+                      fontSize: 10.sp,
+                    ),
                   ),
                 ],
               ),

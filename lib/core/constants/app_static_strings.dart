@@ -1,276 +1,231 @@
-class AppStaticStrings {
-  // Common Auth Labels
-  static const String signUp = 'Sign Up';
-  static const String signIn = 'Log In';
-  static const String language = 'Language';
-  static const String addToCard = 'Add to cart';
-  static const String checkout = 'Check Out';
-  static const String welcomeBack = 'Welcome Back!!!';
-  static const String createAccount = 'Create a new account';
-  static const String signInToYourAccount = 'Sign in to Your \nAccount';
-  static const String forgetPassword = 'Forget password?';
-  static const String verifyEmail = 'Verify Your Email';
-  static const String logInToContinue = 'Log in to continue. Enter your credentials to access your account.';
-  static const String rememberMe = 'Remember me';
-  static const String signUpToGetStarted = 'Sign up to get started. Fill in your details to create an account.';
-  static const String phoneNumber = 'Phone Number';
-  static const String weWillSendACode = 'We\'ll send a verification code to this email to confirm your account.';
-  static const String continueButton = 'Continue';
-  static const String enterCodeSent = 'Please enter the code we’ve sent to';
-  static const String resetYourPassword = 'Reset Your Password';
-  static const String newPassword = 'New Password';
-  static const String confirmNewPassword = 'Confirm New Password';
-  static const String resetPassword = 'Reset Password';
-  static const String success = 'Success';
-  static const String yourItemHasBeenSubmitted = 'Your item has been submitted successfully and is now pending admin approval.';
-  static const String createAnewPassword = 'Create a new password to secure your account.';
-  static const String yearlyPlan = 'Yearly Plan';
-  static const String monthlyPlan = 'Monthly Plan';
-  static const String save20Percent = 'Save 20%';
-  static const String popular = 'Popular';
-  static const String subscribeNow = 'Subscribe Now';
-  static const String newLabel = 'New';
-  static const String typeMessage = 'Type message...';
-  static const String manageProduct = 'Manage Product';
-  static const String viewProfile = 'View Profile';
-  static const String moreFromThisSeller = 'more from this seller';
-  static const String sellerProfile = 'Seller Profile';
-  static const String productInformation = 'Product Information';
-  static const String productDescription = 'Product Description';
-  static const String previous = 'Previous';
-  static const String productTitle = 'Product Title';
-  static const String uploadProductImages = 'Upload Product Images';
-  // Subscription
-  static const String chooseSubscriptionPlan = 'Choose Your Subscription Plan';
-  static const String subscriptionDescription = 'Get the best features to grow your business!';
-  static const String confirmYourEmail =
-      'First, confirm your email to create your account.';
-  static const String forgetPasswordAppbar = 'Forget password';
-  static const String enterYourEmail =
-      'Enter your email and we will send you a verification code';
-  static const String description = "Description";
-  static const String failed = 'Failed';
-  static const String deletePermanently = 'Delete Permanently';
-  static const String archiveListings = 'Archive Listing';
-  static const String markAsSold = 'Mark as Sold Out';
-  static const String editListingInfo = ' Edit Listing Info';
+import 'package:get/get.dart';
 
-  static const String submit = 'Submit';
-  static const String quantity = 'Quantity';
-  static const String ageMu = 'Age must be more then 21';
-  static const String noInternet = 'No internet connection';
-  static const String editProfile = 'Edit Profile';
-  static const String accountSetting = 'Account Setting';
-  static const String favoriteItems = 'Favorite Items';
-  static const String notification = 'Notification';
-  static const String more = 'More';
-  static const String monthly = 'Monthly';
-  static const String yearly = 'Yearly';
-  static const String viewAll = 'View All';
-  static const String termsAndCondition = 'Terms & Condition';
-  static const String privacyPolicy = 'Privacy policy';
-  static const String helpSupport = 'Help/Support';
-  static const String logOut = 'Log Out';
+class AppStaticStrings {
+  static  String signUp = 'signUp'.tr;
+  static  String signIn = 'signIn'.tr;
+  static  String language = 'language'.tr;
+  static  String addToCard = 'addToCard'.tr;
+  static  String checkout = 'checkout'.tr;
+  static  String welcomeBack = 'welcomeBack'.tr;
+  static  String createAccount = 'createAccount'.tr;
+  static  String signInToYourAccount = 'signInToYourAccount'.tr;
+  static  String forgetPassword = 'forgetPassword'.tr;
+  static  String verifyEmail = 'verifyEmail'.tr;
+  static  String logInToContinue = 'logInToContinue'.tr;
+  static  String rememberMe = 'rememberMe'.tr;
+  static  String signUpToGetStarted = 'signUpToGetStarted'.tr;
+  static  String phoneNumber = 'phoneNumber'.tr;
+  static  String weWillSendACode = 'weWillSendACode'.tr;
+  static  String continueButton = 'continueButton'.tr;
+  static  String enterCodeSent = 'enterCodeSent'.tr;
+  static  String resetYourPassword = 'resetYourPassword'.tr;
+  static  String newPassword = 'newPassword'.tr;
+  static  String confirmNewPassword = 'confirmNewPassword'.tr;
+  static  String resetPassword = 'resetPassword'.tr;
+  static  String success = 'success'.tr;
+  static  String yourItemHasBeenSubmitted = 'yourItemHasBeenSubmitted'.tr;
+  static  String createAnewPassword = 'createAnewPassword'.tr;
+  static  String yearlyPlan = 'yearlyPlan'.tr;
+  static  String monthlyPlan = 'monthlyPlan'.tr;
+  static  String save20Percent = 'save20Percent'.tr;
+  static  String popular = 'popular'.tr;
+  static  String subscribeNow = 'subscribeNow'.tr;
+  static  String newLabel = 'newLabel'.tr;
+  static  String typeMessage = 'typeMessage'.tr;
+  static  String manageProduct = 'manageProduct'.tr;
+  static  String viewProfile = 'viewProfile'.tr;
+  static  String moreFromThisSeller = 'moreFromThisSeller'.tr;
+  static  String sellerProfile = 'sellerProfile'.tr;
+  static  String productInformation = 'productInformation'.tr;
+  static  String productDescription = 'productDescription'.tr;
+  static  String previous = 'previous'.tr;
+  static  String productTitle = 'productTitle'.tr;
+  static  String uploadProductImages = 'uploadProductImages'.tr;
+
+  // Subscription
+  static  String chooseSubscriptionPlan = 'chooseSubscriptionPlan'.tr;
+  static  String subscriptionDescription = 'subscriptionDescription'.tr;
+  static  String confirmYourEmail = 'confirmYourEmail'.tr;
+  static  String forgetPasswordAppbar = 'forgetPasswordAppbar'.tr;
+  static  String enterYourEmail = 'enterYourEmail'.tr;
+  static  String description = 'description'.tr;
+  static  String failed = 'failed'.tr;
+  static  String deletePermanently = 'deletePermanently'.tr;
+  static  String archiveListings = 'archiveListings'.tr;
+  static  String markAsSold = 'markAsSold'.tr;
+  static  String editListingInfo = 'editListingInfo'.tr;
+
+  static  String submit = 'submit'.tr;
+  static  String quantity = 'quantity'.tr;
+  static  String ageMu = 'ageMu'.tr;
+  static  String noInternet = 'noInternet'.tr;
+  static  String editProfile = 'editProfile'.tr;
+  static  String accountSetting = 'accountSetting'.tr;
+  static  String favoriteItems = 'favoriteItems'.tr;
+  static  String notification = 'notification'.tr;
+  static  String more = 'more'.tr;
+  static  String monthly = 'monthly'.tr;
+  static  String yearly = 'yearly'.tr;
+  static  String viewAll = 'viewAll'.tr;
+  static  String termsAndCondition = 'termsAndCondition'.tr;
+  static  String privacyPolicy = 'privacyPolicy'.tr;
+  static  String helpSupport = 'helpSupport'.tr;
+  static  String logOut = 'logOut'.tr;
+
   // OTP Verification
-  static const String currentPass = "Current Password";
-  static const String newPass = "New Password";
-  static const String activeListings = 'Active Listings';
-  static const String soldOutListings = 'Sold Out Listings';
-  static const String archivedListings = 'Archived Listings';
-  static const String unapprovedListings = 'Unapproved Listings';
-  static const String rejectedListings = 'Rejected Listings';
-  static const String changePass = "Change Password";
-  static const String deleteAcc = "Delete Account";
-  static const String yes = "Yes";
-  static const String cancel = "Cancel";
-  static const String no = "No";
-  static const String confirmPass = "Confirm Password";
-  static const String emailRequired = "Email is required.";
-  static const String nameRequired = "Username is required.";
-  static const String ageRequired = "Age is required.";
-  static const String fieldRequired = "Field is required.";
-  static const String otpFieldRequired = "Otp field is required.";
-  static const String passRequired = "Password is required.";
-  static const String enterValidEmail = "Enter a valid email.";
-  static const String passMustbe6 = "Password must be at least 8 characters.";
-  static const String passNotMatch = "Passwords do not match.";
-  static const String passMustContain =
-      "Password must contain at least one uppercase letter";
-  static const String otp = 'OTP';
-  static const String documentation = 'Documentations:';
-  static const String save = 'Save';
-  static const String buyNow = 'Buy Now';
-  static const String selectColor = 'Select Color:';
-  static const String checkYourEmail = 'Check your email';
-  static const String otpSentMessage =
-      'We sent a reset link to contact@dscode...com';
-  static const String enterOtp =
-      'enter 6 digit code that mentioned in the email';
-  static const String resendOtp = 'Resend OTP';
-  static const String sendCode = 'Send Code';
-  static const String wilaya = 'Wilaya';
-  static const String category = 'Category';
-  static const String subCategory = 'Sub Category';
+  static  String currentPass = 'currentPass'.tr;
+  static  String newPass = 'newPass'.tr;
+  static  String activeListings = 'activeListings'.tr;
+  static  String soldOutListings = 'soldOutListings'.tr;
+  static  String archivedListings = 'archivedListings'.tr;
+  static  String unapprovedListings = 'unapprovedListings'.tr;
+  static  String rejectedListings = 'rejectedListings'.tr;
+  static  String changePass = 'changePass'.tr;
+  static  String deleteAcc = 'deleteAcc'.tr;
+  static  String yes = 'yes'.tr;
+  static  String cancel = 'cancel'.tr;
+  static  String callNow = 'callNow'.tr;
+  static  String chatNow = 'chatNow'.tr;
+  static  String no = 'no'.tr;
+  static  String confirmPass = 'confirmPass'.tr;
+  static  String emailRequired = 'emailRequired'.tr;
+  static  String nameRequired = 'nameRequired'.tr;
+  static  String ageRequired = 'ageRequired'.tr;
+  static  String fieldRequired = 'fieldRequired'.tr;
+  static  String otpFieldRequired = 'otpFieldRequired'.tr;
+  static  String passRequired = 'passRequired'.tr;
+  static  String enterValidEmail = 'enterValidEmail'.tr;
+  static  String passMustbe6 = 'passMustbe6'.tr;
+  static  String passNotMatch = 'passNotMatch'.tr;
+  static  String passMustContain = 'passMustContain'.tr;
+  static  String otp = 'otp'.tr;
+  static  String documentation = 'documentation'.tr;
+  static  String save = 'save'.tr;
+  static  String buyNow = 'buyNow'.tr;
+  static  String selectColor = 'selectColor'.tr;
+  static  String checkYourEmail = 'checkYourEmail'.tr;
+  static  String otpSentMessage = 'otpSentMessage'.tr;
+  static  String enterOtp = 'enterOtp'.tr;
+  static  String resendOtp = 'resendOtp'.tr;
+  static  String sendCode = 'sendCode'.tr;
+  static  String wilaya = 'wilaya'.tr;
+  static  String category = 'category'.tr;
+  static  String subCategory = 'subCategory'.tr;
 
   // Password Reset
-  static const String setNewPassword = 'Set New Password';
-  static const String otpDescription =
-      'We sent a reset link to 6 digit code that mentioned in the email';
-  static const String createNewPasswordMessage =
-      'Create a new password. Ensure it differs from previous ones for security';
+  static  String setNewPassword = 'setNewPassword'.tr;
+  static  String otpDescription = 'otpDescription'.tr;
+  static  String createNewPasswordMessage = 'createNewPasswordMessage'.tr;
 
   // Form Labels
-  static const String fullName = 'Full Name';
-  static const String email = 'Email';
-  static const String phone = 'Phone';
-  static const String password = 'Password';
-  static const String confirmPassword = 'Confirm Password';
-  static const String age = 'Age';
-  static const String clearAll = 'Clear all';
-  static const String searchHistory = 'Search history';
-  static const String recentlyAdded = 'Recently Added';
-  static const String productCategories = 'Product Categories';
-  static const String taxId = 'Tax ID';
-  static const String documentations = 'Documentations';
+  static  String fullName = 'fullName'.tr;
+  static  String email = 'email'.tr;
+  static  String phone = 'phone'.tr;
+  static  String password = 'password'.tr;
+  static  String confirmPassword = 'confirmPassword'.tr;
+  static  String age = 'age'.tr;
+  static  String clearAll = 'clearAll'.tr;
+  static  String searchHistory = 'searchHistory'.tr;
+  static  String recentlyAdded = 'recentlyAdded'.tr;
+  static  String productCategories = 'productCategories'.tr;
+  static  String taxId = 'taxId'.tr;
+  static  String documentations = 'documentations'.tr;
 
   // Placeholders
-  static const String enterUserName = 'enter your user name here...';
-  static const String enterEmail = 'enter your email here...';
-  static const String enterPhone = 'enter your phone here...';
-  static const String enterPassword = 'enter your password here';
-  static const String enterAge = 'dd/mm/yy';
-  static const String enterTaxId = 'enter your tax here...';
-  static const String enterOtpCode = 'enter';
-  static const String enterDeliveryDate = 'dd/mm/yyyy';
-  static const String enterDeliveryTime = 'mm:hh';
+  static  String enterUserName = 'enterUserName'.tr;
+  static  String enterEmail = 'enterEmail'.tr;
+  static  String enterPhone = 'enterPhone'.tr;
+  static  String enterPassword = 'enterPassword'.tr;
+  static  String enterAge = 'enterAge'.tr;
+  static  String enterTaxId = 'enterTaxId'.tr;
+  static  String enterOtpCode = 'enterOtpCode'.tr;
+  static  String enterDeliveryDate = 'enterDeliveryDate'.tr;
+  static  String enterDeliveryTime = 'enterDeliveryTime'.tr;
 
   // Notes & Warnings
-  static const String notesAgeRequirement = 'Notes: You have to be over 21';
-  static const String confirmOver21 = 'I’m more than 21';
-  static const String loginToContinue =
-      'Log in to continue. Enter your credentials to access your account.';
-  static const String createYourAccount = 'Create Your Account';
-  static const String joinUsToday =
-      'Join us today and start planning your events or managing your services seamlessly!';
-  static const String verifyYourEmail = 'Verify Your Email';
-  static const String verifyEmailInfo =
-      "We'll send a verification code to this email to confirm your account.";
-  static const String sixDigitCode = '6-digit code';
-  static const String enterCodePrompt =
-      "Please enter the code we've sent to michelle.rivera@example.com";
-  static const String discoverUniqueFinds = 'Discover a World of Unique Finds';
-  static const String browseThousandsOfItems =
-      'Browse thousands of items from trusted local sellers, all in one app.';
-  static const String sellAnythingAnytime = 'Sell Anything, Anytime';
-  static const String sellingMadeSimple =
-      'Snap, post, and connect with buyers instantly — selling has never been this simple.';
-  static const String chatDealTrade = 'Chat. Deal. Trade with Confidence.';
-  static const String chatTrustMessage =
-      'Built-in chat, verified users, and secure profiles — your trust matters most.';
+  static  String notesAgeRequirement = 'notesAgeRequirement'.tr;
+  static  String confirmOver21 = 'confirmOver21'.tr;
+  static  String loginToContinue = 'loginToContinue'.tr;
+  static  String createYourAccount = 'createYourAccount'.tr;
+  static  String joinUsToday = 'joinUsToday'.tr;
+  static  String verifyYourEmail = 'verifyYourEmail'.tr;
+  static  String verifyEmailInfo = 'verifyEmailInfo'.tr;
+  static  String sixDigitCode = 'sixDigitCode'.tr;
+  static  String enterCodePrompt = 'enterCodePrompt'.tr;
+  static  String discoverUniqueFinds = 'discoverUniqueFinds'.tr;
+  static  String browseThousandsOfItems = 'browseThousandsOfItems'.tr;
+  static  String sellAnythingAnytime = 'sellAnythingAnytime'.tr;
+  static  String sellingMadeSimple = 'sellingMadeSimple'.tr;
+  static  String chatDealTrade = 'chatDealTrade'.tr;
+  static  String chatTrustMessage = 'chatTrustMessage'.tr;
 
   // Additional Messages
-  static const String taxIdDescription =
-      'Add your tax id for buying wholesaling products';
-  static const String uploadImage = 'upload image';
-  static const String showIdOnPickup =
-      'I Don’t wanna put my ID here. I will show my ID when I pick up the products';
+  static  String taxIdDescription = 'taxIdDescription'.tr;
+  static  String uploadImage = 'uploadImage'.tr;
+  static  String showIdOnPickup = 'showIdOnPickup'.tr;
 
   // Account Related
-  static const String alreadyHaveAccount = 'already have an account?';
-  static const String dontHaveAccount = 'Don’t have an account?';
+  static  String alreadyHaveAccount = 'alreadyHaveAccount'.tr;
+  static  String dontHaveAccount = 'dontHaveAccount'.tr;
 
   // Actions
-  static const String send = 'Send';
-  static const String next = 'Next';
-  static const String update = 'Update';
-  static const String enter = 'enter';
-  static const String confirm = 'Confirm';
+  static  String send = 'send'.tr;
+  static  String next = 'next'.tr;
+  static  String update = 'update'.tr;
+  static  String enter = 'enter'.tr;
+  static  String confirm = 'confirm'.tr;
 
   // Pick Up Address
-  static const String pickUpAddress = 'Pick Up Address';
-  static const String pickUp = 'Pick Up';
-  static const String pickUpFrom = 'Pick Up From:';
-  static const String pickUpInfo = 'Pick Up Info:';
-  static const String name = 'Name';
-  static const String contactNumber = 'Contact Number';
-  static const String deliveryDate = 'Delivery Date';
-  static const String deliveryTime = 'Delivery Time';
-  static const String productsInfo = 'Products Info:';
-  static const String productDetails = 'Product Details';
-  static const String price = 'Price';
-  static const String total = 'Total';
-  static const String totalAmount = 'Total Amount';
-  static const String simplyDummyText =
-      'Simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy see more...';
+  static  String pickUpAddress = 'pickUpAddress'.tr;
+  static  String pickUp = 'pickUp'.tr;
+  static  String pickUpFrom = 'pickUpFrom'.tr;
+  static  String pickUpInfo = 'pickUpInfo'.tr;
+  static  String name = 'name'.tr;
+  static  String contactNumber = 'contactNumber'.tr;
+  static  String deliveryDate = 'deliveryDate'.tr;
+  static  String deliveryTime = 'deliveryTime'.tr;
+  static  String productsInfo = 'productsInfo'.tr;
+  static  String productDetails = 'productDetails'.tr;
+  static  String price = 'price'.tr;
+  static  String total = 'total'.tr;
+  static  String totalAmount = 'totalAmount'.tr;
+  static  String simplyDummyText = 'simplyDummyText'.tr;
 
   // Payment
-  static const String payment = 'Payment';
-  static const String subTotal = 'Sub Total:';
-  static const String deliveryFee = 'Delivery Fee:';
+  static  String payment = 'payment'.tr;
+  static  String subTotal = 'subTotal'.tr;
+  static  String deliveryFee = 'deliveryFee'.tr;
 
   // User Profile & Settings
-  static const String myProfile = 'My Profile';
-  static const String settings = 'Settings';
-  static const String feedback = 'Feedback';
-  static const String termsOfUse = 'Terms of use';
-  static const String changePassword = 'Change Password';
-  static const String deleteAccount = 'Delete Account';
-
-  // Orders & Status
-  static const String running = 'Running';
-  static const String shipped = 'Shipped';
-  static const String delivered = 'Delivered';
-  static const String pending = 'Pending';
-  static const String shipping = 'Shipping';
+  static  String myProfile = 'myProfile'.tr;
+  static  String settings = 'settings'.tr;
+  static  String feedback = 'feedback'.tr;
+  static  String termsOfUse = 'termsOfUse'.tr;
+  static  String changePassword = 'changePassword'.tr;
+  static  String deleteAccount = 'deleteAccount'.tr;
 
   // Delivery & Address
-  static const String address = 'Address';
-  static const String delivery = 'Delivery';
-  static const String deliveryAddress = 'Delivery Address';
-  static const String editAddress = 'Edit Address';
-  static const String location = 'Location';
-  static const String city = 'City';
-  static const String close = 'Close';
-  static const String applyFilter = ' Apply filter';
-  static const String condition = 'Condition';
-  static const String sortBy = 'Sort By';
-  static const String priceRange = 'Price Range';
-
+  static  String address = 'address'.tr;
+  static  String delivery = 'delivery'.tr;
+  static  String deliveryAddress = 'deliveryAddress'.tr;
+  static  String editAddress = 'editAddress'.tr;
+  static  String location = 'location'.tr;
+  static  String city = 'city'.tr;
+  static  String close = 'close'.tr;
+  static  String applyFilter = 'applyFilter'.tr;
+  static  String condition = 'condition'.tr;
+  static  String sortBy = 'sortBy'.tr;
+  static  String priceRange = 'priceRange'.tr;
+  static  String selectOne = 'selectOne'.tr;  // New key for "Select One"
+  static  String typeHere = 'typeHere'.tr;
   // Order Details
-  static const String cart = 'Cart';
-  static const String home = 'Home';
-  static const String myListings = 'My Listings';
-  static const String sellNow = 'Sell Now';
-  static const String messages = 'Messages';
-  static const String profile = 'Profile';
-  static const String addNewListing = ' Add New Listing';
-  static const String orders = 'Orders';
-  static const String notifications = 'Notifications';
-
-  // Profile Details
-  static const String userName = 'User Name';
-  static const String userEmail = 'Email';
-  static const String userContact = 'Contact Number';
-  static const String title = "Pick Up Address";
-  static const String pickUpFromLabel = "Pick Up From:";
-  static const String pickUpInfoLabel = "Pick Up Info:";
-  static const String nameLabel = "Name";
-  static const String contactNumberLabel = "Contact Number";
-  static const String deliveryDateLabel = "Delivery Date";
-  static const String deliveryTimeLabel = "Delivery Time";
-  static const String productsInfoLabel = "Products Info:";
-  static const String totalLabel = "Total:";
-  static const String paymentLabel = "Payment";
-  static const String defaultName = "Md. Navid Hassan";
-  static const String defaultContact = "+999 4515154 415445";
-  static const String defaultDeliveryDate = "dd/mm/yyyy";
-  static const String defaultDeliveryTime = "mm:hh";
-  static const String defaultProduct = "THC Gummy";
-  static const String defaultPrice = "Price: \$120";
-  static const String defaultProductInfo =
-      "Simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy ";
-  static const String seeMore = "see more...";
-  static const String defaultTotal = "\$771.00";
-  static const String pickUpDummyAddress =
-      "13th Street. 47 W 13th St, New York, NY 10011";
+  static  String cart = 'cart'.tr;
+  static  String home = 'home'.tr;
+  static  String myListings = 'myListings'.tr;
+  static  String sellNow = 'sellNow'.tr;
+  static  String messages = 'messages'.tr;
+  static  String profile = 'profile'.tr;
+  static  String addNewListing = 'addNewListing'.tr;
+  static  String orders = 'orders'.tr;
+  static  String notifications = 'notifications'.tr;
 }

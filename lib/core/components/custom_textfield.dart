@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/core/constants/color_constants.dart';
 import 'package:market_place/core/constants/custom_space.dart';
 import 'package:market_place/core/constants/fontsize_constant.dart';
@@ -24,7 +25,7 @@ class CustomTextField extends StatefulWidget {
       this.onChanged,
       this.maxLines = 1,
       this.validator,
-      this.hintText = 'type here',
+      this.hintText  ,
       this.hintStyle,
       this.suffixIcon,
       this.suffixIconColor,
@@ -154,7 +155,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               isCollapsed: widget.isCollapsed,
               isDense: widget.isDense,
               errorMaxLines: 2,
-              hintText: widget.hintText,
+              hintText: widget.hintText??AppStaticStrings.typeHere,
               hintStyle: widget.hintStyle ??
                   TextStyle(
                       color: AppColors.kExtraLightTextColor,

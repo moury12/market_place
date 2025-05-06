@@ -8,8 +8,11 @@ import 'package:market_place/core/bindings/bindings.dart';
 import 'package:market_place/core/routes/app_routes.dart';
 import 'package:market_place/core/theme/app_theme.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:market_place/presentations/navigation/views/navigation_page.dart';
 import 'package:market_place/presentations/splash/views/splash_page.dart';
 
+import 'core/services/app_strings.dart';
+import 'core/utils/common_controller.dart';
 import 'core/utils/variable.dart';
 
 void main() async{
@@ -17,6 +20,16 @@ void main() async{
   await ScreenUtil.ensureScreenSize();
   await Hive.initFlutter();
   await Hive.openBox(userBoxName);
+  final translations = AppTranslations();
+  await translations.init();
+
+  // Register with GetX
+  Get.put<AppTranslations>(translations);
+
+  // Initialize controller after translations
+  Get.put(CommonController());
+
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -43,6 +56,9 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.lightTheme,
         themeMode: ThemeMode.light,
         initialRoute: SplashPage.routeName,
+        translations: Get.find<AppTranslations>(), // Get the initialized translations
+        locale: Locale(CommonController.to.selectedLanguageCode.value),
+        fallbackLocale: const Locale('en', 'US'),
         getPages: AppRoutes.route(),
         initialBinding: CommonBinding(),
         debugShowCheckedModeBanner: false,

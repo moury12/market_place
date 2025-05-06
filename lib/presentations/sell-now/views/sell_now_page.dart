@@ -207,7 +207,7 @@ class SellNowPage extends StatelessWidget {
                             SellController.to.addLocationInfo.value = false;
                             SellController.to.addProductInfo.value = true;
                           },
-                          title: "Previous",
+                          title: AppStaticStrings.previous,
                         ),
                       ),
                       Expanded(

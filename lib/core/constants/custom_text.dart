@@ -26,6 +26,7 @@ class CustomText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
+      softWrap: true,
       text,
       textAlign: textAlign ?? TextAlign.start,
       maxLines: maxLines, // null = unlimited lines

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/components/custom_button.dart';
+import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/core/constants/color_constants.dart';
 import 'package:market_place/core/constants/custom_text.dart';
 import 'package:market_place/core/constants/image_constants.dart';
@@ -31,7 +32,7 @@ class CallAndChatButtons extends StatelessWidget {
             onTap: () {
               callOnPhone(phoneNumber: "01716");
             },
-            title: "Call Now",
+            title: AppStaticStrings.cancel,
           ),
         ),
         Expanded(

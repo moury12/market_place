@@ -107,7 +107,7 @@ dropdownColor: AppColors.kWhiteColor,
               fontSize: getFontSizeSemiSmall(),
             ),
             hint: Text(
-              widget.hintText ?? "Select One",
+              widget.hintText ??AppStaticStrings.selectOne ,
               style: poppinsMedium.copyWith(
                   color: widget.hintColor ?? AppColors.kLightTextColor,
                   fontWeight: FontWeight.w400,

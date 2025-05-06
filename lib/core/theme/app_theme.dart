@@ -21,7 +21,7 @@ class AppTheme {
       //
       // ),
 
-      splashColor: AppColors.kPrimaryLightColor,
+      splashColor: AppColors.kPrimaryAccentColor,
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: AppColors.kWhiteColor,
         showUnselectedLabels: true,

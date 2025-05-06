@@ -9,6 +9,7 @@ import '../../presentations/my-listings/controller/listings_controller.dart';
 import '../../presentations/product/controller/product_controller.dart';
 import '../../presentations/profile/controllers/account_information_controller.dart';
 import '../../presentations/splash/controller/splash_controller.dart';
+import '../services/app_strings.dart';
 
 
 class SplashBinding extends Bindings {
@@ -22,7 +23,7 @@ class CommonBinding extends Bindings {
   @override
   void dependencies() {
     Get.put(CommonController(), permanent: true);
-
+    Get.put(AppTranslations());
   }
 }
 //

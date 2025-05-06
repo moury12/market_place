@@ -133,7 +133,7 @@ class ProductDetailsPage extends StatelessWidget {
                   ),
 
               CustomText(
-                text: "Product Details",
+                text: AppStaticStrings.productDetails,
                 style: poppinsSemiBold,
                 fontSize: getFontSizeDefault(),
               ),
@@ -151,7 +151,7 @@ class ProductDetailsPage extends StatelessWidget {
                 title: "Product Category ",
                 value: "Jewelary",
               ),
-              CustomText(text: "Product Description"),
+              CustomText(text: AppStaticStrings.productDescription),
               space8H,
               CustomText(text: dummyDesc, fontSize: getFontSizeSmall()),
               space8H,
