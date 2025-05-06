@@ -9,8 +9,7 @@ import 'package:market_place/core/constants/custom_text.dart';
 import 'package:market_place/core/constants/fontsize_constant.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
-import 'package:market_place/core/components/custom_button.dart';
-import 'package:market_place/core/constants/app_static_strings.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
 void showPopupMenu(BuildContext context, Offset offset) async {
@@ -89,6 +88,14 @@ void removeImage(
     uploadImages.remove(imagePath);
   } else {
     debugPrint("Image not found in the list.");
+  }
+}
+void callOnPhone({required String phoneNumber})async{
+  final url = Uri.parse('tel:$phoneNumber');
+  if (await canLaunchUrl(url)) {
+    await launchUrl(url);
+  } else {
+    throw 'Could not launch $url';
   }
 }
 Future<void> pickImages({

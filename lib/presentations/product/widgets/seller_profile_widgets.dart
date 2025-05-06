@@ -8,6 +8,7 @@ import 'package:market_place/core/constants/custom_text.dart';
 import 'package:market_place/core/constants/image_constants.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
+import 'package:market_place/core/helper/helper_function.dart';
 import 'package:market_place/presentations/home/widgets/product_card_item_widget.dart';
 import 'package:market_place/presentations/navigation/controller/navigation_controller.dart';
 import 'package:market_place/presentations/navigation/views/navigation_page.dart';
@@ -27,7 +28,9 @@ class CallAndChatButtons extends StatelessWidget {
               padding: EdgeInsets.only(right: 12.w),
               child: SvgPicture.asset(callIcon),
             ),
-            onTap: () {},
+            onTap: () {
+              callOnPhone(phoneNumber: "01716");
+            },
             title: "Call Now",
           ),
         ),
