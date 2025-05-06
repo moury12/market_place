@@ -20,6 +20,8 @@ class AppStaticStrings {
   static const String newPassword = 'New Password';
   static const String confirmNewPassword = 'Confirm New Password';
   static const String resetPassword = 'Reset Password';
+  static const String success = 'Success';
+  static const String yourItemHasBeenSubmitted = 'Your item has been submitted successfully and is now pending admin approval.';
   static const String createAnewPassword = 'Create a new password to secure your account.';
 
   // Subscription

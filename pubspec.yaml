@@ -49,6 +49,7 @@ dependencies:
   http_parser: ^4.1.2
   webview_flutter: ^4.11.0
   url_launcher: ^6.3.1
+  lottie: ^3.3.1
 
 
 
@@ -71,6 +72,7 @@ flutter:
   assets:
     - assets/icons/
     - assets/images/
+    - assets/lottie/
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
