@@ -4,6 +4,8 @@ import 'package:market_place/core/constants/fontsize_constant.dart';
 import 'package:market_place/core/constants/image_constants.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
+import 'package:market_place/core/utils/common_controller.dart';
+import 'package:market_place/core/utils/variable.dart';
 import 'package:market_place/presentations/my-listings/views/listing_product_page.dart';
 
 import 'package:market_place/presentations/notification/views/notification_page.dart';
@@ -14,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../core/components/custom_checkbox_widget.dart';
 import '../../../core/constants/app_static_strings.dart';
 import '../../auth/views/login_page.dart';
 import '../widgets/profile_action_item_widget.dart';
@@ -68,6 +71,29 @@ class ProfilePage extends StatelessWidget {
               },
             ),
             ProfileActionItemWidget(
+              img: languageIcon,
+              title: AppStaticStrings.language,
+              onTap: () {
+               showDialog(context: context, builder: (context) => AlertDialog(
+                 content: Obx(() {
+                   return Column(
+                     mainAxisSize: MainAxisSize.min,
+                     children: languageList.map((lang) {
+                       return CheckboxListTile(
+
+                         value: CommonController.to.selectedLanguageCode.value == lang.code,
+                         title: CustomText(text:lang.name,style: poppinsMedium,),
+                         onChanged: (_) {
+                           CommonController.to.selectedLanguageCode.value = lang.code;
+                           Get.back(); // Close dialog after selecting
+                         },
+                       );
+                     }).toList(),
+                   );
+                 }),
+               ),);
+              },
+            ), ProfileActionItemWidget(
               img: notificationOutlineIcon,
               title: AppStaticStrings.notification,
               onTap: () {

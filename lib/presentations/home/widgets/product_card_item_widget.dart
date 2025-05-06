@@ -54,7 +54,7 @@ class ProductCardItemWidget extends StatelessWidget {
                     Positioned(
                       bottom: 10,left: 6,
                       child: GreenAccentContainerWidget(child: CustomText(
-                        text: "New",
+                        text: AppStaticStrings.newLabel,
                         style: poppinsSemiBold,
                         color: AppColors.kPrimaryColor,
                         fontSize: getFontSizeSmall(),

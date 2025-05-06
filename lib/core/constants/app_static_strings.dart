@@ -2,6 +2,7 @@ class AppStaticStrings {
   // Common Auth Labels
   static const String signUp = 'Sign Up';
   static const String signIn = 'Log In';
+  static const String language = 'Language';
   static const String addToCard = 'Add to cart';
   static const String checkout = 'Check Out';
   static const String welcomeBack = 'Welcome Back!!!';
@@ -23,7 +24,22 @@ class AppStaticStrings {
   static const String success = 'Success';
   static const String yourItemHasBeenSubmitted = 'Your item has been submitted successfully and is now pending admin approval.';
   static const String createAnewPassword = 'Create a new password to secure your account.';
-
+  static const String yearlyPlan = 'Yearly Plan';
+  static const String monthlyPlan = 'Monthly Plan';
+  static const String save20Percent = 'Save 20%';
+  static const String popular = 'Popular';
+  static const String subscribeNow = 'Subscribe Now';
+  static const String newLabel = 'New';
+  static const String typeMessage = 'Type message...';
+  static const String manageProduct = 'Manage Product';
+  static const String viewProfile = 'View Profile';
+  static const String moreFromThisSeller = 'more from this seller';
+  static const String sellerProfile = 'Seller Profile';
+  static const String productInformation = 'Product Information';
+  static const String productDescription = 'Product Description';
+  static const String previous = 'Previous';
+  static const String productTitle = 'Product Title';
+  static const String uploadProductImages = 'Upload Product Images';
   // Subscription
   static const String chooseSubscriptionPlan = 'Choose Your Subscription Plan';
   static const String subscriptionDescription = 'Get the best features to grow your business!';

@@ -31,7 +31,7 @@ class ProductDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomDefaultAppbar(
-        title: fromSeller ? "Manage Product" : "",
+        title: fromSeller ?  AppStaticStrings.manageProduct: "",
         action: [
           fromSeller
               ? SizedBox.shrink()
@@ -123,7 +123,7 @@ class ProductDetailsPage extends StatelessWidget {
                                 onTap: () {
                                   Get.toNamed(SellerProfilePage.routeName);
                                 },
-                                title: "View Profile",
+                                title: AppStaticStrings.viewProfile,
                               ),
                             ),
                           ],

@@ -39,7 +39,7 @@ class SellNowPage extends StatelessWidget {
                 spacing: 12.h,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  titleBold(title: "Upload Product Images"),
+                  titleBold(title:AppStaticStrings.uploadProductImages),
                   Obx(() {
                     return Wrap(
                       spacing: 8.w,
@@ -124,10 +124,10 @@ class SellNowPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 12.h,
                 children: [
-                  titleBold(title: "Product Information "),
+                  titleBold(title:AppStaticStrings.productInformation),
                   CustomTextField(
                     fillColor: AppColors.kWhiteColor,
-                    title: "Product Title",
+                    title: AppStaticStrings.productTitle,
                   ),
                   CustomDropdown(
                     title: AppStaticStrings.category,
@@ -150,7 +150,7 @@ class SellNowPage extends StatelessWidget {
                   ),
                   CustomTextField(
                     fillColor: AppColors.kWhiteColor,
-                    title: "Product Description",
+                    title:AppStaticStrings.productDescription,
                     maxLines: 6,
                   ),
                   Row(
@@ -163,7 +163,7 @@ class SellNowPage extends StatelessWidget {
                           onTap: () {
                             SellController.to.addProductInfo.value = false;
                           },
-                          title: "Previous",
+                          title: AppStaticStrings.previous,
                         ),
                       ),
                       Expanded(
@@ -183,7 +183,7 @@ class SellNowPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 12.h,
                 children: [
-                  titleBold(title: "Product Information "),
+                  titleBold(title: AppStaticStrings.productInformation),
 
                   CustomDropdown(
                     title: AppStaticStrings.wilaya,

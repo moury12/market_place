@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:market_place/core/components/custom_button.dart';
+import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/core/constants/color_constants.dart';
 import 'package:market_place/core/constants/custom_text.dart';
 import 'package:market_place/core/constants/fontsize_constant.dart';
@@ -37,7 +38,7 @@ import '../../../core/constants/padding_constant.dart';class SubscriptionPlanWid
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                  text:isYear?"Yearly Plan": "Monthly Plan",
+                  text:isYear?AppStaticStrings.yearlyPlan: AppStaticStrings.monthlyPlan,
                   style: poppinsSemiBold,
                   fontSize: getFontSizeDefault(),
                 ),
@@ -48,7 +49,7 @@ import '../../../core/constants/padding_constant.dart';class SubscriptionPlanWid
                     borderRadius: BorderRadius.circular(12.r),
                   ),
                   child: CustomText(
-                    text:isYear?"Save 20%": "Popular",
+                    text:isYear?AppStaticStrings.save20Percent:AppStaticStrings.popular,
                     color: AppColors.kPrimaryDarkColor,
                     fontSize: getFontSizeSmall(),
                   ),
@@ -67,7 +68,7 @@ import '../../../core/constants/padding_constant.dart';class SubscriptionPlanWid
             ),
             CustomButton(onTap: () {
 
-            },title: "Subscribe Now",)
+            },title: AppStaticStrings.subscribeNow,)
           ],
         ),
       ),

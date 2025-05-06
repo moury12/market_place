@@ -7,6 +7,7 @@ import '../../presentations/auth/controller/auth_controller.dart';
 import '../../presentations/home/controller/home_controller.dart';
 import '../../presentations/my-listings/controller/listings_controller.dart';
 import '../../presentations/product/controller/product_controller.dart';
+import '../../presentations/profile/controllers/account_information_controller.dart';
 import '../../presentations/splash/controller/splash_controller.dart';
 
 
@@ -58,13 +59,13 @@ class HomeBinding extends Bindings {
     Get.put(HomeController());
   }
 }
-//
-// class ProfileBinding extends Bindings {
-//   @override
-//   void dependencies() {
-//     Get.put(ProfileController());
-//   }
-// }
+
+class AccountInformationBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.put(AccountInformationController());
+  }
+}
 //
 class NotificationBinding extends Bindings {
   @override

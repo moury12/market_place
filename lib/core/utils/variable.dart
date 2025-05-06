@@ -51,6 +51,21 @@ class OnboardingModel {
         this.backgroundImgUrl,
         this.frontImgUrl});
 }
+class LanguageModel {
+  final String name;
+  final String code;
+
+  LanguageModel({
+    required this.name,
+    required this.code,
+  });
+}
+final List<LanguageModel> languageList = [
+  LanguageModel(name: 'English', code: 'en'),
+  LanguageModel(name: 'Français', code: 'fr'),
+  LanguageModel(name: 'عربي', code: 'ar'),
+];
+
 // Category options
 final List<String> category = [
   'Electronics',

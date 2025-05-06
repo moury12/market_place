@@ -107,7 +107,7 @@ class AppRoutes {
     ),
     GetPage(
       name: EditProfilePage.routeName,
-      page: () => EditProfilePage() /*binding: SettingsBinding()*/,
+      page: () => EditProfilePage(), binding: AccountInformationBinding(),
     ),
     GetPage(
       name: ProductDetailsPage.routeName,
