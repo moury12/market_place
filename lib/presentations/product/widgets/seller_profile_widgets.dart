@@ -33,14 +33,14 @@ class CallAndChatButtons extends StatelessWidget {
         Expanded(
           child: CustomButton(
             prefixWidget: Padding(
-              padding: EdgeInsets.only(right: 12.w),
+              padding: EdgeInsets.symmetric(horizontal: 12.w),
               child: SvgPicture.asset(chatIcon),
             ),
             onTap: () {
               NavigationController.to.selectedNavIndex.value = 3;
               Get.toNamed(NavigationPage.routeName);
             },
-            title: "Chat Now",
+            title: AppStaticStrings.chatNow.tr,
           ),
         ),
       ],

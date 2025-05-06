@@ -80,28 +80,6 @@ final List<String> category = [
   'Kids & Toys',
   'Others',
 ];
-final List<MyListingsModel> listingData = [
-  MyListingsModel(
-    img: activeProductIcon,
-    title: AppStaticStrings.activeListings.tr,
-  ),
-  MyListingsModel(
-    img: soldoutProductIcon,
-    title: AppStaticStrings.soldOutListings.tr,
-  ),
-  MyListingsModel(
-    img: archiveProductIcon,
-    title: AppStaticStrings.archivedListings.tr,
-  ),
-  MyListingsModel(
-    img: unsupportProductIcon,
-    title: AppStaticStrings.unapprovedListings.tr,
-  ),
-  MyListingsModel(
-    img: rejectedProductIcon,
-    title: AppStaticStrings.rejectedListings.tr,
-  ),
-];
 
 class MyListingsModel {
   final String img;

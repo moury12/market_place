@@ -11,12 +11,38 @@ import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/core/utils/variable.dart';
 import 'package:market_place/presentations/my-listings/views/listing_product_page.dart';
 
+import '../../../core/constants/app_static_strings.dart';
+import '../../../core/constants/image_constants.dart';
+
 class MyListingsPage extends StatelessWidget {
   static const String routeName = "/my-listing";
   const MyListingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final List<MyListingsModel> listingData = [
+      MyListingsModel(
+        img: activeProductIcon,
+        title: AppStaticStrings.activeListings.tr,
+      ),
+      MyListingsModel(
+        img: soldoutProductIcon,
+        title: AppStaticStrings.soldOutListings.tr,
+      ),
+      MyListingsModel(
+        img: archiveProductIcon,
+        title: AppStaticStrings.archivedListings.tr,
+      ),
+      MyListingsModel(
+        img: unsupportProductIcon,
+        title: AppStaticStrings.unapprovedListings.tr,
+      ),
+      MyListingsModel(
+        img: rejectedProductIcon,
+        title: AppStaticStrings.rejectedListings.tr,
+      ),
+    ];
+
     return GridView.builder(
 
       itemCount: listingData.length,
