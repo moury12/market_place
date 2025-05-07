@@ -2,13 +2,13 @@ String signupEndPoint ='auth/sign-up';
 String verifyEmailEndPoint ='verification/verify';
 String signInEndPoint ='auth/sign-in';
 String logoutEndPoint ='auth/logout';
-String settingTermsEndPoint ='setting/terms';
-String settingPrivacyEndPoint ='setting/privacy';
 String resetPasswordEndPoint ='auth/reset-password';
 String forgetPassEndPoint ='verification/create';
 String getProfileEndPoint ='auth/profile';
 String updateProfileEndPoint ='auth/update-profile';
 String changePassEndPoint ='auth/change-password';
+
+
 String catGetAllEndPoint ='category/get-all';
 String productGetAllEndPoint ='product/get-all';
 String productDetailsEndPoint ='product/get-details/';
@@ -16,6 +16,8 @@ String addToCartEndPoint ='cart/create';
 String getAllCartEndPoint ='cart/get-all';
 String deleteCartEndPoint ='cart/delete-item/';
 String orderCreateEndPoint ='order/create';
+String settingTermsEndPoint ='setting/terms';
+String settingPrivacyEndPoint ='setting/privacy';
 String deletesShippingAddressEndPoint ='shipping-address/delete/';
 String shippingAddressCreateEndPoint ='shipping-address/create';
 String shippingAddressGetEndPoint ='shipping-address/get-all';

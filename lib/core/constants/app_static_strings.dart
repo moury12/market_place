@@ -20,6 +20,9 @@ class AppStaticStrings {
   static  String enterCodeSent = 'enterCodeSent';
   static  String resetYourPassword = 'resetYourPassword';
   static  String newPassword = 'newPassword';
+  static const String passwordSpecialChar = 'passwordSpecialChar';  // New key for special character
+  static const String passwordNumber = 'passwordNumber';  // New key for number
+  static const String passwordLowercase = 'passwordLowercase';
   static  String confirmNewPassword = 'confirmNewPassword';
   static  String resetPassword = 'resetPassword';
   static  String success = 'success';
@@ -94,8 +97,10 @@ class AppStaticStrings {
   static  String fieldRequired = 'fieldRequired';
   static  String otpFieldRequired = 'otpFieldRequired';
   static  String passRequired = 'passRequired';
+  static  String phoneRequired = 'phoneRequired';
   static  String enterValidEmail = 'enterValidEmail';
   static  String passMustbe6 = 'passMustbe6';
+  static  String phoneMustbe11 = 'phoneMustbe11';
   static  String passNotMatch = 'passNotMatch';
   static  String passMustContain = 'passMustContain';
   static  String otp = 'otp';

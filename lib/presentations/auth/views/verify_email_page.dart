@@ -9,31 +9,39 @@ import '../../../core/components/custom_textfield.dart';
 import '../../../core/constants/app_static_strings.dart';
 import '../../../core/constants/custom_space.dart';
 import '../widgets/auth_title_widget.dart';
+
 class VerifyEmailPage extends StatelessWidget {
-  static const String routeName ="/verify-email";
-   VerifyEmailPage({super.key});
-final arg= Get.arguments;
+  static const String routeName = "/verify-email";
+  VerifyEmailPage({super.key});
+  final arg = Get.arguments;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:Padding(
-        padding: padding12.copyWith(top: MediaQuery.of(context).viewPadding.top+16),
+      body: Padding(
+        padding: padding12.copyWith(
+          top: MediaQuery.of(context).viewPadding.top + 16,
+        ),
         child: Center(
           child: Column(
             spacing: 8.h,
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [  AuthTitleTextWidget(title: AppStaticStrings.verifyYourEmail.tr),
+            children: [
+              AuthTitleTextWidget(title: AppStaticStrings.verifyYourEmail.tr),
               AuthSubTextWidget(text: AppStaticStrings.weWillSendACode.tr),
-              CustomTextField(title: AppStaticStrings.email.tr,fillColor: Colors.transparent,),
+              CustomTextField(
+                title: AppStaticStrings.email.tr,
+                fillColor: Colors.transparent,
+              ),
 
               space4H,
               CustomButton(
                 onTap: () {
-                  Get.toNamed(VerifyOtpPage.routeName,arguments: arg);
+                  Get.toNamed(VerifyOtpPage.routeName, arguments: arg);
                 },
                 title: AppStaticStrings.continueButton.tr,
-              ),],
+              ),
+            ],
           ),
         ),
       ),

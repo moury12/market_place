@@ -5,6 +5,12 @@
   "chatNow": "Chat Now",
   "selectOne": "Select One",
   "typeHere": "Type here",
+  "phoneRequired": "Phone number is required.",
+  "phoneMustbe11": "Phone number must be 11 digits.",
+  "passwordSpecialChar": "Password must contain at least one special character.",
+  "passwordNumber": "Password must contain at least one number.",
+  "passwordLowercase": "Password must contain at least one lowercase letter.",
+
   "language": "Language",
   "addToCard": "Add to cart",
   "checkout": "Check Out",

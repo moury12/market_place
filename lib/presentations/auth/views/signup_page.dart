@@ -4,8 +4,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/constants/image_constants.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
+import 'package:market_place/core/utils/enum.dart';
+import 'package:market_place/presentations/auth/controller/auth_controller.dart';
 import 'package:market_place/presentations/auth/views/login_page.dart';
-import 'package:market_place/presentations/auth/views/verify_email_page.dart';
 
 import '../../../core/components/custom_button.dart';
 import '../../../core/components/custom_text_button.dart';
@@ -17,70 +18,160 @@ import '../../../core/constants/custom_text.dart';
 import '../../../core/constants/fontsize_constant.dart';
 import '../../../core/constants/text_style_constant.dart';
 import '../widgets/auth_title_widget.dart';
+
 class SignUpPage extends StatelessWidget {
-  static const String routeName ="/sign-up";
-  const SignUpPage({super.key});
+  static const String routeName = "/sign-up";
+  SignUpPage({super.key});
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:Padding(
-        padding: padding12.copyWith(top: MediaQuery.of(context).viewPadding.top+16),
+      body: Padding(
+        padding: padding12.copyWith(
+          top: MediaQuery.of(context).viewPadding.top + 16,
+        ),
         child: SingleChildScrollView(
           child: Center(
-            child: Column(
-              spacing: 8.h,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                AuthTitleTextWidget(title: AppStaticStrings.createYourAccount.tr),
-                AuthSubTextWidget(text: AppStaticStrings.signUpToGetStarted.tr),
-                CustomTextField(
+            child: Form(
+              key: formKey,
+              child: Column(
+                spacing: 8.h,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  AuthTitleTextWidget(
+                    title: AppStaticStrings.createYourAccount.tr,
+                  ),
+                  AuthSubTextWidget(
+                    text: AppStaticStrings.signUpToGetStarted.tr,
+                  ),
+                  CustomTextField(
+                    textEditingController:
+                        AuthController.to.nameSignUpController,
                     fillColor: Colors.transparent,
-                    title: AppStaticStrings.fullName.tr),
-                CustomTextField(
+                    title: AppStaticStrings.fullName.tr,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return AppStaticStrings.nameRequired.tr;
+                      }
+                      return null;
+                    },
+                    isRequired: true,
+                  ),
+                  CustomTextField(
+                    textEditingController:
+                        AuthController.to.emailSignUpController.value,
                     fillColor: Colors.transparent,
-                    title: AppStaticStrings.email.tr),
-                CustomTextField(
-                  fillColor: Colors.transparent,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return AppStaticStrings.emailRequired.tr;
+                      } else if (!RegExp(
+                        r'^[^@]+@[^@]+\.[^@]+',
+                      ).hasMatch(value)) {
+                        return AppStaticStrings.enterValidEmail.tr;
+                      }
+                      return null;
+                    },
+                    isRequired: true,
+                    title: AppStaticStrings.email.tr,
+                  ),
+                  CustomTextField(
+                    textEditingController:
+                        AuthController.to.phoneSignUpController,
+                    fillColor: Colors.transparent,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return AppStaticStrings.phoneRequired.tr;
+                      } else if (value.length < 8) {
+                        return AppStaticStrings.phoneMustbe11.tr;
+                      }
 
-                  title: AppStaticStrings.phoneNumber.tr,
-                  keyboardType: TextInputType.number,
-                ),
-          
-                CustomTextField(
-                    fillColor: Colors.transparent,
-                    title: AppStaticStrings.password.tr, isPassword: true),
-                CustomTextField(
-                  fillColor: Colors.transparent,
+                      return null;
+                    },
+                    title: AppStaticStrings.phoneNumber.tr,
+                    keyboardType: TextInputType.number,
+                  ),
 
-                  title: AppStaticStrings.confirmPassword.tr,
-                  isPassword: true,
-                ),
-                SvgPicture.asset(orImg, width: ScreenUtil().screenWidth),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CustomText(
-                      text: AppStaticStrings.alreadyHaveAccount.tr,
-                      style: poppinsRegular,
-                    ),
-                    CustomTextButton(
-                      onPressed: () {
-                        Get.toNamed(LoginPage.routeName);
+                  CustomTextField(
+                    textEditingController:
+                        AuthController.to.passSignUpController,
+                    fillColor: Colors.transparent,
+                    title: AppStaticStrings.password.tr,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return AppStaticStrings.passRequired.tr;
+                      } else if (value.length < 8) {
+                        return AppStaticStrings.passMustbe6.tr;
+                      } else if (!RegExp(r'[A-Z]').hasMatch(value)) {
+                        return AppStaticStrings.passMustContain.tr;
+                      } else if (!RegExp(r'[a-z]').hasMatch(value)) {
+                        return AppStaticStrings.passwordLowercase.tr;
+                      } else if (!RegExp(r'[0-9]').hasMatch(value)) {
+                        return AppStaticStrings.passwordNumber.tr;
+                      } else if (!RegExp(
+                        r'[!@#\$&*~%^()_+\-=\[\]{};:"\\|,.<>\/?]',
+                      ).hasMatch(value)) {
+                        return AppStaticStrings.passwordSpecialChar.tr;
+                      }
+                      return null;
+                    },
+                    isRequired: true,
+                    isPassword: true,
+                  ),
+                  CustomTextField(
+                    textEditingController:
+                        AuthController.to.confirmPassSignUpController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return AppStaticStrings.passRequired.tr;
+                      } else if (value !=
+                          AuthController.to.passSignUpController.value.text) {
+                        return AppStaticStrings.passNotMatch.tr;
+                      }
+                      return null;
+                    },
+                    isRequired: true,
+                    fillColor: Colors.transparent,
+
+                    title: AppStaticStrings.confirmPassword.tr,
+                    isPassword: true,
+                  ),
+                  SvgPicture.asset(orImg, width: ScreenUtil().screenWidth),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CustomText(
+                        text: AppStaticStrings.alreadyHaveAccount.tr,
+                        style: poppinsRegular,
+                      ),
+                      CustomTextButton(
+                        onPressed: () {
+                          Get.toNamed(LoginPage.routeName);
+                        },
+                        title: AppStaticStrings.signIn.tr,
+                        fontSize: getFontSizeSemiSmall(),
+                        textColor: AppColors.kPrimaryColor,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ],
+                  ),
+                  Obx(() {
+                    return CustomButton(
+                      isLoading:
+                          AuthController.to.loadingProcess.value ==
+                          AuthProcess.signUp,
+                      onTap: () {
+                        if (formKey.currentState!.validate()) {
+                          AuthController.to.signUpRequest();
+                        }
                       },
-                      title: AppStaticStrings.signIn.tr,
-                      fontSize: getFontSizeSemiSmall(),
-                      textColor: AppColors.kPrimaryColor,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ],
-                ),
-                CustomButton(onTap: () {
-                  Get.toNamed(VerifyEmailPage.routeName);
-                }, title: AppStaticStrings.createAccount.tr),
-                space12H,
-              ],
+                      title: AppStaticStrings.createAccount.tr,
+                    );
+                  }),
+                  space12H,
+                ],
+              ),
             ),
           ),
         ),

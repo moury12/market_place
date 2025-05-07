@@ -1,1 +1,10 @@
-enum OrderStatus  {pending, shipping, completed, shipped}
+enum AuthProcess {
+  signUp,
+  login,
+  logout,
+  activateAccount,
+  forgetPassword,
+  resetPassword,
+  verifyOtp,
+  none
+}

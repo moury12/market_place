@@ -7,6 +7,12 @@
   "addToCard": "Ajouter au panier",
   "checkout": "Passer à la caisse",
   "welcomeBack": "Bon retour!!!",
+  "passwordSpecialChar": "Le mot de passe doit contenir au moins un caractère spécial.",
+  "passwordNumber": "Le mot de passe doit contenir au moins un chiffre.",
+  "passwordLowercase": "Le mot de passe doit contenir au moins une lettre minuscule.",
+
+  "phoneRequired": "Le numéro de téléphone est requis.",
+  "phoneMustbe11": "Le numéro de téléphone doit comporter 11 chiffres.",
   "createAccount": "Créer un nouveau compte",
   "signInToYourAccount": "Connectez-vous à votre compte \n",
   "forgetPassword": "Mot de passe oublié?",
