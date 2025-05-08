@@ -4,32 +4,69 @@ import 'package:get/get.dart';
 import 'package:market_place/core/components/custom_appbar.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
+import 'package:market_place/presentations/home/controller/home_controller.dart';
 
+import '../../../core/components/custom_refresh_indicator.dart';
+import '../../../core/constants/pagination_loading_widget.dart';
 import '../widgets/category_card_item_widget.dart';
 
-
-class CategoryPage extends StatelessWidget {
+class CategoryPage extends StatefulWidget {
   static const String routeName = "/cat_list";
   const CategoryPage({super.key});
 
   @override
+  State<CategoryPage> createState() => _CategoryPageState();
+}
+
+class _CategoryPageState extends State<CategoryPage> {
+  final ScrollController scrollController = ScrollController();
+
+  @override
+  void initState() {
+    scrollController.addListener(
+          () {
+        if (scrollController.position.pixels ==
+            scrollController.position.maxScrollExtent) {
+          HomeController.to.getCategoryListRequest(loadMore: true);
+        }
+      },
+    );
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomDefaultAppbar(title: AppStaticStrings.productCategories.tr),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: padding12,
-          child: Wrap(
-            spacing: 8.w,
-            runSpacing: 8.w,
-            // alignment: WrapAlignment.center,
+      body: CustomRefreshIndicatorWidget(
+        onRefresh: () {
+          return HomeController.to.getCategoryListRequest();
+        },
+        child: SingleChildScrollView(
+          controller: scrollController,
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Padding(
+            padding: padding12,
+            child: Column(
+              children: [
+                Wrap(
+                  spacing: 8.w,
+                  runSpacing: 8.w,
 
-            // crossAxisAlignment: WrapCrossAlignment.center,
-            // alignment: WrapAlignment.spaceBetween,
-            // runAlignment: WrapAlignment.spaceBetween,
-            children: List.generate(
-              4,
-              (index) => CategoryDetailsCardItemWidget(),
+                  children: List.generate(
+                    HomeController.to.catList.length,
+                    (index) => CategoryDetailsCardItemWidget(
+                      categoryModel: HomeController.to.catList[index],
+                    ),
+                  ),
+                ),
+                Obx(
+                      () {
+                    return HomeController.to.isLoadingMore.value
+                        ? PaginationLoadingWidget()
+                        : SizedBox.shrink();
+                  },
+                )
+              ],
             ),
           ),
         ),
@@ -37,4 +74,3 @@ class CategoryPage extends StatelessWidget {
     );
   }
 }
-

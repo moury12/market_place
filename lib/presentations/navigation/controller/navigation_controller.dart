@@ -21,7 +21,7 @@ import '../../home/views/home_page.dart';
 class NavigationController extends GetxController {
   static NavigationController get to => Get.find();
   RxInt selectedNavIndex = 0.obs;
-  Rx<bool> isLoadingLogout = false.obs;
+  RxBool isLoadingLogout = false.obs;
 
   List<Widget> getPages() {
     return [

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:market_place/presentations/profile/model/profile_model.dart';
 
@@ -17,6 +18,14 @@ RxString profileImgPath ="".obs;
   var tabContent = <Widget>[].obs;
   RxBool isLoadingProfile = false.obs;
   RxBool isLoadingUpdateProfile = false.obs;
+  TextEditingController confirmPasswordController = TextEditingController();
+  TextEditingController newPasswordController = TextEditingController();
+  TextEditingController currentPasswordController = TextEditingController();
+  RxBool isLoadingChangePass = false.obs;
+  RxBool isLoadingPolicy = false.obs;
+
+  // Rx<SettingsModel> policyModel = SettingsModel().obs;
+  // Rx<SettingsModel> termsModel = SettingsModel().obs;
   ///=====================add dynmic name ====================///
   Rx<TextEditingController> nameController =
       TextEditingController().obs;
@@ -33,6 +42,7 @@ RxString profileImgPath ="".obs;
   @override
   void onInit() {
     getUserProfileRequest();
+    reinitializeSignUpControllers();
     super.onInit();
   }
   ///------------------------------ get User profile method -------------------------///
@@ -92,8 +102,7 @@ RxString profileImgPath ="".obs;
       isLoadingUpdateProfile.value = false;
       if (response['success'] == true) {
         logger.d(response);
-        Get.back();
-        // Get.offAllNamed(NavigationPage.routeName);
+        profileImgPath.value="";
         getUserProfileRequest();
       } else {
         logger.e(response);
@@ -107,6 +116,37 @@ RxString profileImgPath ="".obs;
       isLoadingUpdateProfile.value = false;
     }
   }
+
+  ///------------------------------ change pass method -------------------------///
+
+  Future<void> changePassRequest() async {
+    try {
+      isLoadingChangePass.value = true;
+      final response = await ApiService().request(endpoint: changePassEndPoint, method: 'POST', body: {
+        "confirm_password": confirmPasswordController.text,
+        "password": newPasswordController.text,
+        "old_password": currentPasswordController.text
+      });
+      isLoadingChangePass.value = false;
+      if (response['success'] == true) {
+        showCustomSnackbar(
+          title: 'Success',
+          message: response['message'],
+        );
+        clearControllers();
+
+        logger.d(response);
+        // Get.back();
+      } else {
+        logger.e(response);
+        showCustomSnackbar(title: 'Failed', message: response['message'], type: SnackBarType.failed);
+      }
+    } catch (e) {
+      isLoadingChangePass.value = false;
+
+      logger.e(e.toString());
+    }
+  }
   reinitializeProfileControllers() {
     nameController.value.text = userModel.value.name ?? 'n/a';
 
@@ -117,5 +157,17 @@ RxString profileImgPath ="".obs;
     contactNumberController.value.text = userModel.value.phone ?? 'n/a';
 
 
+  }  reinitializeSignUpControllers() {
+    if (kDebugMode) {
+      confirmPasswordController.text = '12345aA!';
+      newPasswordController.text = '12345aA!';
+      currentPasswordController.text = '12345aA*';
+    }
+  }
+
+  clearControllers() {
+    confirmPasswordController.clear();
+    newPasswordController.clear();
+    currentPasswordController.clear();
   }
 }

@@ -39,7 +39,7 @@ class SellNowPage extends StatelessWidget {
                 spacing: 12.h,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  titleBold(title:AppStaticStrings.uploadProductImages.tr),
+                  titleBold(title: AppStaticStrings.uploadProductImages.tr),
                   Obx(() {
                     return Wrap(
                       spacing: 8.w,
@@ -124,7 +124,7 @@ class SellNowPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 12.h,
                 children: [
-                  titleBold(title:AppStaticStrings.productInformation.tr),
+                  titleBold(title: AppStaticStrings.productInformation.tr),
                   CustomTextField(
                     fillColor: AppColors.kWhiteColor,
                     title: AppStaticStrings.productTitle.tr,
@@ -150,7 +150,7 @@ class SellNowPage extends StatelessWidget {
                   ),
                   CustomTextField(
                     fillColor: AppColors.kWhiteColor,
-                    title:AppStaticStrings.productDescription.tr,
+                    title: AppStaticStrings.productDescription.tr,
                     maxLines: 6,
                   ),
                   Row(
@@ -213,61 +213,13 @@ class SellNowPage extends StatelessWidget {
                       Expanded(
                         child: CustomButton(
                           onTap: () {
-                            showDialog(
-                              context: context,
-                              builder:
-                                  (context) => AlertDialog(
-                                    content: Column(
-                                      spacing: 8.h,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Lottie.asset(
-                                          "assets/lottie/success.json",
-                                        ),
-                                        CustomText(
-                                          text: AppStaticStrings.success.tr,
-                                          style: poppinsMedium,
-                                          fontSize: getFontSizeDefault(),
-                                        ),
-                                        CustomText(
-                                          textAlign: TextAlign.center,
-                                          text:
-                                              AppStaticStrings
-                                                  .yourItemHasBeenSubmitted.tr,
-                                          color: AppColors.kExtraLightTextColor,
-                                          fontSize: getFontSizeSemiSmall(),
-                                        ),
-
-                                        Container(
-                                          width: ScreenUtil().screenWidth / 3,
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                            color: AppColors.kPrimaryDarkColor,
-                                            borderRadius: BorderRadius.circular(
-                                              4.r,
-                                            ),
-                                          ),
-                                          child: ButtonTapWidget(
-                                            onTap: () {
-                                              Navigator.pop(context);
-                                              NavigationController.to.selectedNavIndex.value =0;
-                                              Get.back();
-                                            },
-                                            child: Padding(
-                                              padding: paddingH16V6,
-                                              child: CustomText(
-                                                text: "Ok",
-                                                fontSize: getFontSizeDefault(),
-                                                color: AppColors.kWhiteColor,
-                                                style: poppinsMedium,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                            );
+                            successDialogCustom(title: AppStaticStrings
+                                .yourItemHasBeenSubmitted
+                                .tr, onTap: () {   NavigationController
+                                .to
+                                .selectedNavIndex
+                                .value = 0;
+                            Get.back();  });
                           },
                           title: AppStaticStrings.submit.tr,
                         ),
@@ -280,6 +232,7 @@ class SellNowPage extends StatelessWidget {
       ),
     );
   }
+
 
   CustomText titleBold({required String title}) {
     return CustomText(

@@ -5,6 +5,7 @@ import 'package:market_place/core/constants/fontsize_constant.dart';
 import 'package:market_place/core/constants/image_constants.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
+import 'package:market_place/core/helper/helper_function.dart';
 import 'package:market_place/presentations/my-listings/views/listing_product_page.dart';
 
 import 'package:market_place/presentations/notification/views/notification_page.dart';
@@ -17,6 +18,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../core/components/custom_button.dart';
+import '../../../core/components/custom_refresh_indicator.dart';
 import '../../../core/constants/app_static_strings.dart';
 import '../../auth/views/login_page.dart';
 import '../../navigation/controller/navigation_controller.dart';
@@ -30,138 +32,151 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: padding12.copyWith(top: 0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: 12.h,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16.r),
-                color: AppColors.kWhiteColor,
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.kExtraLightGreyTextColor.withValues(
-                      alpha: .3,
+    return CustomRefreshIndicatorWidget(
+      onRefresh: () {
+        return AccountInformationController.to.getUserProfileRequest();
+      },
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Padding(
+          padding: padding12.copyWith(top: 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 12.h,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16.r),
+                  color: AppColors.kWhiteColor,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.kExtraLightGreyTextColor.withValues(
+                        alpha: .3,
+                      ),
+                      blurRadius: 6.r,
                     ),
-                    blurRadius: 6.r,
-                  ),
-                ],
+                  ],
+                ),
+                child: Padding(
+                  padding: padding6,
+                  child: Obx(() {
+                    return AccountInformationController
+                            .to
+                            .isLoadingProfile
+                            .value
+                        ? ProfileCardShimmer()
+                        : ProfileInfoDetailsWidget(
+                          email:
+                              AccountInformationController
+                                  .to
+                                  .userModel
+                                  .value
+                                  .email,
+                          img:
+                              "${ApiService().baseUrl}/${AccountInformationController.to.userModel.value.img}",
+                          name:
+                              AccountInformationController
+                                  .to
+                                  .userModel
+                                  .value
+                                  .name,
+                          phone:
+                              AccountInformationController
+                                  .to
+                                  .userModel
+                                  .value
+                                  .phone,
+                        );
+                  }),
+                ),
               ),
-              child: Padding(
-                padding: padding6,
-                child: Obx(() {
-                  return AccountInformationController.to.isLoadingProfile.value
-                      ? ProfileCardShimmer()
-                      : ProfileInfoDetailsWidget(
-                        email:
-                            AccountInformationController
-                                .to
-                                .userModel
-                                .value
-                                .email,
-                        img:
-                            "${ApiService().baseUrl}/${AccountInformationController.to.userModel.value.img}",
-                        name:
-                            AccountInformationController
-                                .to
-                                .userModel
-                                .value
-                                .name,
-                        phone:
-                            AccountInformationController
-                                .to
-                                .userModel
-                                .value
-                                .phone,
-                      );
-                }),
+              ProfileActionItemWidget(
+                img: settingIcon,
+                title: AppStaticStrings.accountSetting.tr,
+                onTap: () {
+                  Get.toNamed(AccountSettingsPage.routeName);
+                },
               ),
-            ),
-            ProfileActionItemWidget(
-              img: settingIcon,
-              title: AppStaticStrings.accountSetting.tr,
-              onTap: () {
-                Get.toNamed(AccountSettingsPage.routeName);
-              },
-            ),
-            ProfileActionItemWidget(
-              img: favItemIcon,
-              title: AppStaticStrings.favoriteItems.tr,
-              onTap: () {
-                Get.toNamed(
-                  ListingProductPage.routeName,
-                  arguments: AppStaticStrings.favoriteItems.tr,
-                );
-              },
-            ),
-            ProfileActionItemWidget(
-              img: languageIcon,
-              title: AppStaticStrings.language.tr,
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => LanguageChangeDialog(),
-                );
-              },
-            ),
-            ProfileActionItemWidget(
-              img: notificationOutlineIcon,
-              title: AppStaticStrings.notification.tr,
-              onTap: () {
-                Get.toNamed(NotificationPage.routeName);
-              },
-            ),
-
-            CustomText(
-              text: AppStaticStrings.more.tr,
-              fontSize: getFontSizeDefault(),
-              style: poppinsSemiBold,
-            ),
-            ProfileActionItemWidget(
-              img: termsIcon,
-              title: AppStaticStrings.termsAndCondition.tr,
-              onTap: () {
-                Get.toNamed(
-                  TermsPolicyHelpPage.routeName,
-                  arguments: AppStaticStrings.termsAndCondition.tr,
-                );
-              },
-            ),
-            ProfileActionItemWidget(
-              img: privacyPolicyIcon,
-              title: AppStaticStrings.privacyPolicy.tr,
-              onTap: () {
-                Get.toNamed(
-                  TermsPolicyHelpPage.routeName,
-                  arguments: AppStaticStrings.privacyPolicy.tr,
-                );
-              },
-            ),
-            ProfileActionItemWidget(
-              img: helpIcon,
-              title: AppStaticStrings.helpSupport.tr,
-              onTap: () {
-                Get.toNamed(
-                  TermsPolicyHelpPage.routeName,
-                  arguments: AppStaticStrings.helpSupport.tr,
-                );
-              },
-            ),
-            Obx(() {
-              return NavigationController.to.isLoadingLogout.value
-                  ? DefaultProgressIndicator(color: AppColors.kPrimaryColor)
-                  : ProfileActionItemWidget(
-                    img: logoutIcon,
-                    title: AppStaticStrings.logOut.tr,
-                    onTap: () {
-                      NavigationController.to.logoutRequest();
-                    },
+              ProfileActionItemWidget(
+                img: favItemIcon,
+                title: AppStaticStrings.favoriteItems.tr,
+                onTap: () {
+                  Get.toNamed(
+                    ListingProductPage.routeName,
+                    arguments: AppStaticStrings.favoriteItems.tr,
                   );
-            }),
-          ],
+                },
+              ),
+              ProfileActionItemWidget(
+                img: languageIcon,
+                title: AppStaticStrings.language.tr,
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => LanguageChangeDialog(),
+                  );
+                },
+              ),
+              ProfileActionItemWidget(
+                img: notificationOutlineIcon,
+                title: AppStaticStrings.notification.tr,
+                onTap: () {
+                  Get.toNamed(NotificationPage.routeName);
+                },
+              ),
+
+              CustomText(
+                text: AppStaticStrings.more.tr,
+                fontSize: getFontSizeDefault(),
+                style: poppinsSemiBold,
+              ),
+              ProfileActionItemWidget(
+                img: termsIcon,
+                title: AppStaticStrings.termsAndCondition.tr,
+                onTap: () {
+                  Get.toNamed(
+                    TermsPolicyHelpPage.routeName,
+                    arguments: AppStaticStrings.termsAndCondition.tr,
+                  );
+                },
+              ),
+              ProfileActionItemWidget(
+                img: privacyPolicyIcon,
+                title: AppStaticStrings.privacyPolicy.tr,
+                onTap: () {
+                  Get.toNamed(
+                    TermsPolicyHelpPage.routeName,
+                    arguments: AppStaticStrings.privacyPolicy.tr,
+                  );
+                },
+              ),
+              ProfileActionItemWidget(
+                img: helpIcon,
+                title: AppStaticStrings.helpSupport.tr,
+                onTap: () {
+                  Get.toNamed(
+                    TermsPolicyHelpPage.routeName,
+                    arguments: AppStaticStrings.helpSupport.tr,
+                  );
+                },
+              ),
+              ProfileActionItemWidget(
+                      img: logoutIcon,
+                      title: AppStaticStrings.logOut.tr,
+                      onTap: () {
+                        warningCustomDialog(
+
+                          title: AppStaticStrings.logoutConfirmation.tr,
+                          onTap: () {
+                            NavigationController.to.logoutRequest();
+                          },
+                          loading: NavigationController.to.isLoadingLogout,
+                        );
+                        // NavigationController.to.logoutRequest();
+                      },
+                    )
+            ],
+          ),
         ),
       ),
     );

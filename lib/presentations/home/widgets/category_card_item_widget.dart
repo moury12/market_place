@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:market_place/core/api-client/api_service.dart';
 import 'package:market_place/core/components/custom_network_image.dart';
 import 'package:market_place/core/constants/custom_text.dart';
 import 'package:market_place/core/utils/variable.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
+import 'package:market_place/presentations/home/model/category_subcategory_model.dart';
 
 class CategoryCardItemWidget extends StatelessWidget {
-  const CategoryCardItemWidget({
-    super.key,
-  });
+  final CategoryModel categoryModel;
+  const CategoryCardItemWidget({super.key, required this.categoryModel});
 
   @override
   Widget build(BuildContext context) {
@@ -19,24 +20,27 @@ class CategoryCardItemWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           CustomNetworkImage(
-            imageUrl: imageUrl,
+            imageUrl: "${
+            ApiService().baseUrl
+            }/${categoryModel.img}",
             boxShape: BoxShape.circle,
             height: 60.w,
             width: 60.w,
           ),
           CustomText(
-
-              textAlign: TextAlign.center,
-              text: "Health Products	", maxLines: 2),
+            textAlign: TextAlign.center,
+            text: categoryModel.name??"Dummy Category",
+            maxLines: 2,
+          ),
         ],
       ),
     );
   }
 }
+
 class CategoryDetailsCardItemWidget extends StatelessWidget {
-  const CategoryDetailsCardItemWidget({
-    super.key,
-  });
+  final  CategoryModel categoryModel;
+  const CategoryDetailsCardItemWidget({super.key, required this.categoryModel});
 
   @override
   Widget build(BuildContext context) {
@@ -66,4 +70,3 @@ class CategoryDetailsCardItemWidget extends StatelessWidget {
     );
   }
 }
-

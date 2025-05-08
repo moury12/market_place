@@ -15,7 +15,10 @@ class CustomRefreshIndicatorWidget extends StatelessWidget {
       backgroundColor: AppColors.kWhiteColor,
       color: AppColors.kPrimaryDarkColor,
       onRefresh: onRefresh,
+      displacement: 10, // Adjust this value to control how far down the indicator appears
+      strokeWidth: 2.0,
       child: child,
+
     );
   }
 }

@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:market_place/core/components/custom_textfield.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
+import 'package:market_place/presentations/home/controller/home_controller.dart';
+import 'package:market_place/presentations/home/loading/category_circle_loading.dart';
 import 'package:market_place/presentations/home/views/category_page.dart';
 import 'package:market_place/presentations/home/views/search_page.dart';
 
@@ -26,8 +28,8 @@ class HomePage extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () {
-      Get.toNamed(SearchPage.routeName);
-      },
+                Get.toNamed(SearchPage.routeName);
+              },
               child: CustomTextField(
                 isEnable: false,
                 prefixIcon: Icon(CupertinoIcons.search, color: Colors.black),
@@ -39,14 +41,29 @@ class HomePage extends StatelessWidget {
                 Get.toNamed(CategoryPage.routeName);
               },
             ),
-            Wrap(
-              alignment: WrapAlignment.spaceBetween,
-              spacing: 8.w,
-              runSpacing: 8.w,
+            Obx(() {
+              return HomeController.to.isLoadingCategory.value
 
-              children: List.generate(8, (index) => CategoryCardItemWidget()),
+                  ? CategoryCircleLoading()
+                  : Wrap(
+                    alignment: WrapAlignment.spaceBetween,
+                    spacing: 8.w,
+                    runSpacing: 8.w,
+
+                    children: List.generate(
+                      HomeController.to.catList.length > 8
+                          ? 8
+                          : HomeController.to.catList.length,
+                      (index) => CategoryCardItemWidget(
+                        categoryModel: HomeController.to.catList[index],
+                      ),
+                    ),
+                  );
+            }),
+            ViewAllRow(
+              title: AppStaticStrings.recentlyAdded.tr,
+              onPressed: () {},
             ),
-            ViewAllRow(title: AppStaticStrings.recentlyAdded.tr, onPressed: () {}),
             ProductGridWidget(),
           ],
         ),

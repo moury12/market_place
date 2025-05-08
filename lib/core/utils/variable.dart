@@ -23,7 +23,7 @@ final List<String> sortBy = [
   'Latest First',
   'Price: Low to High',
   'Price: High to Low',
-  'Most Viewed',
+
 ];
 List<OnboardingModel> onboardingData = [
   OnboardingModel(

@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 
 class AppStaticStrings {
   static  String signUp='signUp';
@@ -231,4 +230,35 @@ class AppStaticStrings {
   static  String addNewListing = 'addNewListing';
   static  String orders = 'orders';
   static  String notifications = 'notifications';
+  static const String warning = 'warning';
+
+  static const String ok = 'ok';
+
+  // Action-related messages
+  static const String updatePasswordConfirmation = 'updatePasswordConfirmation';
+  static const String passwordUpdated = 'passwordUpdated';
+  static const String saveChangesConfirmation = 'saveChangesConfirmation';
+  static const String changesSaved = 'changesSaved';
+  static const String deleteListingConfirmation = 'deleteListingConfirmation';
+  static const String listingDeleted = 'listingDeleted';
+  static const String markSoldConfirmation = 'markSoldConfirmation';
+  static const String itemMarkedSold = 'itemMarkedSold';
+  static const String deleteAccountConfirmation = 'deleteAccountConfirmation';
+  static const String accountDeleted = 'accountDeleted';
+  static const String itemSubmittedSuccess = 'itemSubmittedSuccess';
+  static const String resubmitListingConfirmation = 'resubmitListingConfirmation';
+  static const String listingResubmitted = 'listingResubmitted';
+  static const String logoutConfirmation = 'logoutConfirmation';
+  static const String loggedOutSuccess = 'loggedOutSuccess';
+  static const String updateProfileConfirmation = 'updateProfileConfirmation';
+  static const String profileUpdated = 'profileUpdated';
+  static const String passwordChanged = 'passwordChanged';
+  static const String relistItemConfirmation = 'relistItemConfirmation';
+  static const String itemRelisted = 'itemRelisted';
+  static const String removeFavoritesConfirmation = 'removeFavoritesConfirmation';
+  static const String itemRemovedFromFavorites = 'itemRemovedFromFavorites';
+  static const String archiveListingConfirmation = 'archiveListingConfirmation';
+  static const String listingArchived = 'listingArchived';
+  static const String changePasswordConfirmation = 'changePasswordConfirmation';
+  static const String removeItemFromFavoritesConfirmation = 'removeItemFromFavoritesConfirmation';
 }

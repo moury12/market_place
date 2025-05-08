@@ -15,7 +15,7 @@ class SplashController extends GetxController {
   @override
   void onInit() {
     pageController = PageController(initialPage: currentIndex.value).obs;
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(Duration(milliseconds: 300), () {
       if (Boxes.getUserData().get(tokenKey) == null ||
           Boxes.getUserData().get(tokenKey).toString().isEmpty) {
         Get.offAllNamed(LoginPage.routeName);
