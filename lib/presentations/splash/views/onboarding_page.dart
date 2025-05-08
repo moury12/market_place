@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/components/custom_text_button.dart';
-import 'package:market_place/presentations/auth/views/login_page.dart';
 
+
+import '../../../core/utils/hive_boxes.dart';
 import '../../../core/utils/variable.dart';
+import '../../auth/views/login_page.dart';
 import '../controller/splash_controller.dart';
 import '../widgets/onboarding_item_content_widget.dart';
 
@@ -29,7 +31,9 @@ if(SplashController.to.currentIndex.value>0){
         appBar: AppBar(
 
           actions: [CustomTextButton(title: 'Skip',onPressed: () {
-      Get.offAllNamed( LoginPage.routeName);
+            Boxes.getUserData().put(initialKey, true);
+
+            Get.offAllNamed( LoginPage.routeName);
           },)],
         ),
         body: PageView.builder(

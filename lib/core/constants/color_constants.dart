@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 class AppColors {
   static const Color kPrimaryColor = Color(0xff16A34A);
   static const Color kPrimaryDarkColor = Color(0xff15803D);
+  static const Color shimmerBase = Color(0xffE8F5E9);
+  static const Color shimmerHighlight = Color(0xffC8E6C9);
   static const Color kPrimaryAccentColor = Color(0xffF0FDF4);
   static const Color kWhiteColor = Colors.white;
   static const Color kPrimaryCartColor = Color(0xffEBF1FE);

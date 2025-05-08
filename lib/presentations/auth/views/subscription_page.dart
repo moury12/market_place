@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
+import 'package:market_place/core/constants/custom_text.dart';
+import 'package:market_place/core/utils/variable.dart';
 import 'package:market_place/presentations/auth/controller/auth_controller.dart';
 import 'package:market_place/presentations/auth/widgets/auth_title_widget.dart';
 
@@ -20,6 +22,8 @@ class SubscriptionPage extends StatelessWidget {
     );AuthController.to.tabContent.add(
       SubscriptionPlanWidget(isYear: true,),
     );
+    logger.d(AuthController.to.tabLabels.toString());
+
     return Scaffold(
       body: Padding(
         padding: padding12.copyWith(
@@ -37,6 +41,7 @@ class SubscriptionPage extends StatelessWidget {
                 tabs: AuthController.to.tabLabels,
                 tabContent: AuthController.to.tabContent,
               ),
+              CustomText(text: AuthController.to.packageList.first.type.toString())
             ],
           ),
         ),

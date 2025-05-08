@@ -7,6 +7,7 @@ String forgetPassEndPoint ='verification/create';
 String getProfileEndPoint ='auth/profile';
 String updateProfileEndPoint ='auth/update-profile';
 String changePassEndPoint ='auth/change-password';
+String packageAllListEndPoint ='package/get-all';
 
 
 String catGetAllEndPoint ='category/get-all';

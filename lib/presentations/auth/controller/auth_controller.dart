@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:market_place/presentations/auth/model/package_model.dart';
 import 'package:market_place/presentations/auth/views/verify_otp_page.dart';
 
 import '../../../core/api-client/api_endpoints.dart';
@@ -19,10 +20,16 @@ class AuthController extends GetxController {
   @override
   void onInit() {
     reinitializeSignUpControllers();
-   super.onInit();
+    getPackagesRequest();
+    tabLabels.value =
+        packageList.map((e) =>e.type??"" ,).toList();
+    super.onInit();
   }
-  RxBool isRememberMe = false.obs;
 
+  RxBool isRememberMe = false.obs;
+  RxList<PackageModel> packageList = <PackageModel>[].obs;
+  // RxList<String> tabLabels =
+  //     [AppStaticStrings.monthly, AppStaticStrings.yearly].obs;
   RxList<String> tabLabels =
       [AppStaticStrings.monthly, AppStaticStrings.yearly].obs;
   var tabContent = <Widget>[].obs;
@@ -92,8 +99,7 @@ class AuthController extends GetxController {
   Future<void> verifyEmailRequest({
     required String email,
     required bool isAccVerify,
-  })
-  async {
+  }) async {
     try {
       loadingProcess.value = AuthProcess.activateAccount;
 
@@ -243,6 +249,38 @@ class AuthController extends GetxController {
     }
   }
 
+  ///-----------------------------get package list method------------------------------///
+  Future<void> getPackagesRequest() async {
+    try {
+      loadingProcess.value = AuthProcess.packageGet;
+
+      final response = await ApiService().request(
+        endpoint: packageAllListEndPoint,
+        method: 'GET',
+      );
+
+      loadingProcess.value = AuthProcess.none;
+
+      if (response['success'] == true) {
+        logger.d(response);
+        packageList.value =
+            (response['data'] as List)
+                .map((e) => PackageModel.fromJson(e))
+                .toList();
+      } else {
+        logger.e(response);
+        showCustomSnackbar(
+          title: 'Failed',
+          message: response['message'],
+          type: SnackBarType.failed,
+        );
+      }
+    } catch (e) {
+      loadingProcess.value = AuthProcess.none;
+      logger.e(e.toString());
+    }
+  }
+
   clearSignUpController() {
     emailSignUpController.value.clear();
     nameSignUpController.clear();
@@ -260,20 +298,23 @@ class AuthController extends GetxController {
     confirmPassNewController.dispose();
     super.onClose();
   }
+
   reinitializeSignUpControllers() {
     if (kDebugMode) {
       emailSignUpController.value.text = 'calaga8422@bocapies.com';
       nameSignUpController.text = 'calaga8422';
       phoneSignUpController.text = '01566026303';
-      passSignUpController.text = '12345aA!';
-      confirmPassSignUpController.text = '12345aA!';
+      passSignUpController.text = '12345aA*';
+      confirmPassSignUpController.text = '12345aA*';
       emailLoginController.text = 'calaga8422@bocapies.com';
-      emailForgetController.value.text ='cayoj38393@evluence.com' /*'pihoner651@eligou.com'*/;
-      passLoginController.text = '12345aA!';
-      passNewController.text = '1234567A';
-      confirmPassNewController.text = '1234567A';
+      emailForgetController.value.text =
+          'calaga8422@bocapies.com' /*'pihoner651@eligou.com'*/;
+      passLoginController.text = '12345aA*';
+      passNewController.text = '12345aA*';
+      confirmPassNewController.text = '12345aA*';
     }
   }
+
   ///------------------------------- OTP section ------------------------------///
   final List<Rx<TextEditingController>> otpControllers = List.generate(
     6,
@@ -290,6 +331,7 @@ class AuthController extends GetxController {
           .requestFocus(); // Move to previous field on backspace
     }
   }
+
   bool checkOtpProvided() {
     for (var controller in otpControllers) {
       if (controller.value.text.isEmpty) {
@@ -298,6 +340,7 @@ class AuthController extends GetxController {
     }
     return true; // All fields are filled
   }
+
   String getOtp() {
     return otpControllers.map((e) => e.value.text).join();
   }

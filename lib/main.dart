@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -9,13 +8,10 @@ import 'package:market_place/core/bindings/bindings.dart';
 import 'package:market_place/core/helper/helper_function.dart';
 import 'package:market_place/core/routes/app_routes.dart';
 import 'package:market_place/core/theme/app_theme.dart';
-import 'package:device_preview/device_preview.dart';
 import 'package:market_place/core/utils/hive_boxes.dart';
-import 'package:market_place/presentations/navigation/views/navigation_page.dart';
 import 'package:market_place/presentations/splash/views/splash_page.dart';
 
 import 'core/services/app_strings.dart';
-import 'core/utils/common_controller.dart';
 import 'core/utils/variable.dart';
 
 void main() async {

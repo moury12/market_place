@@ -1,8 +1,6 @@
 import 'package:get/get.dart';
 import 'package:market_place/core/bindings/bindings.dart';
 import 'package:market_place/presentations/auth/views/set_new_password_page.dart';
-import 'package:market_place/presentations/auth/views/set_new_password_page.dart';
-import 'package:market_place/presentations/auth/views/subscription_page.dart';
 import 'package:market_place/presentations/auth/views/subscription_page.dart';
 import 'package:market_place/presentations/auth/views/verify_email_page.dart';
 import 'package:market_place/presentations/auth/views/verify_otp_page.dart';
@@ -16,7 +14,6 @@ import 'package:market_place/presentations/product/views/seller_profile_page.dar
 import 'package:market_place/presentations/profile/views/account_settings_page.dart';
 import 'package:market_place/presentations/profile/views/change_password_page.dart';
 import 'package:market_place/presentations/profile/views/edit_profile_page.dart';
-import 'package:market_place/presentations/splash/views/onboarding_page.dart';
 import 'package:market_place/presentations/splash/views/onboarding_page.dart';
 
 import '../../presentations/auth/views/login_page.dart';

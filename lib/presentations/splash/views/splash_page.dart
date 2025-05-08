@@ -17,23 +17,13 @@ class SplashPage extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: 
-        GestureDetector(
-          onTap: () {
-           if(Boxes.getUserData().get(initialKey)==true) {
-              Get.offAllNamed(LoginPage.routeName);
-            }else{
-             Get.toNamed(OnboardingPage.routeName);
-
-           }
-          },
-          child: Column(
-            spacing: 8.h,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SvgPicture.asset(logoIcon,height: 200.w,),
-              SvgPicture.asset(appNameImg),
-            ],
-          ),
+        Column(
+          spacing: 8.h,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(logoIcon,height: 200.w,),
+            SvgPicture.asset(appNameImg),
+          ],
         ),
       ),
     );

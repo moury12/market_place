@@ -6,5 +6,6 @@ enum AuthProcess {
   forgetPassword,
   resetPassword,
   verifyOtp,
+  packageGet,
   none
 }

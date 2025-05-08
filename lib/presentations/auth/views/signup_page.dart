@@ -7,6 +7,7 @@ import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/utils/enum.dart';
 import 'package:market_place/presentations/auth/controller/auth_controller.dart';
 import 'package:market_place/presentations/auth/views/login_page.dart';
+import 'package:market_place/presentations/auth/views/subscription_page.dart';
 
 import '../../../core/components/custom_button.dart';
 import '../../../core/components/custom_text_button.dart';
@@ -80,6 +81,7 @@ class SignUpPage extends StatelessWidget {
                     textEditingController:
                         AuthController.to.phoneSignUpController,
                     fillColor: Colors.transparent,
+                    isRequired: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return AppStaticStrings.phoneRequired.tr;
@@ -170,6 +172,9 @@ class SignUpPage extends StatelessWidget {
                     );
                   }),
                   space12H,
+                  CustomButton(onTap: () {
+                    Get.toNamed(SubscriptionPage.routeName);
+                  },)
                 ],
               ),
             ),

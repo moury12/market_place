@@ -122,7 +122,7 @@ class ApiService {
 if(body!=null){
   logger.d(body);
 }
-      logger.d(uri);
+
 
       // Parse response
       var responseData = json.decode(response.body);

@@ -1,3 +1,4 @@
+import 'package:market_place/core/api-client/api_service.dart';
 import 'package:market_place/core/constants/color_constants.dart';
 import 'package:market_place/core/constants/custom_text.dart';
 import 'package:market_place/core/constants/fontsize_constant.dart';
@@ -7,14 +8,18 @@ import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/presentations/my-listings/views/listing_product_page.dart';
 
 import 'package:market_place/presentations/notification/views/notification_page.dart';
+import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
+import 'package:market_place/presentations/profile/loading/profile_card_loading.dart';
 import 'package:market_place/presentations/profile/views/account_settings_page.dart';
 import 'package:market_place/presentations/profile/views/term_policy_help_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../core/components/custom_button.dart';
 import '../../../core/constants/app_static_strings.dart';
 import '../../auth/views/login_page.dart';
+import '../../navigation/controller/navigation_controller.dart';
 import '../widgets/language_change_dialog.dart';
 import '../widgets/profile_action_item_widget.dart';
 import '../widgets/profile_info_widget.dart';
@@ -47,7 +52,32 @@ class ProfilePage extends StatelessWidget {
               ),
               child: Padding(
                 padding: padding6,
-                child: ProfileInfoDetailsWidget(),
+                child: Obx(() {
+                  return AccountInformationController.to.isLoadingProfile.value
+                      ? ProfileCardShimmer()
+                      : ProfileInfoDetailsWidget(
+                        email:
+                            AccountInformationController
+                                .to
+                                .userModel
+                                .value
+                                .email,
+                        img:
+                            "${ApiService().baseUrl}/${AccountInformationController.to.userModel.value.img}",
+                        name:
+                            AccountInformationController
+                                .to
+                                .userModel
+                                .value
+                                .name,
+                        phone:
+                            AccountInformationController
+                                .to
+                                .userModel
+                                .value
+                                .phone,
+                      );
+                }),
               ),
             ),
             ProfileActionItemWidget(
@@ -71,9 +101,13 @@ class ProfilePage extends StatelessWidget {
               img: languageIcon,
               title: AppStaticStrings.language.tr,
               onTap: () {
-               showDialog(context: context, builder: (context) => LanguageChangeDialog(),);
+                showDialog(
+                  context: context,
+                  builder: (context) => LanguageChangeDialog(),
+                );
               },
-            ), ProfileActionItemWidget(
+            ),
+            ProfileActionItemWidget(
               img: notificationOutlineIcon,
               title: AppStaticStrings.notification.tr,
               onTap: () {
@@ -116,18 +150,20 @@ class ProfilePage extends StatelessWidget {
                 );
               },
             ),
-            ProfileActionItemWidget(
-              img: logoutIcon,
-              title: AppStaticStrings.logOut.tr,
-              onTap: () {
-                Get.offAllNamed(LoginPage.routeName);
-              },
-            ),
+            Obx(() {
+              return NavigationController.to.isLoadingLogout.value
+                  ? DefaultProgressIndicator(color: AppColors.kPrimaryColor)
+                  : ProfileActionItemWidget(
+                    img: logoutIcon,
+                    title: AppStaticStrings.logOut.tr,
+                    onTap: () {
+                      NavigationController.to.logoutRequest();
+                    },
+                  );
+            }),
           ],
         ),
       ),
     );
   }
 }
-
-
