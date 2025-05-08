@@ -9,6 +9,9 @@ String updateProfileEndPoint ='auth/update-profile';
 String changePassEndPoint ='auth/change-password';
 String packageAllListEndPoint ='package/get-all';
 String catGetAllEndPoint ='category/get-all';
+String subCatGetEndPoint ='service/get-all';
+String divisionGetEndPoint ='division/get-all';
+String cityGetEndPoint ='city/get-all';
 
 
 String productGetAllEndPoint ='product/get-all';

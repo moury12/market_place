@@ -30,23 +30,45 @@ class FilterDrawerWidget extends StatelessWidget {
                 spacing: 12.h,
                 children: [
                   CustomDropdown(
+                    isLoading: HomeController.to.isLoadingCategory.value,
                     title: AppStaticStrings.category.tr,
-                    items: category,
+                    items: HomeController.to.catList,
+                    onChanged: (value) {
+                      if (value != null) {
+                        HomeController.to.getSubCategoryListRequest(
+                          catId: value.sId.toString(),
+                        );
+                      }
+                    },
+                    displayText: (cat) => cat.name.toString(),
                     selectedValue: HomeController.to.selectedCategory.value,
                   ),
                   CustomDropdown(
+                    isLoading: HomeController.to.isLoadingSubCategory.value,
+                    displayText: (cat) => cat.name.toString(),
                     title: AppStaticStrings.subCategory.tr,
-                    items: category,
+                    items: HomeController.to.subCatList,
                     selectedValue: HomeController.to.selectedSubCategory.value,
                   ),
                   CustomDropdown(
+                    isLoading: HomeController.to.isLoadingDivision.value,
                     title: AppStaticStrings.wilaya.tr,
-                    items: category,
+                    items: HomeController.to.divisionList,
+                    onChanged: (value) {
+                      if (value != null) {
+                        HomeController.to.getCityListRequest(
+                          division: value.sId.toString(),
+                        );
+                      }
+                    },
+                    displayText: (cat) => cat.name.toString(),
                     selectedValue: HomeController.to.selectedWilaya.value,
                   ),
                   CustomDropdown(
+                    isLoading: HomeController.to.isLoadingCity.value,
+                    displayText: (cat) => cat.name.toString(),
                     title: AppStaticStrings.city.tr,
-                    items: category,
+                    items: HomeController.to.cityList,
                     selectedValue: HomeController.to.selectedCity.value,
                   ),
                   Text(
@@ -72,9 +94,11 @@ class FilterDrawerWidget extends StatelessWidget {
                       values: HomeController.to.rangeValues.value,
                       min: 0,
                       max: 1000,
-            
+
                       activeColor: AppColors.kPrimaryColor, // Green track
-                      inactiveColor: const Color(0xFFDDE6E7), // Light gray track
+                      inactiveColor: const Color(
+                        0xFFDDE6E7,
+                      ), // Light gray track
                       divisions: 100,
                       onChanged: (RangeValues values) {
                         HomeController.to.rangeValues.value = values;
@@ -91,17 +115,18 @@ class FilterDrawerWidget extends StatelessWidget {
                     items: sortBy,
                     selectedValue: HomeController.to.selectedSortBy.value,
                   ),
-                  CustomButton(onTap: () {
-            
-                  },
-                  title:AppStaticStrings.applyFilter.tr ,),
+                  CustomButton(
+                    onTap: () {},
+                    title: AppStaticStrings.applyFilter.tr,
+                  ),
                   CustomButton(
                     fillColor: Colors.transparent,
                     textColor: AppColors.kPrimaryColor,
                     onTap: () {
-            Navigator.pop(context);
-                  },
-                  title:AppStaticStrings.close.tr ,),
+                      Navigator.pop(context);
+                    },
+                    title: AppStaticStrings.close.tr,
+                  ),
                 ],
               );
             }),

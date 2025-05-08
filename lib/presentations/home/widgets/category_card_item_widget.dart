@@ -54,14 +54,16 @@ class CategoryDetailsCardItemWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           CustomNetworkImage(
-            imageUrl: imageUrl,
+            imageUrl: "${
+                ApiService().baseUrl
+            }/${categoryModel.img}",
             height: 150.w,
             borderRadius: BorderRadius.vertical(top: Radius.circular(4.r)),
           ),
           Padding(
             padding: padding6,
             child: CustomText(
-              text: "Women's Fashion	",
+              text:categoryModel.name?? "Women's Fashion	",
               textAlign: TextAlign.center,
             ),
           ),

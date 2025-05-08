@@ -4,7 +4,6 @@ import 'package:market_place/presentations/home/model/category_subcategory_model
 
 import '../../../core/api-client/api_endpoints.dart';
 import '../../../core/api-client/api_service.dart';
-import '../../../core/constants/app_static_strings.dart';
 import '../../../core/helper/helper_function.dart';
 import '../../../core/utils/hive_boxes.dart';
 import '../../../core/utils/variable.dart';
@@ -12,25 +11,33 @@ import '../../../core/utils/variable.dart';
 class HomeController extends GetxController {
   static HomeController get to => Get.find();
   RxBool showProducts = false.obs;
-  var selectedCategory = Rx<String?>(null);
-  var selectedSubCategory = Rx<String?>(null);
-  var selectedWilaya = Rx<String?>(null);
-  var selectedCity = Rx<String?>(null);
+  final selectedCategory = Rx<CategoryModel?>(null);
+  var selectedSubCategory = Rx<SubCategoryModel?>(null);
+  var selectedWilaya = Rx<CategoryModel?>(null);
+  var selectedCity = Rx<CityModel?>(null);
   var selectedCondition = Rx<String?>(null);
   var selectedSortBy = Rx<String?>(null);
   Rx<RangeValues> rangeValues = RangeValues(0, 500).obs;
   RxList<CategoryModel> catList = <CategoryModel>[].obs;
+  RxList<CategoryModel> divisionList = <CategoryModel>[].obs;
+  RxList<CityModel> cityList = <CityModel>[].obs;
+  RxList<SubCategoryModel> subCatList = <SubCategoryModel>[].obs;
+  TextEditingController searchCatField = TextEditingController();
   RxBool isLoadingCategory = false.obs;
+  RxBool isLoadingDivision = false.obs;
+  RxBool isLoadingCity = false.obs;
+  RxBool isLoadingSubCategory = false.obs;
   @override
   void onInit() {
     getCategoryListRequest();
+    getDivisionListRequest();
     super.onInit();
   }
 
   ///====================category pagination variable========================///
 
   final RxInt currentPage = 1.obs;
-  final RxInt itemsPerPage = 10.obs;
+  final RxInt itemsPerPage = 100.obs;
   final RxInt totalCategoryPages = 5.obs;
   final RxBool isLoadingMore = false.obs;
 
@@ -59,6 +66,7 @@ class HomeController extends GetxController {
           'limit': itemsPerPage.value.toString(),
           'sort': 'updatedAt',
           'order': 'desc',
+          'search': searchCatField.text,
         },
       );
 
@@ -83,7 +91,7 @@ class HomeController extends GetxController {
           catList.value = newCategories; // Replace for refresh
         }
         logger.d(response);
-      }  else {
+      } else {
         logger.e(response);
         showCustomSnackbar(
           title: 'Failed',
@@ -94,6 +102,105 @@ class HomeController extends GetxController {
     } catch (e) {
       logger.e(e.toString());
       isLoadingCategory.value = false;
+    }
+  }
+
+  ///------------------------------ get sub category list method -------------------------///
+
+  Future<void> getSubCategoryListRequest({required String catId}) async {
+    try {
+      isLoadingSubCategory.value = true;
+      ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
+
+      final response = await ApiService().request(
+        endpoint: subCatGetEndPoint,
+        queryParams: {'category_id': catId},
+        method: 'GET',
+      );
+      isLoadingSubCategory.value = false;
+      if (response['success'] == true) {
+        logger.d(response);
+        subCatList.value =
+            (response['data'] as List)
+                .map((e) => SubCategoryModel.fromJson(e))
+                .toList();
+      } else {
+        logger.e(response);
+        showCustomSnackbar(
+          title: 'Failed',
+          message: response['message'],
+          type: SnackBarType.failed,
+        );
+      }
+    } catch (e) {
+      logger.e(e.toString());
+      isLoadingSubCategory.value = false;
+    }
+  }
+
+  ///------------------------------ get division list method -------------------------///
+
+  Future<void> getDivisionListRequest() async {
+    try {
+      isLoadingDivision.value = true;
+      ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
+
+      final response = await ApiService().request(
+        endpoint: divisionGetEndPoint,
+
+        method: 'GET',
+      );
+      isLoadingDivision.value = false;
+      if (response['success'] == true) {
+        logger.d(response);
+        divisionList.value =
+            (response['data'] as List)
+                .map((e) => CategoryModel.fromJson(e))
+                .toList();
+      } else {
+        logger.e(response);
+        showCustomSnackbar(
+          title: 'Failed',
+          message: response['message'],
+          type: SnackBarType.failed,
+        );
+      }
+    } catch (e) {
+      logger.e(e.toString());
+      isLoadingDivision.value = false;
+    }
+  }
+
+  ///------------------------------ get city list method -------------------------///
+
+  Future<void> getCityListRequest({required String division}) async {
+    try {
+      isLoadingCity.value = true;
+      ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
+
+      final response = await ApiService().request(
+        endpoint: cityGetEndPoint,
+        queryParams: {'division': division},
+        method: 'GET',
+      );
+      isLoadingCity.value = false;
+      if (response['success'] == true) {
+        logger.d(response);
+        cityList.value =
+            (response['data'] as List)
+                .map((e) => CityModel.fromJson(e))
+                .toList();
+      } else {
+        logger.e(response);
+        showCustomSnackbar(
+          title: 'Failed',
+          message: response['message'],
+          type: SnackBarType.failed,
+        );
+      }
+    } catch (e) {
+      logger.e(e.toString());
+      isLoadingCity.value = false;
     }
   }
 }

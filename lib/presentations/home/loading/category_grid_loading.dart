@@ -7,16 +7,16 @@ class CategoryGridLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      spacing: 8.w,
-      runSpacing: 8.w,
+      // spacing: 8.w,
+      // runSpacing: 8.w,
       children: List.generate(
-        4,
+        8,
             (index) => Shimmer.fromColors(
           baseColor: const Color(0xffE8F5E9),
           highlightColor: const Color(0xffC8E6C9),
           period: const Duration(milliseconds: 1500),
           child: Container(
-            width: (MediaQuery.of(context).size.width / 2) - 16.w,
+            width: (MediaQuery.of(context).size.width / 3) - 16.w,
             padding: EdgeInsets.all(12.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

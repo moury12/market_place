@@ -22,7 +22,8 @@ class CustomDropdown<T> extends StatefulWidget {
   final bool? isLoading;
   final double? radius;
   final T? selectedValue;
-  final List<T>? items; // Dynamic list of items
+  final List<T>? items;
+  final String Function(T)? displayText;// Dynamic list of items
   final ValueChanged<T?>? onChanged; // Callback for selected value
 
   const CustomDropdown({
@@ -37,7 +38,7 @@ class CustomDropdown<T> extends StatefulWidget {
     this.items, // Pass dropdown items dynamically
     this.onChanged,
     this.selectedValue,
-    this.isRequired = false, this.isLoading=false, // Selected value managed externally
+    this.isRequired = false, this.isLoading=false, this.displayText, // Selected value managed externally
   });
 
   @override
@@ -131,8 +132,7 @@ dropdownColor: AppColors.kWhiteColor,
                 value: e,
 
                 child: Text(
-                  e.toString(),
-                    style: poppinsMedium.copyWith(
+                    _getDisplayText(e),                    style: poppinsMedium.copyWith(
                         color: AppColors.kBlackColor,
                         fontWeight: FontWeight.w400,
                         fontSize: getFontSizeSemiSmall())),
@@ -151,5 +151,10 @@ dropdownColor: AppColors.kWhiteColor,
         ),
       ],
     );
+  }
+  String _getDisplayText(T? item) {
+    if (item == null) return '';
+    // Use custom display text if provided, otherwise use toString()
+    return widget.displayText?.call(item) ?? item.toString();
   }
 }
