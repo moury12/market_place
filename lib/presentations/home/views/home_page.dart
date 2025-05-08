@@ -62,11 +62,14 @@ class HomePage extends StatelessWidget {
             }),
             ViewAllRow(
               title: AppStaticStrings.recentlyAdded.tr,
-              onPressed: () {},
+              onPressed: () {
+                Get.toNamed(SearchPage.routeName);
+              },
             ),
             Obx(
                () {
-                return ProductGridWidget(productList: HomeController.to.productList,isLoading: HomeController.to.isLoadingProduct.value,);
+                return ProductGridWidget(length: HomeController.to.productList.length>4?4:HomeController.to.productList.length,
+                  productList: HomeController.to.productList,isLoading: HomeController.to.isLoadingProduct.value,);
               }
             ),
           ],

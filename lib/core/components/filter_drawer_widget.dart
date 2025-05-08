@@ -13,9 +13,14 @@ import 'package:market_place/presentations/home/controller/home_controller.dart'
 
 import '../constants/text_style_constant.dart';
 
-class FilterDrawerWidget extends StatelessWidget {
+class FilterDrawerWidget extends StatefulWidget {
   const FilterDrawerWidget({super.key});
 
+  @override
+  State<FilterDrawerWidget> createState() => _FilterDrawerWidgetState();
+}
+
+class _FilterDrawerWidgetState extends State<FilterDrawerWidget> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -116,7 +121,9 @@ class FilterDrawerWidget extends StatelessWidget {
                     selectedValue: HomeController.to.selectedSortBy.value,
                   ),
                   CustomButton(
-                    onTap: () {},
+                    onTap: () {
+                      HomeController.to.getProductListRequest();
+                    },
                     title: AppStaticStrings.applyFilter.tr,
                   ),
                   CustomButton(

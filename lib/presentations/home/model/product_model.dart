@@ -2,7 +2,7 @@
 class ProductModel {
   String? sId;
   String? name;
-  int? price;
+  String? price;
   String? condition;
   bool? isFavorite;
   String? img;
@@ -18,13 +18,13 @@ class ProductModel {
         this.categoryName});
 
   ProductModel.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    name = json['name'];
-    price = json['price'];
-    condition = json['condition'];
+    sId = json['_id'].toString()=='null'?'n/a':json['_id'].toString();
+    name = json['name'].toString()=='null'?'n/a':json['name'].toString();
+    price = json['price'].toString()=='null'?'n/a':json['price'].toString();
+    condition = json['condition'].toString()=='null'?'n/a':json['condition'].toString();
     isFavorite = json['is_favorite'];
-    img = json['img'];
-    categoryName = json['category_name'];
+    img = json['img'].toString()=='null'?'n/a':json['img'].toString();
+    categoryName = json['category_name'].toString()=='null'?'n/a':json['category_name'].toString();
   }
 
   Map<String, dynamic> toJson() {

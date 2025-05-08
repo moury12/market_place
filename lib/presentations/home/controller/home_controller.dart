@@ -244,10 +244,10 @@ class HomeController extends GetxController {
           'page': currentProductPage.value.toString(),
           'limit': itemsProductPerPage.value.toString(),
           'search': searchController.value.text,
-          'category': selectedCategory.value!.sId.toString(),
-          'sub_category': selectedSubCategory.value!.sId.toString(),
-          'city': selectedCity.value!.sId.toString(),
-          'division': selectedWilaya.value!.sId.toString(),
+          'category': selectedCategory.value!=null?selectedCategory.value!.sId.toString():"",
+          'sub_category': selectedSubCategory.value!=null?selectedSubCategory.value!.sId.toString():"",
+          'city': selectedCity.value!=null?selectedCity.value!.sId.toString():"",
+          'division': selectedWilaya.value!=null?selectedWilaya.value!.sId.toString():"",
         },
       );
 

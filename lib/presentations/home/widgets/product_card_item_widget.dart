@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:market_place/core/api-client/api_service.dart';
 import 'package:market_place/core/components/custom_button_tap.dart';
 import 'package:market_place/core/components/custom_network_image.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
@@ -50,14 +51,14 @@ class ProductCardItemWidget extends StatelessWidget {
                 child: Stack(
                   children: [
                     CustomNetworkImage(
-                      imageUrl: imageUrl,
+                      imageUrl: "${ApiService().baseUrl}/${product.img}",
                       // height: 150.w,
                       radius: 4.r,
                     ),
                     Positioned(
                       bottom: 10,left: 6,
                       child: GreenAccentContainerWidget(child: CustomText(
-                        text: AppStaticStrings.newLabel.tr,
+                        text: product.condition.toString(),
                         style: poppinsSemiBold,
                         color: AppColors.kPrimaryColor,
                         fontSize: getFontSizeSmall(),
@@ -79,13 +80,13 @@ class ProductCardItemWidget extends StatelessWidget {
                         style: poppinsSemiBold,
                       ),
                       CustomText(
-                        text: "Premium support",
+                        text: product.categoryName.toString(),
                         maxLines: 2,
                         style: poppinsRegular,
                         color: AppColors.kExtraLightTextColor,
                       ),
                       CustomText(
-                        text: "UM 49.99",
+                        text: "UM ${product.price.toString()}",
                         maxLines: 2,
                         style: poppinsMedium,
                       ),
@@ -102,6 +103,7 @@ class ProductCardItemWidget extends StatelessWidget {
 }
 class ProductGridWidget extends StatelessWidget {
   final bool fromSeller;
+  final int? length;
   final List<ProductModel> productList;
   final bool isLoading; // Add loading state
 
@@ -109,12 +111,12 @@ class ProductGridWidget extends StatelessWidget {
     super.key,
     this.fromSeller = false,
     required this.productList,
-    this.isLoading = false,
+    this.isLoading = false, this.length,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
+
       // Show shimmer when loading or empty list
       if (isLoading || productList.isEmpty) {
         return _buildShimmerGrid();
@@ -125,7 +127,7 @@ class ProductGridWidget extends StatelessWidget {
         shrinkWrap: true,
         primary: false,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: productList.length,
+        itemCount:length?? productList.length,
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
           crossAxisSpacing: 8.w,
           mainAxisSpacing: 12.w,
@@ -137,7 +139,7 @@ class ProductGridWidget extends StatelessWidget {
           product: productList[index], // Pass product data
         ),
       );
-    });
+
   }
 
   Widget _buildShimmerGrid() {
