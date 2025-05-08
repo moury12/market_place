@@ -54,14 +54,12 @@ class SearchPage extends StatelessWidget {
                 Builder(
                   builder: (context) {
                     return ButtonTapWidget(
-
-
                       onTap: () {
                         Scaffold.of(context).openEndDrawer();
                       },
                       child: SvgPicture.asset(filterIcon),
                     );
-                  }
+                  },
                 ),
               ],
             ),
@@ -70,55 +68,60 @@ class SearchPage extends StatelessWidget {
             child: SingleChildScrollView(
               child: Padding(
                 padding: padding12.copyWith(top: 6),
-                child: Obx(
-                  () {
-                    return Column(
-                      spacing: 8.h,
-                      children: [
-                        !HomeController.to.showProducts.value
-                            ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              spacing: 6.h,
-                              children: [
-                                ViewAllRow(
-                                  title: AppStaticStrings.searchHistory.tr,
-                                  onPressed: () {},
-                                  buttonText: AppStaticStrings.clearAll.tr,
-                                ),
-                                Wrap(
-                                  spacing: 8.w,
-                                  runSpacing: 8.w,
-                                  // alignment: WrapAlignment.spaceBetween,
-                                  children: List.generate(7, (index) {
-                                    return ButtonTapWidget(
-                                      onTap: () {
-                                        HomeController.to.showProducts.value = true;
-                                      },
-                                      child: GreenAccentContainerWidget(
-                                        radius: 4.r,
-                                        child: Padding(
-                                          padding: padding4,
-                                          child: CustomText(
-                                            text: "Women's",
-                                            style: poppinsRegular,
-                                            fontSize: 10.sp,
-                                            color: AppColors.kPrimaryColor,
-                                          ),
+                child: Obx(() {
+                  return Column(
+                    spacing: 8.h,
+                    children: [
+                      !HomeController.to.showProducts.value
+                          ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            spacing: 6.h,
+                            children: [
+                              ViewAllRow(
+                                title: AppStaticStrings.searchHistory.tr,
+                                onPressed: () {},
+                                buttonText: AppStaticStrings.clearAll.tr,
+                              ),
+                              Wrap(
+                                spacing: 8.w,
+                                runSpacing: 8.w,
+                                // alignment: WrapAlignment.spaceBetween,
+                                children: List.generate(7, (index) {
+                                  return ButtonTapWidget(
+                                    onTap: () {
+                                      HomeController.to.showProducts.value =
+                                          true;
+                                    },
+                                    child: GreenAccentContainerWidget(
+                                      radius: 4.r,
+                                      child: Padding(
+                                        padding: padding4,
+                                        child: CustomText(
+                                          text: "Women's",
+                                          style: poppinsRegular,
+                                          fontSize: 10.sp,
+                                          color: AppColors.kPrimaryColor,
                                         ),
                                       ),
-                                    );
-                                  }),
-                                ),
-                              ],
-                            )
-                            : SizedBox.shrink(),
-                        HomeController.to.showProducts.value
-                            ? ProductGridWidget()
-                            : SizedBox.shrink(),
-                      ],
-                    );
-                  }
-                ),
+                                    ),
+                                  );
+                                }),
+                              ),
+                            ],
+                          )
+                          : SizedBox.shrink(),
+                      HomeController.to.showProducts.value
+                          ? Obx(() {
+                            return ProductGridWidget(
+                              productList: HomeController.to.productList,
+                              isLoading:
+                                  HomeController.to.isLoadingProduct.value,
+                            );
+                          })
+                          : SizedBox.shrink(),
+                    ],
+                  );
+                }),
               ),
             ),
           ),

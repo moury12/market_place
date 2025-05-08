@@ -64,7 +64,11 @@ class HomePage extends StatelessWidget {
               title: AppStaticStrings.recentlyAdded.tr,
               onPressed: () {},
             ),
-            ProductGridWidget(),
+            Obx(
+               () {
+                return ProductGridWidget(productList: HomeController.to.productList,isLoading: HomeController.to.isLoadingProduct.value,);
+              }
+            ),
           ],
         ),
       ),

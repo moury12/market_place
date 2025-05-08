@@ -186,7 +186,7 @@ class ProductDetailsPage extends StatelessWidget {
                     ],
                   )
                   : ViewAllRow(title: "Related product", onPressed: () {}),
-              fromSeller ? SizedBox.shrink() : ProductGridWidget(),
+              // fromSeller ? SizedBox.shrink() : ProductGridWidget(),
             ],
           ),
         ),

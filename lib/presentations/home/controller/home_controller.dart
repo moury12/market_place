@@ -7,6 +7,7 @@ import '../../../core/api-client/api_service.dart';
 import '../../../core/helper/helper_function.dart';
 import '../../../core/utils/hive_boxes.dart';
 import '../../../core/utils/variable.dart';
+import '../model/product_model.dart';
 
 class HomeController extends GetxController {
   static HomeController get to => Get.find();
@@ -21,8 +22,14 @@ class HomeController extends GetxController {
   RxList<CategoryModel> catList = <CategoryModel>[].obs;
   RxList<CategoryModel> divisionList = <CategoryModel>[].obs;
   RxList<CityModel> cityList = <CityModel>[].obs;
+  RxList<ProductModel> productList = <ProductModel>[].obs;
+
   RxList<SubCategoryModel> subCatList = <SubCategoryModel>[].obs;
-  TextEditingController searchCatField = TextEditingController();
+
+  ///=======================search controller============================///
+
+  Rx<TextEditingController> searchController = TextEditingController().obs;
+  RxBool isLoadingProduct = false.obs;
   RxBool isLoadingCategory = false.obs;
   RxBool isLoadingDivision = false.obs;
   RxBool isLoadingCity = false.obs;
@@ -31,6 +38,7 @@ class HomeController extends GetxController {
   void onInit() {
     getCategoryListRequest();
     getDivisionListRequest();
+    getProductListRequest();
     super.onInit();
   }
 
@@ -40,6 +48,13 @@ class HomeController extends GetxController {
   final RxInt itemsPerPage = 100.obs;
   final RxInt totalCategoryPages = 5.obs;
   final RxBool isLoadingMore = false.obs;
+
+  ///====================product pagination variable========================///
+
+  final RxInt currentProductPage = 1.obs;
+  final RxInt itemsProductPerPage = 10.obs;
+  final RxInt totalProductPages = 5.obs;
+  final RxBool isProductLoadingMore = false.obs;
 
   ///------------------------------ get category list method -------------------------///
 
@@ -66,7 +81,6 @@ class HomeController extends GetxController {
           'limit': itemsPerPage.value.toString(),
           'sort': 'updatedAt',
           'order': 'desc',
-          'search': searchCatField.text,
         },
       );
 
@@ -201,6 +215,79 @@ class HomeController extends GetxController {
     } catch (e) {
       logger.e(e.toString());
       isLoadingCity.value = false;
+    }
+  }
+
+  ///------------------------------ get product list method -------------------------///
+
+  Future<void> getProductListRequest({bool loadMore = false}) async {
+    try {
+      // Don't load more if we've reached the last page
+      if (loadMore && currentProductPage.value >= totalProductPages.value) {
+        return;
+      }
+
+      if (loadMore) {
+        isProductLoadingMore.value = true;
+        currentProductPage.value++;
+        // Don't increment page here - we'll do it after successful response
+      } else {
+        isLoadingProduct.value = true;
+        currentProductPage.value = 1;
+      }
+
+      ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
+      final response = await ApiService().request(
+        endpoint: productGetAllEndPoint,
+        method: 'GET',
+        queryParams: {
+          'page': currentProductPage.value.toString(),
+          'limit': itemsProductPerPage.value.toString(),
+          'search': searchController.value.text,
+          'category': selectedCategory.value!.sId.toString(),
+          'sub_category': selectedSubCategory.value!.sId.toString(),
+          'city': selectedCity.value!.sId.toString(),
+          'division': selectedWilaya.value!.sId.toString(),
+        },
+      );
+
+      isLoadingProduct.value = false;
+      isProductLoadingMore.value = false;
+
+      if (response['success'] == true) {
+        if (response['pagination'] != null) {
+          currentProductPage.value = response['pagination']['currentPage'] ?? 1;
+          totalProductPages.value =
+              response['pagination']['totalPages'] ?? 1; // Add this line
+          itemsProductPerPage.value =
+              response['pagination']['itemsPerPage'] ?? 10;
+        }
+
+        final newProducts =
+            (response['data'] as List)
+                .map((e) => ProductModel.fromJson(e))
+                .toList();
+
+        if (loadMore) {
+          // Only increment page after successful load
+
+          productList.addAll(newProducts);
+        } else {
+          productList.value = newProducts;
+        }
+        logger.d(response);
+      } else {
+        logger.e(response);
+        showCustomSnackbar(
+          title: 'Failed',
+          message: response['message'],
+          type: SnackBarType.failed,
+        );
+      }
+    } catch (e) {
+      logger.e(e.toString());
+      isLoadingProduct.value = false;
+      isProductLoadingMore.value = false;
     }
   }
 }

@@ -29,7 +29,7 @@ class SellerProfilePage extends StatelessWidget {
               ViewAllRow(title:AppStaticStrings.moreFromThisSeller.tr, onPressed: () {
 
               },),
-              ProductGridWidget()
+              // ProductGridWidget()
             ],
           ),
         ),

@@ -18,7 +18,7 @@ final arg = Get.arguments;
           padding: padding12,
           child: Column(
             children: [
-              ProductGridWidget(fromSeller: true,),
+              // ProductGridWidget(fromSeller: true,),
             ],
           ),
         ),

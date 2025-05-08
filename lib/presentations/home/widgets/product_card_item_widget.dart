@@ -10,13 +10,16 @@ import 'package:market_place/core/constants/fontsize_constant.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/core/utils/variable.dart';
+import 'package:market_place/presentations/home/model/product_model.dart';
 import 'package:market_place/presentations/product/views/product_details_page.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ProductCardItemWidget extends StatelessWidget {
   final bool fromSeller;
+  final ProductModel product;
 
   const ProductCardItemWidget({
-    super.key,  this.fromSeller =false,
+    super.key,  this.fromSeller =false, required this.product,
   });
 
   @override
@@ -99,32 +102,124 @@ class ProductCardItemWidget extends StatelessWidget {
 }
 class ProductGridWidget extends StatelessWidget {
   final bool fromSeller;
-  const ProductGridWidget({
+  final List<ProductModel> productList;
+  final bool isLoading; // Add loading state
 
-    super.key,  this.fromSeller=false,
+  const ProductGridWidget({
+    super.key,
+    this.fromSeller = false,
+    required this.productList,
+    this.isLoading = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    return Obx(() {
+      // Show shimmer when loading or empty list
+      if (isLoading || productList.isEmpty) {
+        return _buildShimmerGrid();
+      }
+
+      return GridView.builder(
+        padding: EdgeInsets.zero,
+        shrinkWrap: true,
+        primary: false,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: productList.length,
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+          crossAxisSpacing: 8.w,
+          mainAxisSpacing: 12.w,
+          mainAxisExtent: 265.w,
+          maxCrossAxisExtent: 210.w,
+        ),
+        itemBuilder: (context, index) => ProductCardItemWidget(
+          fromSeller: fromSeller,
+          product: productList[index], // Pass product data
+        ),
+      );
+    });
+  }
+
+  Widget _buildShimmerGrid() {
     return GridView.builder(
       padding: EdgeInsets.zero,
       shrinkWrap: true,
       primary: false,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: 4,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: 6, // Number of shimmer items
       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
         crossAxisSpacing: 8.w,
         mainAxisSpacing: 12.w,
         mainAxisExtent: 265.w,
-        // childAspectRatio: .5,
         maxCrossAxisExtent: 210.w,
       ),
-      itemBuilder:
-          (context, index) => ProductCardItemWidget(fromSeller: fromSeller,),
+      itemBuilder: (context, index) => const ProductCardShimmer(),
     );
   }
 }
 
+// Product Card Shimmer Widget
+class ProductCardShimmer extends StatelessWidget {
+  const ProductCardShimmer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: const Color(0xffE8F5E9),
+      highlightColor: const Color(0xffC8E6C9),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8.r),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Image placeholder
+            Container(
+              height: 140.w,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(8.r)),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(8.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Title placeholder
+                  Container(
+                    height: 16.h,
+                    width: double.infinity,
+                    color: Colors.white,
+                  ),
+                  SizedBox(height: 4.h),
+                  // Price placeholder
+                  Container(
+                    height: 14.h,
+                    width: 60.w,
+                    color: Colors.white,
+                  ),
+                  SizedBox(height: 8.h),
+                  // Button placeholder
+                  Container(
+                    height: 30.h,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(4.r),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 class GreenAccentContainerWidget extends StatelessWidget {
   final Widget child;
   final double? radius;
