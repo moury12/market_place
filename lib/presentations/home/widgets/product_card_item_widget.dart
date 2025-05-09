@@ -118,8 +118,10 @@ class ProductGridWidget extends StatelessWidget {
   Widget build(BuildContext context) {
 
       // Show shimmer when loading or empty list
-      if (isLoading || productList.isEmpty) {
+      if (isLoading ) {
         return _buildShimmerGrid();
+      }else if(productList.isEmpty){
+        return  CustomText( text:"Product List is Empty!!" ,);
       }
 
       return GridView.builder(

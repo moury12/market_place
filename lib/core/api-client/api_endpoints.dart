@@ -13,6 +13,7 @@ String subCatGetEndPoint ='service/get-all';
 String divisionGetEndPoint ='division/get-all';
 String cityGetEndPoint ='city/get-all';
 String productGetAllEndPoint ='product/get-all';
+String productHigherPriceEndPoint ='product/get-all?sort=price&order=desc';
 
 String productDetailsEndPoint ='product/get-details/';
 String addToCartEndPoint ='cart/create';

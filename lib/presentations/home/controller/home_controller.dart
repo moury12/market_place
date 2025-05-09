@@ -23,6 +23,7 @@ class HomeController extends GetxController {
   RxList<CategoryModel> divisionList = <CategoryModel>[].obs;
   RxList<CityModel> cityList = <CityModel>[].obs;
   RxList<ProductModel> productList = <ProductModel>[].obs;
+  RxList<ProductModel> productWithHigherPriceList = <ProductModel>[].obs;
 
   RxList<SubCategoryModel> subCatList = <SubCategoryModel>[].obs;
 
@@ -39,7 +40,38 @@ class HomeController extends GetxController {
     getCategoryListRequest();
     getDivisionListRequest();
     getProductListRequest();
+    getMaximumRange();
     super.onInit();
+  }
+
+  Future<void> refreshSearchHome() async {
+    selectedCategory.value = null;
+    selectedSubCategory.value = null;
+    selectedWilaya.value = null;
+    selectedCity.value = null;
+    selectedCondition.value = null;
+    selectedSortBy.value = null;
+    getMaximumRange();
+    getProductListRequest();
+  }
+
+  getMaximumRange() async {
+    final response = await ApiService().request(
+      endpoint: productHigherPriceEndPoint,
+      method: 'GET',
+    );
+    if (response['success'] == true) {
+      productWithHigherPriceList.value =
+          (response['data'] as List)
+              .map((e) => ProductModel.fromJson(e))
+              .toList();
+      rangeValues.value = RangeValues(
+        0,
+        double.parse(productWithHigherPriceList.first.price ?? "300"),
+      );
+    }else{
+      rangeValues.value =RangeValues(0, 500);
+    }
   }
 
   ///====================category pagination variable========================///
@@ -244,10 +276,33 @@ class HomeController extends GetxController {
           'page': currentProductPage.value.toString(),
           'limit': itemsProductPerPage.value.toString(),
           'search': searchController.value.text,
-          'category': selectedCategory.value!=null?selectedCategory.value!.sId.toString():"",
-          'sub_category': selectedSubCategory.value!=null?selectedSubCategory.value!.sId.toString():"",
-          'city': selectedCity.value!=null?selectedCity.value!.sId.toString():"",
-          'division': selectedWilaya.value!=null?selectedWilaya.value!.sId.toString():"",
+          'category':
+              selectedCategory.value != null
+                  ? selectedCategory.value!.sId.toString()
+                  : "",
+          'sub_category':
+              selectedSubCategory.value != null
+                  ? selectedSubCategory.value!.sId.toString()
+                  : "",
+          'city':
+              selectedCity.value != null
+                  ? selectedCity.value!.sId.toString()
+                  : "",
+          'division':
+              selectedWilaya.value != null
+                  ? selectedWilaya.value!.sId.toString()
+                  : "",
+          'price_min': rangeValues.value.start.toString(),
+          'price_max': rangeValues.value.end.toString(),
+          'sort':
+              selectedSortBy.value != null
+                  ? selectedSortBy.value!.toUpperCase().toString()
+                  : "",
+          'order': 'desc',
+          'condition':
+              selectedCondition.value != null
+                  ? selectedCondition.value!.toUpperCase().toString()
+                  : "",
         },
       );
 

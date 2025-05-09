@@ -39,7 +39,10 @@ class _FilterDrawerWidgetState extends State<FilterDrawerWidget> {
                     title: AppStaticStrings.category.tr,
                     items: HomeController.to.catList,
                     onChanged: (value) {
+
                       if (value != null) {
+                        HomeController.to.selectedCategory.value = value;
+
                         HomeController.to.getSubCategoryListRequest(
                           catId: value.sId.toString(),
                         );
@@ -61,6 +64,8 @@ class _FilterDrawerWidgetState extends State<FilterDrawerWidget> {
                     items: HomeController.to.divisionList,
                     onChanged: (value) {
                       if (value != null) {
+                        HomeController.to.selectedWilaya.value = value;
+
                         HomeController.to.getCityListRequest(
                           division: value.sId.toString(),
                         );
@@ -123,6 +128,7 @@ class _FilterDrawerWidgetState extends State<FilterDrawerWidget> {
                   CustomButton(
                     onTap: () {
                       HomeController.to.getProductListRequest();
+                      // Navigator.pop(context);
                     },
                     title: AppStaticStrings.applyFilter.tr,
                   ),

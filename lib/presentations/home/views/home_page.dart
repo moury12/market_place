@@ -43,7 +43,6 @@ class HomePage extends StatelessWidget {
             ),
             Obx(() {
               return HomeController.to.isLoadingCategory.value
-
                   ? CategoryCircleLoading()
                   : Wrap(
                     alignment: WrapAlignment.spaceBetween,
@@ -66,12 +65,16 @@ class HomePage extends StatelessWidget {
                 Get.toNamed(SearchPage.routeName);
               },
             ),
-            Obx(
-               () {
-                return ProductGridWidget(length: HomeController.to.productList.length>4?4:HomeController.to.productList.length,
-                  productList: HomeController.to.productList,isLoading: HomeController.to.isLoadingProduct.value,);
-              }
-            ),
+            Obx(() {
+              return ProductGridWidget(
+                length:
+                    HomeController.to.productList.length > 4
+                        ? 4
+                        : HomeController.to.productList.length,
+                productList: HomeController.to.productList,
+                isLoading: HomeController.to.isLoadingProduct.value,
+              );
+            }),
           ],
         ),
       ),

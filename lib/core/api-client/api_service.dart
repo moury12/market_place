@@ -76,7 +76,7 @@ class ApiService {
     if (queryParams != null && queryParams.isNotEmpty) {
       uri = uri.replace(queryParameters: queryParams);
     }
-
+logger.d(uri.toString());
     http.Response response;
     final headers = {
       'Content-Type': 'application/json',
