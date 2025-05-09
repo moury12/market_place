@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:market_place/core/components/custom_refresh_indicator.dart';
 import 'package:market_place/core/components/custom_textfield.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
@@ -20,62 +21,68 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: padding12,
-        child: Column(
-          spacing: 8.h,
-          children: [
-            GestureDetector(
-              onTap: () {
-                Get.toNamed(SearchPage.routeName);
-              },
-              child: CustomTextField(
-                isEnable: false,
-                prefixIcon: Icon(CupertinoIcons.search, color: Colors.black),
+    return CustomRefreshIndicatorWidget(
+      onRefresh: () async{
+       await HomeController.to.refreshHome();
+      },
+      child: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        child: Padding(
+          padding: padding12,
+          child: Column(
+            spacing: 8.h,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Get.toNamed(SearchPage.routeName);
+                },
+                child: CustomTextField(
+                  isEnable: false,
+                  prefixIcon: Icon(CupertinoIcons.search, color: Colors.black),
+                ),
               ),
-            ),
-            ViewAllRow(
-              title: AppStaticStrings.productCategories.tr,
-              onPressed: () {
-                Get.toNamed(CategoryPage.routeName);
-              },
-            ),
-            Obx(() {
-              return HomeController.to.isLoadingCategory.value
-                  ? CategoryCircleLoading()
-                  : Wrap(
-                    alignment: WrapAlignment.spaceBetween,
-                    spacing: 8.w,
-                    runSpacing: 8.w,
+              ViewAllRow(
+                title: AppStaticStrings.productCategories.tr,
+                onPressed: () {
+                  Get.toNamed(CategoryPage.routeName);
+                },
+              ),
+              Obx(() {
+                return HomeController.to.isLoadingCategory.value
+                    ? CategoryCircleLoading()
+                    : Wrap(
+                      alignment: WrapAlignment.spaceBetween,
+                      spacing: 8.w,
+                      runSpacing: 8.w,
 
-                    children: List.generate(
-                      HomeController.to.catList.length > 8
-                          ? 8
-                          : HomeController.to.catList.length,
-                      (index) => CategoryCardItemWidget(
-                        categoryModel: HomeController.to.catList[index],
+                      children: List.generate(
+                        HomeController.to.catList.length > 8
+                            ? 8
+                            : HomeController.to.catList.length,
+                        (index) => CategoryCardItemWidget(
+                          categoryModel: HomeController.to.catList[index],
+                        ),
                       ),
-                    ),
-                  );
-            }),
-            ViewAllRow(
-              title: AppStaticStrings.recentlyAdded.tr,
-              onPressed: () {
-                Get.toNamed(SearchPage.routeName);
-              },
-            ),
-            Obx(() {
-              return ProductGridWidget(
-                length:
-                    HomeController.to.productList.length > 4
-                        ? 4
-                        : HomeController.to.productList.length,
-                productList: HomeController.to.productList,
-                isLoading: HomeController.to.isLoadingProduct.value,
-              );
-            }),
-          ],
+                    );
+              }),
+              ViewAllRow(
+                title: AppStaticStrings.recentlyAdded.tr,
+                onPressed: () {
+                  Get.toNamed(SearchPage.routeName);
+                },
+              ),
+              Obx(() {
+                return ProductGridWidget(
+                  length:
+                      HomeController.to.productListForHome.length > 4
+                          ? 4
+                          : HomeController.to.productListForHome.length,
+                  productList: HomeController.to.productListForHome,
+                  isLoading: HomeController.to.isLoadingHomeProduct.value,
+                );
+              }),
+            ],
+          ),
         ),
       ),
     );

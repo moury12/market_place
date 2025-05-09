@@ -56,6 +56,9 @@ class _FilterDrawerWidgetState extends State<FilterDrawerWidget> {
                     displayText: (cat) => cat.name.toString(),
                     title: AppStaticStrings.subCategory.tr,
                     items: HomeController.to.subCatList,
+                    onChanged: (value) {
+                      HomeController.to.selectedSubCategory.value= value;
+                    },
                     selectedValue: HomeController.to.selectedSubCategory.value,
                   ),
                   CustomDropdown(
@@ -77,6 +80,9 @@ class _FilterDrawerWidgetState extends State<FilterDrawerWidget> {
                   CustomDropdown(
                     isLoading: HomeController.to.isLoadingCity.value,
                     displayText: (cat) => cat.name.toString(),
+                    onChanged: (value) {
+                      HomeController.to.selectedCity.value= value;
+                    },
                     title: AppStaticStrings.city.tr,
                     items: HomeController.to.cityList,
                     selectedValue: HomeController.to.selectedCity.value,
@@ -118,17 +124,26 @@ class _FilterDrawerWidgetState extends State<FilterDrawerWidget> {
                   CustomDropdown(
                     title: AppStaticStrings.condition.tr,
                     items: condition,
+                    onChanged: (value) {
+                      HomeController.to.selectedCondition.value= value;
+                    },
                     selectedValue: HomeController.to.selectedCondition.value,
                   ),
                   CustomDropdown(
                     title: AppStaticStrings.sortBy.tr,
                     items: sortBy,
+                    onChanged: (value) {
+                      HomeController.to.selectedSortBy.value= value;
+                    },
                     selectedValue: HomeController.to.selectedSortBy.value,
                   ),
                   CustomButton(
-                    onTap: () {
-                      HomeController.to.getProductListRequest();
-                      // Navigator.pop(context);
+                    onTap: () async{
+
+
+                     await HomeController.to.getProductListRequest();
+                     Navigator.pop(context);
+
                     },
                     title: AppStaticStrings.applyFilter.tr,
                   ),

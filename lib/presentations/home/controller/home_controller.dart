@@ -23,6 +23,7 @@ class HomeController extends GetxController {
   RxList<CategoryModel> divisionList = <CategoryModel>[].obs;
   RxList<CityModel> cityList = <CityModel>[].obs;
   RxList<ProductModel> productList = <ProductModel>[].obs;
+  RxList<ProductModel> productListForHome = <ProductModel>[].obs;
   RxList<ProductModel> productWithHigherPriceList = <ProductModel>[].obs;
 
   RxList<SubCategoryModel> subCatList = <SubCategoryModel>[].obs;
@@ -31,6 +32,7 @@ class HomeController extends GetxController {
 
   Rx<TextEditingController> searchController = TextEditingController().obs;
   RxBool isLoadingProduct = false.obs;
+  RxBool isLoadingHomeProduct = false.obs;
   RxBool isLoadingCategory = false.obs;
   RxBool isLoadingDivision = false.obs;
   RxBool isLoadingCity = false.obs;
@@ -38,6 +40,7 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     getCategoryListRequest();
+    getProductListForHomeRequest();
     getDivisionListRequest();
     getProductListRequest();
     getMaximumRange();
@@ -53,6 +56,11 @@ class HomeController extends GetxController {
     selectedSortBy.value = null;
     getMaximumRange();
     getProductListRequest();
+  }Future<void> refreshHome() async {
+    getProductListForHomeRequest();
+    getDivisionListRequest();
+    getCategoryListRequest();
+
   }
 
   getMaximumRange() async {
@@ -250,6 +258,39 @@ class HomeController extends GetxController {
     }
   }
 
+  ///------------------------------ get product list home method -------------------------///
+
+  Future<void> getProductListForHomeRequest() async {
+    try {
+      isLoadingHomeProduct.value = true;
+      ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
+
+      final response = await ApiService().request(
+        endpoint: productGetAllEndPoint,
+
+        method: 'GET',
+      );
+      isLoadingHomeProduct.value = false;
+      if (response['success'] == true) {
+        logger.d(response);
+        productListForHome.value =
+            (response['data'] as List)
+                .map((e) => ProductModel.fromJson(e))
+                .toList();
+      } else {
+        logger.e(response);
+        showCustomSnackbar(
+          title: 'Failed',
+          message: response['message'],
+          type: SnackBarType.failed,
+        );
+      }
+    } catch (e) {
+      logger.e(e.toString());
+      isLoadingHomeProduct.value = false;
+    }
+  }
+
   ///------------------------------ get product list method -------------------------///
 
   Future<void> getProductListRequest({bool loadMore = false}) async {
@@ -272,7 +313,7 @@ class HomeController extends GetxController {
       final response = await ApiService().request(
         endpoint: productGetAllEndPoint,
         method: 'GET',
-        queryParams: {
+        queryParams:  {
           'page': currentProductPage.value.toString(),
           'limit': itemsProductPerPage.value.toString(),
           'search': searchController.value.text,

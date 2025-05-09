@@ -37,118 +37,122 @@ class _SearchPageState extends State<SearchPage> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      endDrawer: FilterDrawerWidget(),
-      body: Column(
-        children: [
-          Padding(
-            padding: padding12.copyWith(
-              top: MediaQuery.of(context).viewPadding.top,
-              bottom: 0,
-            ),
-            child: Row(
-              spacing: 8.w,
-              children: [
-                ButtonTapWidget(
-                  shape: CircleBorder(),
+    return PopScope(
+      onPopInvokedWithResult: (didPop, result) {
+        HomeController.to.refreshSearchHome();
+      },
+      child: Scaffold(
+        endDrawer: FilterDrawerWidget(),
+        body:  CustomRefreshIndicatorWidget(
+            onRefresh:() async => await HomeController.to.refreshSearchHome(),
+            child: Column(
+            children: [
+              Padding(
+                padding: padding12.copyWith(
+                  top: MediaQuery.of(context).viewPadding.top,
+                  bottom: 0,
+                ),
+                child: Row(
+                  spacing: 8.w,
+                  children: [
+                    ButtonTapWidget(
+                      shape: CircleBorder(),
 
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: SvgPicture.asset(backIcon),
-                ),
-                Expanded(
-                  child: CustomTextField(
-                    textEditingController: HomeController.to.searchController.value,
-                    onChanged: (p0) {
-                      HomeController.to.getProductListRequest();
-                    },
-                    prefixIcon: Icon(
-                      CupertinoIcons.search,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-                Builder(
-                  builder: (context) {
-                    return ButtonTapWidget(
                       onTap: () {
-                        Scaffold.of(context).openEndDrawer();
+                        Get.back();
                       },
-                      child: SvgPicture.asset(filterIcon),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: CustomRefreshIndicatorWidget(
-              onRefresh:() {
-            return    HomeController.to.refreshSearchHome();
-              },
-              child: SingleChildScrollView(
-                controller: scrollController,
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: Padding(
-                  padding: padding12.copyWith(top: 6),
-                  child:  Column(
-                      spacing: 8.h,
-                      children: [
-                       /* !HomeController.to.showProducts.value
-                            ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              spacing: 6.h,
-                              children: [
-                                ViewAllRow(
-                                  title: AppStaticStrings.searchHistory.tr,
-                                  onPressed: () {},
-                                  buttonText: AppStaticStrings.clearAll.tr,
-                                ),
-                                Wrap(
-                                  spacing: 8.w,
-                                  runSpacing: 8.w,
-                                  // alignment: WrapAlignment.spaceBetween,
-                                  children: List.generate(7, (index) {
-                                    return ButtonTapWidget(
-                                      onTap: () {
-                                        HomeController.to.showProducts.value =
-                                            true;
-                                      },
-                                      child: GreenAccentContainerWidget(
-                                        radius: 4.r,
-                                        child: Padding(
-                                          padding: padding4,
-                                          child: CustomText(
-                                            text: "Women's",
-                                            style: poppinsRegular,
-                                            fontSize: 10.sp,
-                                            color: AppColors.kPrimaryColor,
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }),
-                                ),
-                              ],
-                            )
-                            : SizedBox.shrink(),
-                        HomeController.to.showProducts.value
-                            ? */Obx(() {
-                              return ProductGridWidget(
-                                productList: HomeController.to.productList,
-                                isLoading:
-                                    HomeController.to.isLoadingProduct.value,
-                              );
-                            })
-                           /* : SizedBox.shrink()*/,
-                      ],
-                    )
+                      child: SvgPicture.asset(backIcon),
+                    ),
+                    Expanded(
+                      child: CustomTextField(
+                        textEditingController: HomeController.to.searchController.value,
+                        onChanged: (p0) {
+                          HomeController.to.getProductListRequest();
+                        },
+                        prefixIcon: Icon(
+                          CupertinoIcons.search,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    Builder(
+                      builder: (context) {
+                        return ButtonTapWidget(
+                          onTap: () {
+                            Scaffold.of(context).openEndDrawer();
+                          },
+                          child: SvgPicture.asset(filterIcon),
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ),
-            ),
+              Expanded(
+                child: SingleChildScrollView(
+
+                  controller: scrollController,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Padding(
+                    padding: padding12.copyWith(top: 6),
+                    child:  Column(
+                        spacing: 8.h,
+                        children: [
+                         /* !HomeController.to.showProducts.value
+                              ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                spacing: 6.h,
+                                children: [
+                                  ViewAllRow(
+                                    title: AppStaticStrings.searchHistory.tr,
+                                    onPressed: () {},
+                                    buttonText: AppStaticStrings.clearAll.tr,
+                                  ),
+                                  Wrap(
+                                    spacing: 8.w,
+                                    runSpacing: 8.w,
+                                    // alignment: WrapAlignment.spaceBetween,
+                                    children: List.generate(7, (index) {
+                                      return ButtonTapWidget(
+                                        onTap: () {
+                                          HomeController.to.showProducts.value =
+                                              true;
+                                        },
+                                        child: GreenAccentContainerWidget(
+                                          radius: 4.r,
+                                          child: Padding(
+                                            padding: padding4,
+                                            child: CustomText(
+                                              text: "Women's",
+                                              style: poppinsRegular,
+                                              fontSize: 10.sp,
+                                              color: AppColors.kPrimaryColor,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                                  ),
+                                ],
+                              )
+                              : SizedBox.shrink(),
+                          HomeController.to.showProducts.value
+                              ? */Obx(() {
+                                return ProductGridWidget(
+                                  productList: HomeController.to.productList,
+                                  isLoading:
+                                      HomeController.to.isLoadingProduct.value,
+                                );
+                              })
+                             /* : SizedBox.shrink()*/,
+                        ],
+                      )
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
