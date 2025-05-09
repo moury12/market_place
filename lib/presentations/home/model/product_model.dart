@@ -39,3 +39,71 @@ class ProductModel {
     return data;
   }
 }
+class ProductDetailsModel {
+  String? sId;
+  String? name;
+  String? description;
+  int? price;
+  List<String>? img;
+  String? condition;
+  String? categoryName;
+  String? categoryId;
+  String? subCategoryName;
+  String? userName;
+  String? userEmail;
+  String? userPhone;
+  String? userImg;
+  String? userId;
+
+  ProductDetailsModel(
+      {this.sId,
+        this.name,
+        this.description,
+        this.price,
+        this.img,
+        this.condition,
+        this.categoryName,
+        this.categoryId,
+        this.subCategoryName,
+        this.userName,
+        this.userEmail,
+        this.userPhone,
+        this.userImg,
+        this.userId});
+
+  ProductDetailsModel.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    name = json['name'];
+    description = json['description'];
+    price = json['price'];
+    img = json['img'].cast<String>();
+    condition = json['condition'];
+    categoryName = json['category_name'];
+    categoryId = json['category_id'];
+    subCategoryName = json['sub_category_name'];
+    userName = json['user_name'];
+    userEmail = json['user_email'];
+    userPhone = json['user_phone'];
+    userImg = json['user_img'];
+    userId = json['user_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['name'] = name;
+    data['description'] = description;
+    data['price'] = price;
+    data['img'] = img;
+    data['condition'] = condition;
+    data['category_name'] = categoryName;
+    data['category_id'] = categoryId;
+    data['sub_category_name'] = subCategoryName;
+    data['user_name'] = userName;
+    data['user_email'] = userEmail;
+    data['user_phone'] = userPhone;
+    data['user_img'] = userImg;
+    data['user_id'] = userId;
+    return data;
+  }
+}

@@ -12,6 +12,7 @@ import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/core/utils/variable.dart';
 import 'package:market_place/presentations/home/model/product_model.dart';
+import 'package:market_place/presentations/product/controller/product_controller.dart';
 import 'package:market_place/presentations/product/views/product_details_page.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -40,6 +41,8 @@ class ProductCardItemWidget extends StatelessWidget {
       child: ButtonTapWidget(
         radius: 4.r,
         onTap: () {
+          Get.put(ProductController());
+          ProductController.to.getProductDetailsRequest(productID: product.sId.toString());
           Get.toNamed(ProductDetailsPage.routeName, arguments: fromSeller);
         },
         child: Padding(

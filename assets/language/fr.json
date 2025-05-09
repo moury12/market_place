@@ -11,6 +11,7 @@
   "passwordNumber": "Le mot de passe doit contenir au moins un chiffre.",
   "passwordLowercase": "Le mot de passe doit contenir au moins une lettre minuscule.",
   "warning": "Avertissement",
+  "relatedProduct": "Produit associé",
 
   "ok": "OK",
 

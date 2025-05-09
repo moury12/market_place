@@ -76,6 +76,7 @@
   "success": "نجاح",
   "cancel": "إلغاء",
   "ok": "موافق",
+  "relatedProduct": "المنتج المتعلق",
 
   "updatePasswordConfirmation": "هل أنت متأكد من أنك تريد تحديث كلمة المرور؟",
   "passwordUpdated": "تم تحديث كلمة المرور بنجاح.",

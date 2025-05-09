@@ -14,8 +14,10 @@ String divisionGetEndPoint ='division/get-all';
 String cityGetEndPoint ='city/get-all';
 String productGetAllEndPoint ='product/get-all';
 String productHigherPriceEndPoint ='product/get-all?sort=price&order=desc';
-
 String productDetailsEndPoint ='product/get-details/';
+String productFavEndPoint ='favorite/create/';
+
+
 String addToCartEndPoint ='cart/create';
 String getAllCartEndPoint ='cart/get-all';
 String deleteCartEndPoint ='cart/delete-item/';

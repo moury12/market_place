@@ -25,7 +25,7 @@ class SellerProfilePage extends StatelessWidget {
           child: Column(spacing: 8.h,
             children: [
               ProfileInfoDetailsWidget(isEdit: false,),
-              CallAndChatButtons(),
+              CallAndChatButtons(number: '', userID: '', ),
               ViewAllRow(title:AppStaticStrings.moreFromThisSeller.tr, onPressed: () {
 
               },),

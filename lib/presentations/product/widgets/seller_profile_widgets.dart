@@ -9,8 +9,10 @@ import 'package:market_place/core/helper/helper_function.dart';
 import 'package:market_place/presentations/navigation/controller/navigation_controller.dart';
 import 'package:market_place/presentations/navigation/views/navigation_page.dart';
 class CallAndChatButtons extends StatelessWidget {
+  final String number;
+  final String userID;
   const CallAndChatButtons({
-    super.key,
+    super.key, required this.number, required this.userID,
   });
 
   @override
@@ -25,9 +27,9 @@ class CallAndChatButtons extends StatelessWidget {
               child: SvgPicture.asset(callIcon),
             ),
             onTap: () {
-              callOnPhone(phoneNumber: "01716");
+              callOnPhone(phoneNumber: number);
             },
-            title: AppStaticStrings.cancel.tr,
+            title: AppStaticStrings.callNow.tr,
           ),
         ),
         Expanded(

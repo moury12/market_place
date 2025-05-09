@@ -41,6 +41,8 @@ class AppStaticStrings {
   static  String productInformation = 'productInformation';
   static  String productDescription = 'productDescription';
   static  String previous = 'previous';
+  static const String relatedProduct = 'relatedProduct';
+
   static  String productTitle = 'productTitle';
   static  String uploadProductImages = 'uploadProductImages';
 
