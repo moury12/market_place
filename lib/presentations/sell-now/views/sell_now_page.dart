@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 import 'package:market_place/core/components/custom_button.dart';
 import 'package:market_place/core/components/custom_button_tap.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
@@ -22,6 +21,7 @@ import 'package:market_place/presentations/sell-now/controller/sell_controller.d
 import '../../../core/components/custom_drop_down_button.dart';
 import '../../../core/components/custom_textfield.dart';
 import '../../../core/utils/variable.dart';
+import '../../home/controller/home_controller.dart';
 
 class SellNowPage extends StatelessWidget {
   static const String routeName = "/sell-now";
@@ -130,19 +130,43 @@ class SellNowPage extends StatelessWidget {
                     title: AppStaticStrings.productTitle.tr,
                   ),
                   CustomDropdown(
-                    title: AppStaticStrings.category.tr,
-                    items: category,
+
+                      isLoading: HomeController.to.isLoadingCategory.value,
+                      title: AppStaticStrings.category.tr,
+                      items: HomeController.to.catList,
+                      onChanged: (value) {
+
+                        if (value != null) {
+                          SellController.to.selectedCategory.value = value;
+
+                          HomeController.to.getSubCategoryListRequest(
+                            catId: value.sId.toString(),
+                          );
+                        }
+                      },
+                      displayText: (cat) => cat.name.toString(),
+
+
                     selectedValue: SellController.to.selectedCategory.value,
                   ),
                   CustomDropdown(
+                    isLoading: HomeController.to.isLoadingSubCategory.value,
+                    displayText: (cat) => cat.name.toString(),
                     title: AppStaticStrings.subCategory.tr,
-                    items: category,
+                    items: HomeController.to.subCatList,
+                    onChanged: (value) {
+                      SellController.to.selectedSubCategory.value= value;
+                    },
+
                     selectedValue: SellController.to.selectedSubCategory.value,
                   ),
                   CustomDropdown(
                     title: AppStaticStrings.condition.tr,
                     items: condition,
                     selectedValue: SellController.to.selectedCondition.value,
+                    onChanged: (value) {
+                      SellController.to.selectedCondition.value=value;
+                    },
                   ),
                   CustomTextField(
                     fillColor: AppColors.kWhiteColor,
@@ -186,14 +210,32 @@ class SellNowPage extends StatelessWidget {
                   titleBold(title: AppStaticStrings.productInformation.tr),
 
                   CustomDropdown(
+
+                    isLoading: HomeController.to.isLoadingDivision.value,
                     title: AppStaticStrings.wilaya.tr,
-                    items: category,
+                    items: HomeController.to.divisionList,
+                    onChanged: (value) {
+                      if (value != null) {
+                        SellController.to.selectedWilaya.value = value;
+
+                        HomeController.to.getCityListRequest(
+                          division: value.sId.toString(),
+                        );
+                      }
+                    },
+                    displayText: (cat) => cat.name.toString(),
                     selectedValue: SellController.to.selectedWilaya.value,
                   ),
                   CustomDropdown(
-                    title: AppStaticStrings.city.tr,
-                    items: category,
+
                     selectedValue: SellController.to.selectedCity.value,
+                    isLoading: HomeController.to.isLoadingCity.value,
+                    displayText: (cat) => cat.name.toString(),
+                    onChanged: (value) {
+                      SellController.to.selectedCity.value= value;
+                    },
+                    title: AppStaticStrings.city.tr,
+                    items: HomeController.to.cityList,
                   ),
 
                   Row(

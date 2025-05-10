@@ -18,6 +18,7 @@ String productDetailsEndPoint ='product/get-details/';
 String productFavEndPoint ='favorite/create/';
 String favoriteProductEndPoint ='favorite/get-all';
 String subscribeEndPoint ='subscription/create';
+String productCreateEndPoint ='product/create';
 
 
 String addToCartEndPoint ='cart/create';
