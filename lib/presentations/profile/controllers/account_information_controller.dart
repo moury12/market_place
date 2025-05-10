@@ -67,6 +67,7 @@ RxString profileImgPath ="".obs;
       if (response['success'] == true) {
         logger.d(response);
         userModel.value = ProfileModel.fromJson(response['data']);
+        Boxes.getUserData().put(subscribed, userModel.value.isSubscribed);
         reinitializeProfileControllers();
       } else if (response['message'] == AppStaticStrings.noInternet) {
         showCustomSnackbar(
@@ -148,7 +149,7 @@ RxString profileImgPath ="".obs;
       final response = await ApiService().request(
         endpoint: favoriteProductEndPoint,
         method: 'GET',
-        useAuth: false,
+
         queryParams:  {
           'page': currentFavProductPage.value.toString(),
           'limit': itemsFavProductPerPage.value.toString(),

@@ -9,6 +9,7 @@ import 'package:market_place/core/constants/fontsize_constant.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/presentations/auth/views/login_page.dart';
+import 'package:market_place/presentations/auth/views/subscription_page.dart';
 import 'package:market_place/presentations/notification/views/notification_page.dart';
 
 import '../../../core/components/custom_appbar.dart';
@@ -24,7 +25,7 @@ class NavigationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<String> appbarTitle= [
+    List<String> appbarTitle = [
       AppStaticStrings.myListings.tr,
       AppStaticStrings.addNewListing.tr,
       AppStaticStrings.messages.tr,
@@ -46,9 +47,9 @@ class NavigationPage extends StatelessWidget {
                 builder: (context) {
                   return CustomHomeAppbar(
                     onActionTap: () {
-                      if(NavigationController.to.isLoggedIn){
+                      if (NavigationController.to.isLoggedIn) {
                         Get.toNamed(NotificationPage.routeName);
-                      }else{
+                      } else {
                         Get.toNamed(LoginPage.routeName);
                       }
                     },
@@ -63,10 +64,7 @@ class NavigationPage extends StatelessWidget {
                   icon: Icon(Icons.arrow_back_rounded),
                 ),
                 title:
-                    appbarTitle[NavigationController
-                            .to
-                            .selectedNavIndex
-                            .value -
+                    appbarTitle[NavigationController.to.selectedNavIndex.value -
                         1],
               );
         }),
@@ -107,12 +105,18 @@ class NavigationPage extends StatelessWidget {
                     // Add Expanded to distribute space evenly
                     child: ButtonTapWidget(
                       onTap: () {
-                        if(Boxes.getUserData().get(tokenKey)== null/*&&NavigationController.to.selectedNavIndex.value!=0*/){
-
-                            Get.toNamed(LoginPage.routeName);
-
-                        }
-                        else{
+                        logger.d(NavigationController.to.isSubscribed);
+                        if (!NavigationController
+                            .to
+                            .isLoggedIn /*&&NavigationController.to.selectedNavIndex.value!=0*/ ) {
+                          Get.toNamed(LoginPage.routeName);
+                        } else if ((index ==
+                                    1 ||
+                                index ==
+                                    2) &&
+                            NavigationController.to.isSubscribed==false) {
+                          Get.toNamed(SubscriptionPage.routeName);
+                        } else {
                           NavigationController.to.selectedNavIndex.value =
                               index;
                         }
@@ -121,10 +125,7 @@ class NavigationPage extends StatelessWidget {
                         padding: padding6V,
                         child: Obx(() {
                           bool isSelected =
-                              NavigationController
-                                  .to
-                                  .selectedNavIndex
-                                  .value ==
+                              NavigationController.to.selectedNavIndex.value ==
                               index;
                           return Column(
                             mainAxisSize:
@@ -137,10 +138,13 @@ class NavigationPage extends StatelessWidget {
                                   duration: const Duration(microseconds: 10),
                                   curve: Curves.linear,
 
-                                  transform: Matrix4.translationValues(0, -20, 0),
+                                  transform: Matrix4.translationValues(
+                                    0,
+                                    -20,
+                                    0,
+                                  ),
                                   decoration: BoxDecoration(
-                                    color:
-                                 Colors.white,
+                                    color: Colors.white,
                                     shape: BoxShape.circle,
 
                                     // border: Border.all(
@@ -149,7 +153,8 @@ class NavigationPage extends StatelessWidget {
                                     // ),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: AppColors.kPrimaryColor.withValues(alpha: .2),
+                                        color: AppColors.kPrimaryColor
+                                            .withValues(alpha: .2),
                                         blurRadius: 4.r,
                                         offset: Offset(0, 4),
                                       ),
@@ -172,7 +177,8 @@ class NavigationPage extends StatelessWidget {
                                       // ),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: AppColors.kPrimaryColor.withValues(alpha: .2),
+                                          color: AppColors.kPrimaryColor
+                                              .withValues(alpha: .2),
                                           blurRadius: 4.r,
                                           offset: Offset(0, 4),
                                         ),
@@ -181,7 +187,9 @@ class NavigationPage extends StatelessWidget {
                                     child: SvgPicture.asset(
                                       NavigationController.to.icons[index],
                                       colorFilter: ColorFilter.mode(
-                                        isSelected ? Colors.white : Colors.black,
+                                        isSelected
+                                            ? Colors.white
+                                            : Colors.black,
                                         BlendMode.srcIn,
                                       ),
                                     ),
@@ -203,8 +211,7 @@ class NavigationPage extends StatelessWidget {
                                     overflow: TextOverflow.ellipsis,
                                     fontSize: getFontSizeSmall(),
                                     style: poppinsMedium,
-                                    text:
-                                        labels[index],
+                                    text: labels[index],
                                   ),
                                 ),
                             ],

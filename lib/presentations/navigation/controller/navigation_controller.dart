@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/constants/image_constants.dart';
-import 'package:market_place/presentations/home/controller/home_controller.dart';
-import 'package:market_place/presentations/message/controllers/message_controller.dart';
 import 'package:market_place/presentations/message/views/message_page.dart';
 import 'package:market_place/presentations/my-listings/views/my-listings_page.dart';
-import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
 import 'package:market_place/presentations/profile/views/profile_page.dart';
-import 'package:market_place/presentations/sell-now/controller/sell_controller.dart';
 import 'package:market_place/presentations/sell-now/views/sell_now_page.dart';
 
 import '../../../core/api-client/api_endpoints.dart';
@@ -22,15 +18,22 @@ class NavigationController extends GetxController {
   static NavigationController get to => Get.find();
   RxInt selectedNavIndex = 0.obs;
   RxBool isLoadingLogout = false.obs;
-// @override
-//   void onInit() {
-//     // TODO: implement onInit
-//     super.onInit();
-//   }
+  @override
+  void onInit() {
+    logger.d(Boxes.getUserData().get(tokenKey));
+    logger.d(Boxes.getUserData().get(subscribed));
+    super.onInit();
+  }
+
   bool get isLoggedIn {
     return Boxes.getUserData().get(tokenKey) != null &&
         Boxes.getUserData().get(tokenKey).isNotEmpty;
   }
+
+  bool get isSubscribed {
+    return  Boxes.getUserData().get(tokenKey) != null && Boxes.getUserData().get(subscribed) ;
+  }
+
   List<Widget> getPages() {
     return [
       HomePage(),
@@ -40,8 +43,6 @@ class NavigationController extends GetxController {
       if (isLoggedIn) ProfilePage(),
     ];
   }
-
-
 
   // List of icons for the navigation bar
   final List<String> icons = [
@@ -79,5 +80,6 @@ class NavigationController extends GetxController {
       logger.e(e.toString());
     }
   }
+
   // List of labels for the navigation bar
 }

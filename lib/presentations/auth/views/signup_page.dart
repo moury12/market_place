@@ -172,9 +172,7 @@ class SignUpPage extends StatelessWidget {
                     );
                   }),
                   space12H,
-                  CustomButton(onTap: () {
-                    Get.toNamed(SubscriptionPage.routeName);
-                  },)
+
                 ],
               ),
             ),

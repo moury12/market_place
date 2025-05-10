@@ -18,30 +18,30 @@ class SubscriptionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = AuthController.to;
-    for (var package in controller.packageList) {
-      controller.tabContent.add(
-        SubscriptionPlanWidget(
-          package: package,
-        ),
-      );
-    }
-
-    // Fallback if no packages (shouldn't happen if API works)
-    if (controller.packageList.isEmpty) {
-      controller.tabContent.addAll([
-        SubscriptionPlanWidget(
-          package: PackageModel(),
-        ), // Monthly fallback
-        SubscriptionPlanWidget(
-          package: PackageModel(),
-        ), // Yearly fallback
-      ]);
-      controller.tabLabels.value = [
-        AppStaticStrings.monthly,
-        AppStaticStrings.yearly,
-      ];
-    }
+    // final controller = AuthController.to;
+    // for (var package in controller.packageList) {
+    //   controller.tabContent.add(
+    //     SubscriptionPlanWidget(
+    //       package: package,
+    //     ),
+    //   );
+    // }
+    //
+    // // Fallback if no packages (shouldn't happen if API works)
+    // if (controller.packageList.isEmpty) {
+    //   controller.tabContent.addAll([
+    //     SubscriptionPlanWidget(
+    //       package: PackageModel(),
+    //     ), // Monthly fallback
+    //     SubscriptionPlanWidget(
+    //       package: PackageModel(),
+    //     ), // Yearly fallback
+    //   ]);
+    //   controller.tabLabels.value = [
+    //     AppStaticStrings.monthly,
+    //     AppStaticStrings.yearly,
+    //   ];
+    // }
 
     return Scaffold(
       body: Padding(

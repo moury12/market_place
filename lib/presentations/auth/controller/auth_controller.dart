@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:market_place/presentations/auth/model/package_model.dart';
+import 'package:market_place/presentations/auth/views/subscription_page.dart';
 import 'package:market_place/presentations/auth/views/verify_otp_page.dart';
 
 import '../../../core/api-client/api_endpoints.dart';
@@ -16,6 +17,7 @@ import '../../navigation/views/navigation_page.dart';
 import '../views/login_page.dart';
 import '../views/payment_page.dart';
 import '../views/set_new_password_page.dart';
+import '../widgets/subscription_plan_card_widget.dart';
 
 class AuthController extends GetxController {
   static AuthController get to => Get.find();
@@ -23,6 +25,7 @@ class AuthController extends GetxController {
   void onInit() {
     reinitializeSignUpControllers();
     getPackagesRequest();
+    ever(packageList, (_) => updateTabContent());
 
     super.onInit();
   }
@@ -118,15 +121,18 @@ class AuthController extends GetxController {
 
       if (response['success'] == true) {
         logger.d(response);
-        showCustomSnackbar(title: 'Success', message: response['message']);
-
-        if (isAccVerify) {
-          Get.offAllNamed(LoginPage.routeName);
-        } else {
+        Boxes.getUserData().put(verifyTokenKey, response['data']['resetToken']);
+        logger.d(
           Boxes.getUserData().put(
             verifyTokenKey,
             response['data']['resetToken'],
-          );
+          ),
+        );
+        showCustomSnackbar(title: 'Success', message: response['message']);
+
+        if (isAccVerify) {
+          Get.offAllNamed(SubscriptionPage.routeName);
+        } else {
           Get.toNamed(SetNewPasswordPage.routeName);
         }
       } else {
@@ -252,7 +258,6 @@ class AuthController extends GetxController {
 
   ///-----------------------------get package list method------------------------------///
 
-
   Future<void> getPackagesRequest() async {
     try {
       loadingProcess.value = AuthProcess.packageGet;
@@ -271,9 +276,13 @@ class AuthController extends GetxController {
                 .map((e) => PackageModel.fromJson(e))
                 .toList();
         if (packageList.isNotEmpty) {
-          tabLabels.value = packageList.map((e) => e.type ?? "Unknown").toList();
+          tabLabels.value =
+              packageList.map((e) => e.type ?? "Unknown").toList();
         } else {
-          tabLabels.value = [AppStaticStrings.monthly, AppStaticStrings.yearly]; // Fallback
+          tabLabels.value = [
+            AppStaticStrings.monthly,
+            AppStaticStrings.yearly,
+          ]; // Fallback
         }
       } else {
         logger.e(response);
@@ -291,25 +300,28 @@ class AuthController extends GetxController {
 
   ///------------------------------ subscribe now method -------------------------///
 
-
   Future<void> subscribeNowRequest({required String subscribeId}) async {
     try {
-     isLoadingSubscribe.value = true;
-
+      isLoadingSubscribe.value = true;
+      ApiService().setAuthToken(
+        Boxes.getUserData().get(tokenKey) != null
+            ? Boxes.getUserData().get(tokenKey).toString()
+            : Boxes.getUserData().get(verifyTokenKey).toString(),
+      );
       final response = await ApiService().request(
         endpoint: subscribeEndPoint,
         method: 'POST',
-        body: { "subscription_id":subscribeId},
+        useAuth: true,
+        body: {"subscription_id": subscribeId},
       );
 
-     isLoadingSubscribe.value = false;
+      isLoadingSubscribe.value = false;
 
       if (response['success'] == true) {
         logger.d(response);
         CommonController.to.stripeUrl.value = response["url"];
         Get.toNamed(PaymentScreen.routeName);
         showCustomSnackbar(title: 'Success', message: response['message']);
-        // Get.toNamed(VerifyOtpPage.routeName);
       } else {
         logger.e(response);
         showCustomSnackbar(
@@ -319,10 +331,11 @@ class AuthController extends GetxController {
         );
       }
     } catch (e) {
-     isLoadingSubscribe.value = false;
+      isLoadingSubscribe.value = false;
       logger.e(e.toString());
     }
   }
+
   clearSignUpController() {
     emailSignUpController.value.clear();
     nameSignUpController.clear();
@@ -343,9 +356,9 @@ class AuthController extends GetxController {
 
   reinitializeSignUpControllers() {
     if (kDebugMode) {
-      emailSignUpController.value.text = 'calaga8422@bocapies.com';
-      nameSignUpController.text = 'calaga8422';
-      phoneSignUpController.text = '01566026303';
+      emailSignUpController.value.text = 'kediwiw260@daupload.com';
+      nameSignUpController.text = 'kediwiw260';
+      phoneSignUpController.text = '01566026603';
       passSignUpController.text = '12345aA*';
       confirmPassSignUpController.text = '12345aA*';
       emailLoginController.text = 'calaga8422@bocapies.com';
@@ -354,6 +367,23 @@ class AuthController extends GetxController {
       passLoginController.text = '12345aA!';
       passNewController.text = '12345aA*';
       confirmPassNewController.text = '12345aA*';
+    }
+  }
+
+  void updateTabContent() {
+    tabContent.clear();
+    for (var package in packageList) {
+      tabContent.add(SubscriptionPlanWidget(package: package));
+    }
+
+    if (packageList.isEmpty) {
+      tabContent.addAll([
+        SubscriptionPlanWidget(package: PackageModel(type: 'monthly')),
+        SubscriptionPlanWidget(package: PackageModel(type: 'yearly')),
+      ]);
+      tabLabels.value = [AppStaticStrings.monthly, AppStaticStrings.yearly];
+    } else {
+      tabLabels.value = packageList.map((p) => p.type ?? 'Unknown').toList();
     }
   }
 

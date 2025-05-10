@@ -8,6 +8,7 @@ import 'package:market_place/core/constants/custom_text.dart';
 import 'package:market_place/core/constants/fontsize_constant.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/core/utils/variable.dart';
+import 'package:market_place/presentations/auth/controller/auth_controller.dart';
 import 'package:market_place/presentations/auth/model/package_model.dart';
 
 import '../../../core/constants/padding_constant.dart';
@@ -79,9 +80,16 @@ class SubscriptionPlanWidget extends StatelessWidget {
                       fontSize: getFontSizeSmall(),
                     ),
                   ),
-                CustomButton(
-                  onTap: () {},
-                  title: AppStaticStrings.subscribeNow.tr,
+                Obx(
+               () {
+                    return CustomButton(
+                      isLoading: AuthController.to.isLoadingSubscribe.value,
+                      onTap: () {
+                        AuthController.to.subscribeNowRequest(subscribeId: package!.sId.toString());
+                      },
+                      title: AppStaticStrings.subscribeNow.tr,
+                    );
+                  }
                 ),
               ],
             ),

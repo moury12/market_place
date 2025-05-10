@@ -14,6 +14,7 @@ String userBoxName = 'user';
 String initialKey = 'initial';
 String verifyEmail = 'verify email';
 String tokenKey = 'token';
+String subscribed = 'is_subscribed';
 String verifyTokenKey = 'verify token';
 // Condition options
 final List<String> condition = ['New', 'Used'];
