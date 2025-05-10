@@ -16,6 +16,7 @@ String productGetAllEndPoint ='product/get-all';
 String productHigherPriceEndPoint ='product/get-all?sort=price&order=desc';
 String productDetailsEndPoint ='product/get-details/';
 String productFavEndPoint ='favorite/create/';
+String favoriteProductEndPoint ='favorite/get-all';
 
 
 String addToCartEndPoint ='cart/create';

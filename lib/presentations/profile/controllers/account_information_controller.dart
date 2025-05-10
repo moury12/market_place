@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:market_place/presentations/profile/model/profile_model.dart';
 
@@ -11,6 +10,7 @@ import '../../../core/constants/app_static_strings.dart';
 import '../../../core/helper/helper_function.dart';
 import '../../../core/utils/hive_boxes.dart';
 import '../../../core/utils/variable.dart';
+import '../../home/model/product_model.dart';
 
 class AccountInformationController extends GetxController{
   static AccountInformationController get to => Get.find();
@@ -23,9 +23,8 @@ RxString profileImgPath ="".obs;
   TextEditingController currentPasswordController = TextEditingController();
   RxBool isLoadingChangePass = false.obs;
   RxBool isLoadingPolicy = false.obs;
+  RxList<ProductModel> favProductList = <ProductModel>[].obs;
 
-  // Rx<SettingsModel> policyModel = SettingsModel().obs;
-  // Rx<SettingsModel> termsModel = SettingsModel().obs;
   ///=====================add dynmic name ====================///
   Rx<TextEditingController> nameController =
       TextEditingController().obs;
@@ -39,10 +38,20 @@ RxString profileImgPath ="".obs;
   Rx<TextEditingController> contactNumberController =
       TextEditingController().obs;
   Rx<ProfileModel> userModel = ProfileModel().obs;
+
+  ///====================product pagination variable========================///
+
+  final RxInt currentFavProductPage = 1.obs;
+  final RxInt itemsFavProductPerPage = 10.obs;
+  final RxInt totalFavProductPages = 5.obs;
+  final RxBool isFavProductLoadingMore = false.obs;
+  RxBool isLoadingFavProduct = false.obs;
+
   @override
   void onInit() {
     getUserProfileRequest();
-    reinitializeSignUpControllers();
+    getFavProductListRequest();
+    reinitializeProfileControllers();
     super.onInit();
   }
   ///------------------------------ get User profile method -------------------------///
@@ -117,6 +126,75 @@ RxString profileImgPath ="".obs;
     }
   }
 
+  ///------------------------------ get product list method -------------------------///
+
+  Future<void> getFavProductListRequest({bool loadMore = false}) async {
+    try {
+      // Don't load more if we've reached the last page
+      if (loadMore && currentFavProductPage.value >= totalFavProductPages.value) {
+        return;
+      }
+
+      if (loadMore) {
+        isFavProductLoadingMore.value = true;
+        currentFavProductPage.value++;
+        // Don't increment page here - we'll do it after successful response
+      } else {
+        isLoadingFavProduct.value = true;
+        currentFavProductPage.value = 1;
+      }
+
+      ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
+      final response = await ApiService().request(
+        endpoint: favoriteProductEndPoint,
+        method: 'GET',
+        queryParams:  {
+          'page': currentFavProductPage.value.toString(),
+          'limit': itemsFavProductPerPage.value.toString(),
+
+
+        },
+      );
+
+      isLoadingFavProduct.value = false;
+      isFavProductLoadingMore.value = false;
+
+      if (response['success'] == true) {
+        if (response['pagination'] != null) {
+          currentFavProductPage.value = response['pagination']['currentPage'] ?? 1;
+          totalFavProductPages.value =
+              response['pagination']['totalPages'] ?? 1; // Add this line
+          itemsFavProductPerPage.value =
+              response['pagination']['itemsPerPage'] ?? 10;
+        }
+
+        final newProducts =
+        (response['data'] as List)
+            .map((e) => ProductModel.fromJson(e))
+            .toList();
+
+        if (loadMore) {
+          // Only increment page after successful load
+
+          favProductList.addAll(newProducts);
+        } else {
+          favProductList.value = newProducts;
+        }
+        logger.d(response);
+      } else {
+        logger.e(response);
+        showCustomSnackbar(
+          title: 'Failed',
+          message: response['message'],
+          type: SnackBarType.failed,
+        );
+      }
+    } catch (e) {
+      logger.e(e.toString());
+      isLoadingFavProduct.value = false;
+      isFavProductLoadingMore.value = false;
+    }
+  }
   ///------------------------------ change pass method -------------------------///
 
   Future<void> changePassRequest() async {
@@ -157,12 +235,6 @@ RxString profileImgPath ="".obs;
     contactNumberController.value.text = userModel.value.phone ?? 'n/a';
 
 
-  }  reinitializeSignUpControllers() {
-    if (kDebugMode) {
-      confirmPasswordController.text = '12345aA!';
-      newPasswordController.text = '12345aA!';
-      currentPasswordController.text = '12345aA*';
-    }
   }
 
   clearControllers() {

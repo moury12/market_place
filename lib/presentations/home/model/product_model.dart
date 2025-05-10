@@ -54,6 +54,8 @@ class ProductDetailsModel {
   String? userPhone;
   String? userImg;
   String? userId;
+  bool? isFavorite;
+
 
   ProductDetailsModel(
       {this.sId,
@@ -69,6 +71,7 @@ class ProductDetailsModel {
         this.userEmail,
         this.userPhone,
         this.userImg,
+        this.isFavorite,
         this.userId});
 
   ProductDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -86,6 +89,7 @@ class ProductDetailsModel {
     userPhone = json['user_phone'];
     userImg = json['user_img'];
     userId = json['user_id'];
+    isFavorite = json['is_favorite'];
   }
 
   Map<String, dynamic> toJson() {
@@ -104,6 +108,7 @@ class ProductDetailsModel {
     data['user_phone'] = userPhone;
     data['user_img'] = userImg;
     data['user_id'] = userId;
+    data['is_favorite'] = isFavorite;
     return data;
   }
 }

@@ -28,7 +28,8 @@ class AppRoutes {
       name: SplashPage.routeName,
       page: () => SplashPage(),
       binding: SplashBinding(),
-    ),  GetPage(
+    ),
+    GetPage(
       name: OnboardingPage.routeName,
       page: () => OnboardingPage(),
       binding: SplashBinding(),
@@ -37,7 +38,8 @@ class AppRoutes {
       name: LoginPage.routeName,
       page: () => LoginPage(),
       binding: AuthBinding(),
-    ), GetPage(
+    ),
+    GetPage(
       name: SubscriptionPage.routeName,
       page: () => SubscriptionPage(),
       binding: AuthBinding(),
@@ -56,7 +58,8 @@ class AppRoutes {
       name: VerifyOtpPage.routeName,
       page: () => VerifyOtpPage(),
       binding: AuthBinding(),
-    ),GetPage(
+    ),
+    GetPage(
       name: SetNewPasswordPage.routeName,
       page: () => SetNewPasswordPage(),
       binding: AuthBinding(),
@@ -84,7 +87,7 @@ class AppRoutes {
     GetPage(
       name: ListingProductPage.routeName,
       page: () => ListingProductPage(),
-      binding: ListingsBinding(),
+      bindings: [ListingsBinding(), AccountInformationBinding()],
     ),
     GetPage(
       name: ChattingPage.routeName,
@@ -104,7 +107,8 @@ class AppRoutes {
     ),
     GetPage(
       name: EditProfilePage.routeName,
-      page: () => EditProfilePage(), binding: AccountInformationBinding(),
+      page: () => EditProfilePage(),
+      binding: AccountInformationBinding(),
     ),
     GetPage(
       name: ProductDetailsPage.routeName,

@@ -64,7 +64,8 @@ class MyListingsPage extends StatelessWidget {
               color: AppColors.kWhiteColor,
               radius: 6.r,
 onTap: () {
-  Get.toNamed(ListingProductPage.routeName,arguments:listingData[index].title );
+  Get.toNamed(ListingProductPage.routeName,arguments: {'title':listingData[index].title,
+  'products':null});
 },
               child: Padding(
                 padding: padding8,

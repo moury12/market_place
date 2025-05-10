@@ -101,9 +101,12 @@ class ProfilePage extends StatelessWidget {
                 img: favItemIcon,
                 title: AppStaticStrings.favoriteItems.tr,
                 onTap: () {
+
                   Get.toNamed(
                     ListingProductPage.routeName,
-                    arguments: AppStaticStrings.favoriteItems.tr,
+                    arguments: {'title':AppStaticStrings.favoriteItems.tr,
+                    'products':AccountInformationController.to.favProductList,
+                    'load':AccountInformationController.to.isLoadingFavProduct},
                   );
                 },
               ),

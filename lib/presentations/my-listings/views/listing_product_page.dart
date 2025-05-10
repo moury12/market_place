@@ -1,25 +1,76 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/components/custom_appbar.dart';
+import 'package:market_place/core/components/custom_refresh_indicator.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/presentations/home/widgets/product_card_item_widget.dart';
+import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
 
-class ListingProductPage extends StatelessWidget {
-  static const String routeName ="/listing-product";
-   ListingProductPage({super.key});
-final arg = Get.arguments;
+import '../../../core/constants/app_static_strings.dart';
+import '../../home/model/product_model.dart';
+
+class ListingProductPage extends StatefulWidget {
+  static const String routeName = "/listing-product";
+  const ListingProductPage({super.key});
+
+  @override
+  State<ListingProductPage> createState() => _ListingProductPageState();
+}
+
+class _ListingProductPageState extends State<ListingProductPage> {
+  String? title;
+  RxList<ProductModel>? products;
+  RxBool? loading;
+  final ScrollController scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    final arg = Get.arguments as Map<String, dynamic>;
+    title = arg['title'] ?? 'Default Title';
+    loading = arg['load'] ?? false;
+    products = arg['products'] ?? <ProductModel>[].obs;
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        if (title == AppStaticStrings.favoriteItems.tr) {
+          AccountInformationController.to.getFavProductListRequest(
+            loadMore: true,
+          );
+        }
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomDefaultAppbar(title: arg.toString(),),
-      body: SingleChildScrollView(
-
-        child: Padding(
-          padding: padding12,
-          child: Column(
-            children: [
-              // ProductGridWidget(fromSeller: true,),
-            ],
+      appBar: CustomDefaultAppbar(title: title.toString()),
+      body: CustomRefreshIndicatorWidget(
+        onRefresh: () async {
+          if (title == AppStaticStrings.favoriteItems.tr) {
+            AccountInformationController.to.getFavProductListRequest();
+          }
+        },
+        child: SingleChildScrollView(
+          controller: scrollController,
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Padding(
+            padding: padding12,
+            child: Column(
+              children: [
+                Obx(() {
+                  return ProductGridWidget(
+                    fromSeller:
+                        title != AppStaticStrings.favoriteItems.tr
+                            ? true
+                            : false,
+                    productList: products ?? [],
+                    isLoading: loading!.value,
+                  );
+                }),
+              ],
+            ),
           ),
         ),
       ),

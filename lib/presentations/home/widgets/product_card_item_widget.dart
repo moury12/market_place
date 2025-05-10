@@ -10,7 +10,6 @@ import 'package:market_place/core/constants/custom_text.dart';
 import 'package:market_place/core/constants/fontsize_constant.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
-import 'package:market_place/core/utils/variable.dart';
 import 'package:market_place/presentations/home/model/product_model.dart';
 import 'package:market_place/presentations/product/controller/product_controller.dart';
 import 'package:market_place/presentations/product/views/product_details_page.dart';
@@ -174,51 +173,91 @@ class ProductCardShimmer extends StatelessWidget {
     return Shimmer.fromColors(
       baseColor: const Color(0xffE8F5E9),
       highlightColor: const Color(0xffC8E6C9),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8.r),
-        ),
+      child: Padding(
+        padding: padding4,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image placeholder
-            Container(
-              height: 140.w,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(8.r)),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(8.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            // Image section (flex: 3)
+            Expanded(
+              flex: 3,
+              child: Stack(
                 children: [
-                  // Title placeholder
                   Container(
-                    height: 16.h,
-                    width: double.infinity,
-                    color: Colors.white,
-                  ),
-                  SizedBox(height: 4.h),
-                  // Price placeholder
-                  Container(
-                    height: 14.h,
-                    width: 60.w,
-                    color: Colors.white,
-                  ),
-                  SizedBox(height: 8.h),
-                  // Button placeholder
-                  Container(
-                    height: 30.h,
-                    width: double.infinity,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(4.r),
                     ),
                   ),
+                  Positioned(
+                    bottom: 10,
+                    left: 6,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8.w,
+                        vertical: 4.h,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(4.r),
+                      ),
+                      child: Container(
+                        width: 40.w,
+                        height: 12.h,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                 ],
+              ),
+            ),
+            // Content section (flex: 2)
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: padding4,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Category title (2 lines)
+                    Container(
+                      height: 16.h,
+                      width: double.infinity,
+                      margin: EdgeInsets.only(bottom: 4.h),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(4.r),
+                      ),
+                    ),
+                    Container(
+                      height: 16.h,
+                      width: double.infinity,
+                      margin: EdgeInsets.only(bottom: 4.h),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(4.r),
+                      ),
+                    ),
+                    // Category name
+                    Container(
+                      height: 14.h,
+                      width: 120.w,
+                      margin: EdgeInsets.only(bottom: 4.h),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(4.r),
+                      ),
+                    ),
+                    // Price
+                    Container(
+                      height: 16.h,
+                      width: 80.w,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(4.r),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
