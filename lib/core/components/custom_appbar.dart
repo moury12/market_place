@@ -3,13 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/components/custom_button_tap.dart';
-import 'package:market_place/core/components/custom_network_image.dart';
 import 'package:market_place/core/constants/image_constants.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/core/constants/color_constants.dart';
 import 'package:market_place/core/constants/custom_text.dart';
 import 'package:market_place/core/constants/fontsize_constant.dart';
+import 'package:market_place/presentations/navigation/controller/navigation_controller.dart';
+import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
 
 class CustomAuthAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -41,9 +42,10 @@ class CustomDefaultAppbar extends StatelessWidget
   final List<Widget>? action;
   const CustomDefaultAppbar({
     super.key,
-     this.title,
+    this.title,
     this.leading,
-    this.action, this.titleWidget,
+    this.action,
+    this.titleWidget,
   });
 
   @override
@@ -53,21 +55,21 @@ class CustomDefaultAppbar extends StatelessWidget
       // foregroundColor: AppColors.kWhiteColor,
       centerTitle: true,
       leading: ButtonTapWidget(
-        shape:CircleBorder(),
-          onTap: () {
-            Get.back();
-          },
-          child: Padding(
-            padding:padding8,
-            child: SvgPicture.asset(backIcon),
-          )),
-      actions: action,
-      title:titleWidget?? CustomText(
-        text: title??"",
-        style: poppinsMedium,
-        fontSize: getFontSizeDefault(),
-        color: Colors.black,
+        shape: CircleBorder(),
+        onTap: () {
+          Get.back();
+        },
+        child: Padding(padding: padding8, child: SvgPicture.asset(backIcon)),
       ),
+      actions: action,
+      title:
+          titleWidget ??
+          CustomText(
+            text: title ?? "",
+            style: poppinsMedium,
+            fontSize: getFontSizeDefault(),
+            color: Colors.black,
+          ),
     );
   }
 
@@ -101,7 +103,8 @@ class CustomHomeAppbar extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomText(
-                  text: 'Hello Ely Mohammed',
+                  text:
+                      'Hello ${NavigationController.to.isLoggedIn ? AccountInformationController.to.userModel.value.name ?? "User" : "Guest User"}',
                   style: poppinsBold,
                   fontSize: getFontSizeSemiSmall(),
                 ),

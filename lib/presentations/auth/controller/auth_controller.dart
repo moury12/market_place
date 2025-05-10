@@ -8,11 +8,13 @@ import '../../../core/api-client/api_endpoints.dart';
 import '../../../core/api-client/api_service.dart';
 import '../../../core/constants/app_static_strings.dart';
 import '../../../core/helper/helper_function.dart';
+import '../../../core/utils/common_controller.dart';
 import '../../../core/utils/enum.dart';
 import '../../../core/utils/hive_boxes.dart';
 import '../../../core/utils/variable.dart';
 import '../../navigation/views/navigation_page.dart';
 import '../views/login_page.dart';
+import '../views/payment_page.dart';
 import '../views/set_new_password_page.dart';
 
 class AuthController extends GetxController {
@@ -21,15 +23,14 @@ class AuthController extends GetxController {
   void onInit() {
     reinitializeSignUpControllers();
     getPackagesRequest();
-    tabLabels.value =
-        packageList.map((e) =>e.type??"" ,).toList();
+
     super.onInit();
   }
 
   RxBool isRememberMe = false.obs;
+  RxBool isLoadingSubscribe = false.obs;
   RxList<PackageModel> packageList = <PackageModel>[].obs;
-  // RxList<String> tabLabels =
-  //     [AppStaticStrings.monthly, AppStaticStrings.yearly].obs;
+
   RxList<String> tabLabels =
       [AppStaticStrings.monthly, AppStaticStrings.yearly].obs;
   var tabContent = <Widget>[].obs;
@@ -250,6 +251,8 @@ class AuthController extends GetxController {
   }
 
   ///-----------------------------get package list method------------------------------///
+
+
   Future<void> getPackagesRequest() async {
     try {
       loadingProcess.value = AuthProcess.packageGet;
@@ -267,6 +270,11 @@ class AuthController extends GetxController {
             (response['data'] as List)
                 .map((e) => PackageModel.fromJson(e))
                 .toList();
+        if (packageList.isNotEmpty) {
+          tabLabels.value = packageList.map((e) => e.type ?? "Unknown").toList();
+        } else {
+          tabLabels.value = [AppStaticStrings.monthly, AppStaticStrings.yearly]; // Fallback
+        }
       } else {
         logger.e(response);
         showCustomSnackbar(
@@ -281,6 +289,40 @@ class AuthController extends GetxController {
     }
   }
 
+  ///------------------------------ subscribe now method -------------------------///
+
+
+  Future<void> subscribeNowRequest({required String subscribeId}) async {
+    try {
+     isLoadingSubscribe.value = true;
+
+      final response = await ApiService().request(
+        endpoint: subscribeEndPoint,
+        method: 'POST',
+        body: { "subscription_id":subscribeId},
+      );
+
+     isLoadingSubscribe.value = false;
+
+      if (response['success'] == true) {
+        logger.d(response);
+        CommonController.to.stripeUrl.value = response["url"];
+        Get.toNamed(PaymentScreen.routeName);
+        showCustomSnackbar(title: 'Success', message: response['message']);
+        // Get.toNamed(VerifyOtpPage.routeName);
+      } else {
+        logger.e(response);
+        showCustomSnackbar(
+          title: 'Failed',
+          message: response['message'],
+          type: SnackBarType.failed,
+        );
+      }
+    } catch (e) {
+     isLoadingSubscribe.value = false;
+      logger.e(e.toString());
+    }
+  }
   clearSignUpController() {
     emailSignUpController.value.clear();
     nameSignUpController.clear();

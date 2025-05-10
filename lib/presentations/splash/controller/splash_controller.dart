@@ -16,10 +16,10 @@ class SplashController extends GetxController {
   void onInit() {
     pageController = PageController(initialPage: currentIndex.value).obs;
     Future.delayed(Duration(milliseconds: 300), () {
-      if (Boxes.getUserData().get(tokenKey) == null ||
+    /*  if (Boxes.getUserData().get(tokenKey) == null ||
           Boxes.getUserData().get(tokenKey).toString().isEmpty) {
         Get.offAllNamed(LoginPage.routeName);
-      } else if (Boxes.getUserData().get(initialKey) == null ||
+      } else*/ if (Boxes.getUserData().get(initialKey) == null ||
           Boxes.getUserData().get(initialKey).toString().isEmpty||
           Boxes.getUserData().get(initialKey) != true) {
         Get.offAllNamed(OnboardingPage.routeName);

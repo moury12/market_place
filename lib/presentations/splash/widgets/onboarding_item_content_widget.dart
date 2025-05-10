@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/utils/variable.dart';
 import 'package:market_place/presentations/auth/views/login_page.dart';
+import 'package:market_place/presentations/navigation/views/navigation_page.dart';
 import 'package:market_place/presentations/splash/controller/splash_controller.dart';
 
 import '../../../core/components/custom_button.dart';
@@ -90,7 +91,7 @@ class OnboardingItemContentWidget extends StatelessWidget {
 
               } else {
                 Boxes.getUserData().put(initialKey, true);
-                Get.offAllNamed(LoginPage.routeName);
+                Get.offAllNamed(NavigationPage.routeName);
               }
             },
           ),

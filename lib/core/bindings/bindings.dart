@@ -1,5 +1,8 @@
 import 'package:get/get.dart';
-import 'package:market_place/core/utils/common_controller.dart' show CommonController;
+import 'package:market_place/core/utils/common_controller.dart'
+    show CommonController;
+import 'package:market_place/core/utils/hive_boxes.dart';
+import 'package:market_place/core/utils/variable.dart';
 import 'package:market_place/presentations/navigation/controller/navigation_controller.dart';
 import 'package:market_place/presentations/notification/controller/notification_controller.dart';
 
@@ -12,7 +15,6 @@ import '../../presentations/profile/controllers/account_information_controller.d
 import '../../presentations/sell-now/controller/sell_controller.dart';
 import '../../presentations/splash/controller/splash_controller.dart';
 import '../services/app_strings.dart';
-
 
 class SplashBinding extends Bindings {
   @override
@@ -28,6 +30,7 @@ class CommonBinding extends Bindings {
     Get.put(AppTranslations());
   }
 }
+
 //
 class ProductBinding extends Bindings {
   @override
@@ -47,19 +50,26 @@ class NavigationBinding extends Bindings {
   @override
   void dependencies() {
     Get.put(NavigationController());
-    Get.put(AccountInformationController());
+
     Get.put(HomeController());
-    Get.put(MessageController());
-    Get.put(SellController());
+    if (Boxes.getUserData().get(tokenKey) != null &&
+        Boxes.getUserData().get(tokenKey).isNotEmpty) {
+      Get.put(AccountInformationController());
+      Get.put(MessageController());
+      Get.put(SellController());
+    }
     // Get.lazyPut(()=>CartController());
   }
-}class ListingsBinding extends Bindings {
+}
+
+class ListingsBinding extends Bindings {
   @override
   void dependencies() {
     Get.put(ListingsController());
     // Get.lazyPut(()=>CartController());
   }
 }
+
 class HomeBinding extends Bindings {
   @override
   void dependencies() {
@@ -73,6 +83,7 @@ class AccountInformationBinding extends Bindings {
     Get.put(AccountInformationController());
   }
 }
+
 //
 class NotificationBinding extends Bindings {
   @override

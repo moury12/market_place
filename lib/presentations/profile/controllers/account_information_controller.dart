@@ -148,6 +148,7 @@ RxString profileImgPath ="".obs;
       final response = await ApiService().request(
         endpoint: favoriteProductEndPoint,
         method: 'GET',
+        useAuth: false,
         queryParams:  {
           'page': currentFavProductPage.value.toString(),
           'limit': itemsFavProductPerPage.value.toString(),

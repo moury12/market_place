@@ -22,22 +22,26 @@ class NavigationController extends GetxController {
   static NavigationController get to => Get.find();
   RxInt selectedNavIndex = 0.obs;
   RxBool isLoadingLogout = false.obs;
-
+// @override
+//   void onInit() {
+//     // TODO: implement onInit
+//     super.onInit();
+//   }
+  bool get isLoggedIn {
+    return Boxes.getUserData().get(tokenKey) != null &&
+        Boxes.getUserData().get(tokenKey).isNotEmpty;
+  }
   List<Widget> getPages() {
     return [
       HomePage(),
-      MyListingsPage(),
-      SellNowPage(),
-      MessageListPage(),
-      ProfilePage(),
+      if (isLoggedIn) MyListingsPage(),
+      if (isLoggedIn) SellNowPage(),
+      if (isLoggedIn) MessageListPage(),
+      if (isLoggedIn) ProfilePage(),
     ];
   }
 
-  @override
-  void onInit() {
 
-    super.onInit();
-  }
 
   // List of icons for the navigation bar
   final List<String> icons = [

@@ -8,10 +8,13 @@ import 'package:market_place/core/constants/custom_text.dart';
 import 'package:market_place/core/constants/fontsize_constant.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
+import 'package:market_place/presentations/auth/views/login_page.dart';
 import 'package:market_place/presentations/notification/views/notification_page.dart';
 
 import '../../../core/components/custom_appbar.dart';
 import '../../../core/constants/app_static_strings.dart';
+import '../../../core/utils/hive_boxes.dart';
+import '../../../core/utils/variable.dart';
 import '../controller/navigation_controller.dart';
 
 class NavigationPage extends StatelessWidget {
@@ -43,7 +46,11 @@ class NavigationPage extends StatelessWidget {
                 builder: (context) {
                   return CustomHomeAppbar(
                     onActionTap: () {
-                      Get.toNamed(NotificationPage.routeName);
+                      if(NavigationController.to.isLoggedIn){
+                        Get.toNamed(NotificationPage.routeName);
+                      }else{
+                        Get.toNamed(LoginPage.routeName);
+                      }
                     },
                   );
                 },
@@ -100,8 +107,15 @@ class NavigationPage extends StatelessWidget {
                     // Add Expanded to distribute space evenly
                     child: ButtonTapWidget(
                       onTap: () {
-                        NavigationController.to.selectedNavIndex.value =
-                            index;
+                        if(Boxes.getUserData().get(tokenKey)== null/*&&NavigationController.to.selectedNavIndex.value!=0*/){
+
+                            Get.toNamed(LoginPage.routeName);
+
+                        }
+                        else{
+                          NavigationController.to.selectedNavIndex.value =
+                              index;
+                        }
                       },
                       child: Padding(
                         padding: padding6V,

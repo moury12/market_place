@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:market_place/core/bindings/bindings.dart';
+import 'package:market_place/presentations/auth/views/payment_page.dart';
 import 'package:market_place/presentations/auth/views/set_new_password_page.dart';
 import 'package:market_place/presentations/auth/views/subscription_page.dart';
 import 'package:market_place/presentations/auth/views/verify_email_page.dart';
@@ -62,6 +63,10 @@ class AppRoutes {
     GetPage(
       name: SetNewPasswordPage.routeName,
       page: () => SetNewPasswordPage(),
+      binding: AuthBinding(),
+    ),GetPage(
+      name: PaymentScreen.routeName,
+      page: () => PaymentScreen(),
       binding: AuthBinding(),
     ),
     GetPage(

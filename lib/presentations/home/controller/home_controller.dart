@@ -263,11 +263,11 @@ class HomeController extends GetxController {
   Future<void> getProductListForHomeRequest() async {
     try {
       isLoadingHomeProduct.value = true;
-      ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
+      // ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
 
       final response = await ApiService().request(
         endpoint: productGetAllEndPoint,
-
+useAuth: false,
         method: 'GET',
       );
       isLoadingHomeProduct.value = false;
@@ -313,6 +313,7 @@ class HomeController extends GetxController {
       final response = await ApiService().request(
         endpoint: productGetAllEndPoint,
         method: 'GET',
+        useAuth: false,
         queryParams:  {
           'page': currentProductPage.value.toString(),
           'limit': itemsProductPerPage.value.toString(),
