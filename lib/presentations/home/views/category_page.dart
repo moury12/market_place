@@ -1,18 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/components/custom_appbar.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
-import 'package:market_place/core/constants/custom_space.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/presentations/home/controller/home_controller.dart';
 import 'package:market_place/presentations/home/loading/category_grid_loading.dart';
 
 import '../../../core/components/custom_refresh_indicator.dart';
-import '../../../core/components/custom_textfield.dart';
 import '../../../core/constants/pagination_loading_widget.dart';
 import '../widgets/category_card_item_widget.dart';
+import '../widgets/view_all_row_widget.dart';
 
 class CategoryPage extends StatefulWidget {
   static const String routeName = "/cat_list";
@@ -50,39 +48,46 @@ class _CategoryPageState extends State<CategoryPage> {
           physics: AlwaysScrollableScrollPhysics(),
           child: Padding(
             padding: padding12.copyWith(top: 0),
-            child: Column(
+            child: Stack(
               children: [
-                // CustomTextField(
-                //   textEditingController: HomeController.to.searchCatField,
-                //   prefixIcon: Icon(CupertinoIcons.search, color: Colors.black),
-                //   onChanged: (p0) {
-                //     HomeController.to.getCategoryListRequest();
-                //   },
-                // ),
-                // space8H,
-                Obx(
-               () {
-                    return HomeController.to.isLoadingCategory.value?
-                        CategoryGridLoading(): Wrap(
-                      spacing: 8.w,
-                      runSpacing: 8.w,
+                Column(
+                  children: [
+                    // CustomTextField(
+                    //   textEditingController: HomeController.to.searchCatField,
+                    //   prefixIcon: Icon(CupertinoIcons.search, color: Colors.black),
+                    //   onChanged: (p0) {
+                    //     HomeController.to.getCategoryListRequest();
+                    //   },
+                    // ),
+                    // space8H,
+                    Obx(
+                   () {
+                        return HomeController.to.isLoadingCategory.value?
+                            CategoryGridLoading(): Wrap(
+                          spacing: 8.w,
+                          runSpacing: 8.w,
 
-                      children: List.generate(
-                        HomeController.to.catList.length,
-                        (index) => CategoryDetailsCardItemWidget(
-                          categoryModel: HomeController.to.catList[index],
-                        ),
-                      ),
-                    );
-                  }
+                          children: List.generate(
+                            HomeController.to.catList.length,
+                            (index) => CategoryDetailsCardItemWidget(
+                              categoryModel: HomeController.to.catList[index],
+                            ),
+                          ),
+                        );
+                      }
+                    ),
+                    Obx(
+                          () {
+                        return HomeController.to.isLoadingMore.value
+                            ? PaginationLoadingWidget()
+                            : SizedBox.shrink();
+                      },
+                    )
+                  ],
                 ),
-                Obx(
-                      () {
-                    return HomeController.to.isLoadingMore.value
-                        ? PaginationLoadingWidget()
-                        : SizedBox.shrink();
-                  },
-                )
+                Obx(() => HomeController.to.isLoadingFilterCategory.value
+                    ? buildLoadingOverlay()
+                    : SizedBox.shrink()),
               ],
             ),
           ),

@@ -22,6 +22,7 @@ class ProductController extends GetxController {
       final response = await ApiService().request(
         endpoint: '$productDetailsEndPoint$productID',
         method: 'GET',
+        useAuth: false
       );
       if (response['success'] == true) {
         logger.d(response);

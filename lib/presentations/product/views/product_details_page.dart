@@ -16,7 +16,9 @@ import 'package:market_place/core/constants/image_constants.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/constants/pagination_loading_widget.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
+import 'package:market_place/presentations/auth/views/login_page.dart';
 import 'package:market_place/presentations/home/widgets/view_all_row_widget.dart';
+import 'package:market_place/presentations/navigation/controller/navigation_controller.dart';
 import 'package:market_place/presentations/product/controller/product_controller.dart';
 import 'package:market_place/presentations/product/views/seller_profile_page.dart';
 
@@ -40,16 +42,20 @@ class ProductDetailsPage extends StatelessWidget {
               ? SizedBox.shrink()
               : ButtonTapWidget(
                 onTap: () async {
-                  bool isFav = await ProductController.to.favProductRequest(
-                    parentId: ProductController.to.productModel.value.sId,
-                  );
-                  if (isFav) {
-                    ProductController.to.productModel.update((val) {
-                      if (val != null) {
-                        val.isFavorite = !(val.isFavorite ?? false);
-                      }
-                    });
-                  }
+                 if(NavigationController.to.isLoggedIn) {
+                    bool isFav = await ProductController.to.favProductRequest(
+                      parentId: ProductController.to.productModel.value.sId,
+                    );
+                    if (isFav) {
+                      ProductController.to.productModel.update((val) {
+                        if (val != null) {
+                          val.isFavorite = !(val.isFavorite ?? false);
+                        }
+                      });
+                    }
+                  }else{
+                   Get.toNamed(LoginPage.routeName);
+                 }
                 },
                 child: Padding(
                   padding: padding8,
@@ -143,7 +149,7 @@ class ProductDetailsPage extends StatelessWidget {
                           child: Column(
                             spacing: 8.h,
                             children: [
-                              CallAndChatButtons(
+                            if(NavigationController.to.isLoggedIn)  CallAndChatButtons(
                                 number: product.userPhone ?? "013230443",
                                 userID: product.userId.toString(),
                               ),
@@ -183,9 +189,13 @@ class ProductDetailsPage extends StatelessWidget {
                                     flex: 2,
                                     child: CustomButton(
                                       onTap: () {
-                                        Get.toNamed(
-                                          SellerProfilePage.routeName,
-                                        );
+                                        if(NavigationController.to.isLoggedIn) {
+                                          Get.toNamed(
+                                            SellerProfilePage.routeName,
+                                          );
+                                        }else{
+                                          Get.toNamed(LoginPage.routeName);
+                                        }
                                       },
                                       title: AppStaticStrings.viewProfile.tr,
                                     ),

@@ -5,6 +5,7 @@ import 'package:market_place/core/constants/fontsize_constant.dart';
 
 import '../../../core/components/custom_text_button.dart';
 import '../../../core/constants/app_static_strings.dart';
+import '../../../core/constants/pagination_loading_widget.dart';
 import '../../../core/constants/text_style_constant.dart';
 
 class ViewAllRow extends StatelessWidget {
@@ -30,4 +31,12 @@ class ViewAllRow extends StatelessWidget {
       ],
     );
   }
+}
+Widget buildLoadingOverlay() {
+  return Positioned.fill(
+    child: Container(
+      color: Colors.white.withValues(alpha: 0.5),
+      child: PaginationLoadingWidget(),
+    ),
+  );
 }

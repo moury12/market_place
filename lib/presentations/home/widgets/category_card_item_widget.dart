@@ -20,10 +20,9 @@ class CategoryCardItemWidget extends StatelessWidget {
     return SizedBox(
       width: 80.w,
       child: ButtonTapWidget(
-        onTap: () {
-          HomeController.to.selectedCategory.value=categoryModel;
-          HomeController.to.getProductListRequest();
-          Get.toNamed(SearchPage.routeName);
+        onTap: () async{
+          HomeController.to.filterOnCategory(categoryModel);
+
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -63,9 +62,7 @@ class CategoryDetailsCardItemWidget extends StatelessWidget {
       width: 110.w,
       child: ButtonTapWidget(
         onTap: () {
-          HomeController.to.selectedCategory.value=categoryModel;
-          HomeController.to.getProductListRequest();
-          Get.toNamed(SearchPage.routeName);
+          HomeController.to.filterOnCategory(categoryModel);
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

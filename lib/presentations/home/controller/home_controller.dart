@@ -8,6 +8,7 @@ import '../../../core/helper/helper_function.dart';
 import '../../../core/utils/hive_boxes.dart';
 import '../../../core/utils/variable.dart';
 import '../model/product_model.dart';
+import '../views/search_page.dart';
 
 class HomeController extends GetxController {
   static HomeController get to => Get.find();
@@ -37,6 +38,7 @@ class HomeController extends GetxController {
   RxBool isLoadingDivision = false.obs;
   RxBool isLoadingCity = false.obs;
   RxBool isLoadingSubCategory = false.obs;
+  RxBool isLoadingFilterCategory = false.obs;
   @override
   void onInit() {
     getCategoryListRequest();
@@ -385,6 +387,21 @@ useAuth: false,
       logger.e(e.toString());
       isLoadingProduct.value = false;
       isProductLoadingMore.value = false;
+    }
+  }
+  Future<void> filterOnCategory(CategoryModel categoryModel) async {
+    isLoadingFilterCategory.value = true;
+    try {
+      // Update category synchronously
+      selectedCategory.value = categoryModel;
+
+      // Wait for product list to load
+      await getProductListRequest();
+
+      // Navigate after loading completes
+      await Get.toNamed(SearchPage.routeName);
+    } finally {
+      isLoadingFilterCategory.value = false;
     }
   }
 }
