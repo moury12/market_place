@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:market_place/core/components/custom_loading_widget.dart';
 import 'package:market_place/core/constants/custom_text.dart';
 import 'package:market_place/core/constants/fontsize_constant.dart';
 
@@ -36,7 +38,11 @@ Widget buildLoadingOverlay() {
   return Positioned.fill(
     child: Container(
       color: Colors.white.withValues(alpha: 0.5),
-      child: PaginationLoadingWidget(),
+      child:CustomLoadingWidget(
+        height: ScreenUtil().screenHeight,
+        size: 30.sp,
+        width: ScreenUtil().screenWidth,
+      ),
     ),
   );
 }

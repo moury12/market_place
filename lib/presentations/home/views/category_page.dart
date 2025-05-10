@@ -43,14 +43,14 @@ class _CategoryPageState extends State<CategoryPage> {
         onRefresh: () {
           return HomeController.to.getCategoryListRequest();
         },
-        child: SingleChildScrollView(
-          controller: scrollController,
-          physics: AlwaysScrollableScrollPhysics(),
-          child: Padding(
-            padding: padding12.copyWith(top: 0),
-            child: Stack(
-              children: [
-                Column(
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              controller: scrollController,
+              physics: AlwaysScrollableScrollPhysics(),
+              child: Padding(
+                padding: padding12.copyWith(top: 0),
+                child: Column(
                   children: [
                     // CustomTextField(
                     //   textEditingController: HomeController.to.searchCatField,
@@ -85,12 +85,12 @@ class _CategoryPageState extends State<CategoryPage> {
                     )
                   ],
                 ),
-                Obx(() => HomeController.to.isLoadingFilterCategory.value
-                    ? buildLoadingOverlay()
-                    : SizedBox.shrink()),
-              ],
+              ),
             ),
-          ),
+            Obx(() => HomeController.to.isLoadingFilterCategory.value
+                ? buildLoadingOverlay()
+                : SizedBox.shrink()),
+          ],
         ),
       ),
     );

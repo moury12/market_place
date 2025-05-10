@@ -27,12 +27,11 @@ class HomePage extends StatelessWidget {
       onRefresh: () async{
        await HomeController.to.refreshHome();
       },
-      child: SingleChildScrollView(
-        physics: AlwaysScrollableScrollPhysics(),
-        child: Stack(
-
-          children: [
-            Padding(
+      child: Stack(
+        children: [
+          SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            child: Padding(
               padding: padding12,
               child: Column(
                 spacing: 8.h,
@@ -89,11 +88,11 @@ class HomePage extends StatelessWidget {
                 ],
               ),
             ),
-            Obx(() => HomeController.to.isLoadingFilterCategory.value
-                ? buildLoadingOverlay()
-                : SizedBox.shrink()),
-          ],
-        ),
+          ),
+          Obx(() => HomeController.to.isLoadingFilterCategory.value
+              ? buildLoadingOverlay()
+              : SizedBox.shrink()),
+        ],
       ),
     );
   }
