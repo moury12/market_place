@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/core/constants/image_constants.dart';
+import 'package:market_place/core/utils/enum.dart';
 
 String dummyProfileImage =
     'https://www.webxcreation.com/event-recruitment/images/profile-1.jpg';
@@ -85,8 +86,9 @@ final List<String> category = [
 class MyListingsModel {
   final String img;
   final String title;
+  final Status productStatus;
 
-  MyListingsModel({required this.img, required this.title});
+  MyListingsModel( {required this.img, required this.title, required this.productStatus,});
 }
 
 String dummyDesc =

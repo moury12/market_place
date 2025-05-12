@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/constants/image_constants.dart';
 import 'package:market_place/presentations/message/views/message_page.dart';
-import 'package:market_place/presentations/my-listings/views/my-listings_page.dart';
+import 'package:market_place/presentations/my-listings/views/my_listings_page.dart';
 import 'package:market_place/presentations/profile/views/profile_page.dart';
 import 'package:market_place/presentations/sell-now/views/sell_now_page.dart';
 

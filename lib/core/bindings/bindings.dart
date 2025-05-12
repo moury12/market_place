@@ -57,6 +57,7 @@ class NavigationBinding extends Bindings {
       Get.put(AccountInformationController());
       Get.put(MessageController());
       Get.put(SellController());
+      Get.put(ListingsController());
     }
     // Get.lazyPut(()=>CartController());
   }

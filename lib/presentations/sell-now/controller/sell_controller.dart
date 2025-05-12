@@ -37,7 +37,8 @@ class SellController extends GetxController {
   Future<void> addProductRequest() async {
     try {
       isLoadingAddProduct.value = true;
-      ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
+
+      ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString(),);
       Map<String, String> fields = {
         'name': nameController.value.text,
         'description': descriptionController.value.text,
@@ -63,6 +64,7 @@ class SellController extends GetxController {
       final response = await ApiService().multipartRequest(
         endpoint: productCreateEndPoint,
         method: 'POST',
+
         fields: fields,
         files: files,
       );

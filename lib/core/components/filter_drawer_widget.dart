@@ -38,14 +38,29 @@ class _FilterDrawerWidgetState extends State<FilterDrawerWidget> {
                     isLoading: HomeController.to.isLoadingCategory.value,
                     title: AppStaticStrings.category.tr,
                     items: HomeController.to.catList,
-                    onChanged: (value) {
+                    onChanged: (value) async{
 
                       if (value != null) {
+
+                        // Clear the subcategory list first
+                        HomeController.to.subCatList.clear();
+                        HomeController.to.subCatList.value = [];
+
+                        // Important: Set selectedSubCategory to null BEFORE refreshing the list
+                        HomeController.to.selectedSubCategory.value = null;
+
+                        // Set new category
                         HomeController.to.selectedCategory.value = value;
 
-                        HomeController.to.getSubCategoryListRequest(
+                        // Load new subcategories
+                        await HomeController.to.getSubCategoryListRequest(
                           catId: value.sId.toString(),
                         );
+
+
+                        // Force UI update
+                        HomeController.to.subCatList.refresh();
+
                       }
                     },
                     displayText: (cat) => cat.name.toString(),
@@ -65,13 +80,27 @@ class _FilterDrawerWidgetState extends State<FilterDrawerWidget> {
                     isLoading: HomeController.to.isLoadingDivision.value,
                     title: AppStaticStrings.wilaya.tr,
                     items: HomeController.to.divisionList,
-                    onChanged: (value) {
+                    onChanged: (value) async{
                       if (value != null) {
+                        // Clear the subcategory list first
+                        HomeController.to.cityList.clear();
+                        HomeController.to.cityList.value = [];
+
+                        // Important: Set selectedSubCategory to null BEFORE refreshing the list
+                        HomeController.to.selectedCity.value = null;
+
+                        // Set new category
                         HomeController.to.selectedWilaya.value = value;
 
-                        HomeController.to.getCityListRequest(
+                        // Load new subcategories
+                        await HomeController.to.getCityListRequest(
                           division: value.sId.toString(),
                         );
+
+
+                        // Force UI update
+                        HomeController.to.cityList.refresh();
+
                       }
                     },
                     displayText: (cat) => cat.name.toString(),

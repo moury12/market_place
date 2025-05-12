@@ -4,10 +4,12 @@ import 'package:market_place/core/components/custom_appbar.dart';
 import 'package:market_place/core/components/custom_refresh_indicator.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/presentations/home/widgets/product_card_item_widget.dart';
+import 'package:market_place/presentations/my-listings/controller/listings_controller.dart';
 import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
 
 import '../../../core/constants/app_static_strings.dart';
 import '../../home/model/product_model.dart';
+import '../../home/widgets/view_all_row_widget.dart';
 
 class ListingProductPage extends StatefulWidget {
   static const String routeName = "/listing-product";
@@ -37,6 +39,8 @@ class _ListingProductPageState extends State<ListingProductPage> {
           AccountInformationController.to.getFavProductListRequest(
             loadMore: true,
           );
+        } else {
+          ListingsController.to.getProductListRequest(loadMore: true);
         }
       }
     });
@@ -50,6 +54,8 @@ class _ListingProductPageState extends State<ListingProductPage> {
         onRefresh: () async {
           if (title == AppStaticStrings.favoriteItems.tr) {
             AccountInformationController.to.getFavProductListRequest();
+          }else{
+            ListingsController.to.getProductListRequest();
           }
         },
         child: SingleChildScrollView(

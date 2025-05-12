@@ -159,9 +159,7 @@ class SellNowPage extends StatelessWidget {
                       items: HomeController.to.catList,
                       onChanged: (value) async {
                         if (value != null) {
-                          logger.d(HomeController.to.subCatList.length);
-                          HomeController.to.subCatList.map((it)=>logger.d(it.name));
-                          logger.d(SellController.to.selectedSubCategory.value);
+
                           // Clear the subcategory list first
                           HomeController.to.subCatList.clear();
                           HomeController.to.subCatList.value = [];
@@ -181,10 +179,6 @@ class SellNowPage extends StatelessWidget {
                           // Force UI update
                           HomeController.to.subCatList.refresh();
 
-                          logger.d("After Refresh");
-                          logger.d(HomeController.to.subCatList.length);
-                          HomeController.to.subCatList.map((it)=>logger.d(it.name));
-                          logger.d(SellController.to.selectedSubCategory.value);
                         }
                       },
                       displayText: (cat) => cat.name.toString(),
@@ -192,20 +186,23 @@ class SellNowPage extends StatelessWidget {
                     ),
                     CustomDropdown<SubCategoryModel>(
                       isRequired: true,
-                      validator: (value) {
-                        return value == null ? AppStaticStrings.fieldRequired.tr : null;
+                      onChanged: (value) {
+                        SellController.to.selectedSubCategory.value = value;
                       },
+                      validator: (value) {
+                        print(value);
+                        if ( /*HomeController.to.cityList.isNotEmpty &&*/ value ==
+                            null) {
+                          return AppStaticStrings.fieldRequired.tr;
+                        }
+                        return null;
+                      },
+
                       isLoading: HomeController.to.isLoadingSubCategory.value,
                       displayText: (cat) => cat.name.toString(),
                       title: AppStaticStrings.subCategory.tr,
                       items: HomeController.to.subCatList,
-                      onChanged: (value) {
-                        logger.d("Sub Category");
-                        logger.d(HomeController.to.subCatList.length);
-                        HomeController.to.subCatList.map((it)=>logger.d(it.name));
-                        logger.d(SellController.to.selectedSubCategory.value);
-                        SellController.to.selectedSubCategory.value = value;
-                      },
+
                       selectedValue: SellController.to.selectedSubCategory.value == null
                           ? null
                           : HomeController.to.subCatList.firstWhereOrNull(
@@ -271,7 +268,7 @@ class SellNowPage extends StatelessWidget {
                         Expanded(
                           child: CustomButton(
                             onTap: () {
-                              if (!_formKey.currentState!.validate()) {
+                              if (_formKey.currentState!.validate()) {
                                 SellController.to.addProductInfo.value = false;
                                 SellController.to.addLocationInfo.value = true;
                               }
