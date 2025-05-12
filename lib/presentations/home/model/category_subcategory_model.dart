@@ -43,6 +43,7 @@ class SubCategoryModel {
     return data;
   }
 }
+
 class CityModel {
   String? sId;
   String? name;

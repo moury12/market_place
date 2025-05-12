@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:market_place/presentations/home/model/category_subcategory_model.dart';
+import 'package:market_place/presentations/sell-now/controller/sell_controller.dart';
 
 import '../../../core/api-client/api_endpoints.dart';
 import '../../../core/api-client/api_service.dart';
@@ -62,7 +63,6 @@ class HomeController extends GetxController {
     getProductListForHomeRequest();
     getDivisionListRequest();
     getCategoryListRequest();
-
   }
 
   getMaximumRange() async {
@@ -175,7 +175,7 @@ class HomeController extends GetxController {
       );
       isLoadingSubCategory.value = false;
       if (response['success'] == true) {
-        logger.d(response);
+
         subCatList.value =
             (response['data'] as List)
                 .map((e) => SubCategoryModel.fromJson(e))

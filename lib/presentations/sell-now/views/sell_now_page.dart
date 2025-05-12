@@ -22,11 +22,13 @@ import '../../../core/components/custom_drop_down_button.dart';
 import '../../../core/components/custom_textfield.dart';
 import '../../../core/utils/variable.dart';
 import '../../home/controller/home_controller.dart';
+import '../../home/model/category_subcategory_model.dart';
 
 class SellNowPage extends StatelessWidget {
   static const String routeName = "/sell-now";
-  const SellNowPage({super.key});
-
+  SellNowPage({super.key});
+  final _formKey = GlobalKey<FormState>();
+  final _formKeyForLocation = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -113,168 +115,291 @@ class SellNowPage extends StatelessWidget {
                   ),
                   CustomButton(
                     onTap: () {
-                      SellController.to.addProductInfo.value = true;
+                      if (SellController.to.imgList.isNotEmpty) {
+                        SellController.to.addProductInfo.value = true;
+                      } else {
+                        showCustomSnackbar(
+                          title: AppStaticStrings.failed.tr,
+                          message: "At least one image is required",
+                          type: SnackBarType.failed,
+                        );
+                      }
                     },
                     title: AppStaticStrings.next.tr,
                   ),
                 ],
               )
               : !SellController.to.addLocationInfo.value
-              ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12.h,
-                children: [
-                  titleBold(title: AppStaticStrings.productInformation.tr),
-                  CustomTextField(
-                    fillColor: AppColors.kWhiteColor,
-                    title: AppStaticStrings.productTitle.tr,
-                  ),
-                  CustomDropdown(
-
+              ? Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 12.h,
+                  children: [
+                    titleBold(title: AppStaticStrings.productInformation.tr),
+                    CustomTextField(
+                      isRequired: true,
+                      fillColor: AppColors.kWhiteColor,
+                      title: AppStaticStrings.productTitle.tr,
+                      textEditingController:
+                          SellController.to.nameController.value,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return AppStaticStrings.fieldRequired.tr;
+                        }
+                        return null;
+                      },
+                    ),
+                    // Category Dropdown
+                    CustomDropdown<CategoryModel>(
+                      isRequired: true,
+                      validator: (value) => value == null ? AppStaticStrings.fieldRequired.tr : null,
                       isLoading: HomeController.to.isLoadingCategory.value,
                       title: AppStaticStrings.category.tr,
                       items: HomeController.to.catList,
-                      onChanged: (value) {
-
+                      onChanged: (value) async {
                         if (value != null) {
+                          logger.d(HomeController.to.subCatList.length);
+                          HomeController.to.subCatList.map((it)=>logger.d(it.name));
+                          logger.d(SellController.to.selectedSubCategory.value);
+                          // Clear the subcategory list first
+                          HomeController.to.subCatList.clear();
+                          HomeController.to.subCatList.value = [];
+
+                          // Important: Set selectedSubCategory to null BEFORE refreshing the list
+                          SellController.to.selectedSubCategory.value = null;
+
+                          // Set new category
                           SellController.to.selectedCategory.value = value;
 
-                          HomeController.to.getSubCategoryListRequest(
+                          // Load new subcategories
+                          await HomeController.to.getSubCategoryListRequest(
                             catId: value.sId.toString(),
                           );
+
+
+                          // Force UI update
+                          HomeController.to.subCatList.refresh();
+
+                          logger.d("After Refresh");
+                          logger.d(HomeController.to.subCatList.length);
+                          HomeController.to.subCatList.map((it)=>logger.d(it.name));
+                          logger.d(SellController.to.selectedSubCategory.value);
                         }
                       },
                       displayText: (cat) => cat.name.toString(),
-
-
-                    selectedValue: SellController.to.selectedCategory.value,
-                  ),
-                  CustomDropdown(
-                    isLoading: HomeController.to.isLoadingSubCategory.value,
-                    displayText: (cat) => cat.name.toString(),
-                    title: AppStaticStrings.subCategory.tr,
-                    items: HomeController.to.subCatList,
-                    onChanged: (value) {
-                      SellController.to.selectedSubCategory.value= value;
-                    },
-
-                    selectedValue: SellController.to.selectedSubCategory.value,
-                  ),
-                  CustomDropdown(
-                    title: AppStaticStrings.condition.tr,
-                    items: condition,
-                    selectedValue: SellController.to.selectedCondition.value,
-                    onChanged: (value) {
-                      SellController.to.selectedCondition.value=value;
-                    },
-                  ),
-                  CustomTextField(
-                    fillColor: AppColors.kWhiteColor,
-                    title: AppStaticStrings.price.tr,
-                  ),
-                  CustomTextField(
-                    fillColor: AppColors.kWhiteColor,
-                    title: AppStaticStrings.productDescription.tr,
-                    maxLines: 6,
-                  ),
-                  Row(
-                    spacing: 12.w,
-                    children: [
-                      Expanded(
-                        child: CustomButton(
-                          fillColor: Colors.transparent,
-                          textColor: AppColors.kPrimaryColor,
-                          onTap: () {
-                            SellController.to.addProductInfo.value = false;
-                          },
-                          title: AppStaticStrings.previous.tr,
-                        ),
+                      selectedValue: SellController.to.selectedCategory.value,
+                    ),
+                    CustomDropdown<SubCategoryModel>(
+                      isRequired: true,
+                      validator: (value) {
+                        return value == null ? AppStaticStrings.fieldRequired.tr : null;
+                      },
+                      isLoading: HomeController.to.isLoadingSubCategory.value,
+                      displayText: (cat) => cat.name.toString(),
+                      title: AppStaticStrings.subCategory.tr,
+                      items: HomeController.to.subCatList,
+                      onChanged: (value) {
+                        logger.d("Sub Category");
+                        logger.d(HomeController.to.subCatList.length);
+                        HomeController.to.subCatList.map((it)=>logger.d(it.name));
+                        logger.d(SellController.to.selectedSubCategory.value);
+                        SellController.to.selectedSubCategory.value = value;
+                      },
+                      selectedValue: SellController.to.selectedSubCategory.value == null
+                          ? null
+                          : HomeController.to.subCatList.firstWhereOrNull(
+                            (e) => e.sId == SellController.to.selectedSubCategory.value!.sId,
                       ),
-                      Expanded(
-                        child: CustomButton(
-                          onTap: () {
-                            SellController.to.addProductInfo.value = false;
-                            SellController.to.addLocationInfo.value = true;
-                          },
-                          title: AppStaticStrings.next.tr,
+                    ),
+                    CustomDropdown(
+                      isRequired: true,
+                      validator: (value) {
+                        if (value == null) {
+                          return AppStaticStrings.fieldRequired.tr;
+                        }
+                        return null;
+                      },
+                      title: AppStaticStrings.condition.tr,
+                      items: condition,
+                      selectedValue: SellController.to.selectedCondition.value,
+                      onChanged: (value) {
+                        SellController.to.selectedCondition.value = value;
+                      },
+                    ),
+                    CustomTextField(
+                      fillColor: AppColors.kWhiteColor,
+                      textEditingController:
+                          SellController.to.priceController.value,
+                      title: AppStaticStrings.price.tr,
+                      isRequired: true,
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return AppStaticStrings.fieldRequired.tr;
+                        }
+                        return null;
+                      },
+                    ),
+                    CustomTextField(
+                      fillColor: AppColors.kWhiteColor,
+                      title: AppStaticStrings.productDescription.tr,
+                      isRequired: true,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return AppStaticStrings.fieldRequired.tr;
+                        }
+                        return null;
+                      },
+                      maxLines: 6,
+                      textEditingController:
+                          SellController.to.descriptionController.value,
+                    ),
+                    Row(
+                      spacing: 12.w,
+                      children: [
+                        Expanded(
+                          child: CustomButton(
+                            fillColor: Colors.transparent,
+                            textColor: AppColors.kPrimaryColor,
+                            onTap: () {
+                              SellController.to.addProductInfo.value = false;
+                            },
+                            title: AppStaticStrings.previous.tr,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                        Expanded(
+                          child: CustomButton(
+                            onTap: () {
+                              if (!_formKey.currentState!.validate()) {
+                                SellController.to.addProductInfo.value = false;
+                                SellController.to.addLocationInfo.value = true;
+                              }
+                            },
+                            title: AppStaticStrings.next.tr,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               )
-              : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12.h,
-                children: [
-                  titleBold(title: AppStaticStrings.productInformation.tr),
+              : Form(
+                key: _formKeyForLocation,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 12.h,
+                  children: [
+                    titleBold(title: AppStaticStrings.productInformation.tr),
 
-                  CustomDropdown(
+                    CustomDropdown<CategoryModel>(
+                      isRequired: true,
+                      validator: (value) {
+                        if (value == null) {
+                          return AppStaticStrings.fieldRequired.tr;
+                        }
+                        return null;
+                      },
+                      isLoading: HomeController.to.isLoadingDivision.value,
+                      title: AppStaticStrings.wilaya.tr,
+                      items: HomeController.to.divisionList,
+                      onChanged: (value) async {
+                        if (value != null) {
+                          // Immediately clear previous selections and subcategories
+                          SellController.to.selectedCity.value = null;
+                          HomeController.to.cityList.clear();
+                          HomeController.to.cityList.refresh();
 
-                    isLoading: HomeController.to.isLoadingDivision.value,
-                    title: AppStaticStrings.wilaya.tr,
-                    items: HomeController.to.divisionList,
-                    onChanged: (value) {
-                      if (value != null) {
-                        SellController.to.selectedWilaya.value = value;
+                          // Set new category
+                          SellController.to.selectedWilaya.value = value;
 
-                        HomeController.to.getCityListRequest(
-                          division: value.sId.toString(),
-                        );
-                      }
-                    },
-                    displayText: (cat) => cat.name.toString(),
-                    selectedValue: SellController.to.selectedWilaya.value,
-                  ),
-                  CustomDropdown(
+                          // Load new subcategories
+                          await HomeController.to.getCityListRequest(
+                            division: value.sId.toString(),
+                          );
+                          HomeController.to.cityList.refresh();
+                        }
+                      },
+                      displayText: (cat) => cat.name.toString(),
+                      selectedValue: SellController.to.selectedWilaya.value,
+                    ),
+                    CustomDropdown<CityModel>(
+                      isRequired: true,
+                      validator: (value) {
+                        if ( /*HomeController.to.cityList.isNotEmpty &&*/ value ==
+                            null) {
+                          return AppStaticStrings.fieldRequired.tr;
+                        }
+                        return null;
+                      },
 
-                    selectedValue: SellController.to.selectedCity.value,
-                    isLoading: HomeController.to.isLoadingCity.value,
-                    displayText: (cat) => cat.name.toString(),
-                    onChanged: (value) {
-                      SellController.to.selectedCity.value= value;
-                    },
-                    title: AppStaticStrings.city.tr,
-                    items: HomeController.to.cityList,
-                  ),
+                      selectedValue: HomeController.to.cityList
+                          .firstWhereOrNull(
+                            (item) =>
+                                item.sId ==
+                                SellController.to.selectedCity.value?.sId,
+                          ),
+                      isLoading: HomeController.to.isLoadingCity.value,
+                      displayText: (cat) => cat.name.toString(),
+                      onChanged: (value) {
+                        SellController.to.selectedCity.value = value;
+                      },
+                      title: AppStaticStrings.city.tr,
+                      items: HomeController.to.cityList,
+                    ),
 
-                  Row(
-                    spacing: 12.w,
-                    children: [
-                      Expanded(
-                        child: CustomButton(
-                          fillColor: Colors.transparent,
-                          textColor: AppColors.kPrimaryColor,
-                          onTap: () {
-                            SellController.to.addLocationInfo.value = false;
-                            SellController.to.addProductInfo.value = true;
-                          },
-                          title: AppStaticStrings.previous.tr,
+                    Row(
+                      spacing: 12.w,
+                      children: [
+                        Expanded(
+                          child: CustomButton(
+                            fillColor: Colors.transparent,
+                            textColor: AppColors.kPrimaryColor,
+                            onTap: () {
+                              SellController.to.addLocationInfo.value = false;
+                              SellController.to.addProductInfo.value = true;
+                            },
+                            title: AppStaticStrings.previous.tr,
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        child: CustomButton(
-                          onTap: () {
-                            successDialogCustom(title: AppStaticStrings
-                                .yourItemHasBeenSubmitted
-                                .tr, onTap: () {   NavigationController
-                                .to
-                                .selectedNavIndex
-                                .value = 0;
-                            Get.back();  });
-                          },
-                          title: AppStaticStrings.submit.tr,
+                        Expanded(
+                          child: Obx(() {
+                            return CustomButton(
+                              isLoading:
+                                  SellController.to.isLoadingAddProduct.value,
+
+                              onTap: () {
+                                if (_formKeyForLocation.currentState!
+                                    .validate()) {
+                                  SellController.to.addProductRequest();
+                                  successDialogCustom(
+                                    title:
+                                        AppStaticStrings
+                                            .yourItemHasBeenSubmitted
+                                            .tr,
+                                    onTap: () {
+                                      NavigationController
+                                          .to
+                                          .selectedNavIndex
+                                          .value = 0;
+                                      Get.back();
+                                    },
+                                  );
+                                }
+                              },
+                              title: AppStaticStrings.submit.tr,
+                            );
+                          }),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               );
         }),
       ),
     );
   }
-
 
   CustomText titleBold({required String title}) {
     return CustomText(
