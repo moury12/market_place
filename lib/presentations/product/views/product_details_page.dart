@@ -17,12 +17,15 @@ import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/constants/pagination_loading_widget.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/core/utils/enum.dart';
+import 'package:market_place/core/utils/variable.dart';
 import 'package:market_place/presentations/auth/views/login_page.dart';
+import 'package:market_place/presentations/home/views/home_page.dart';
 import 'package:market_place/presentations/home/widgets/view_all_row_widget.dart';
 import 'package:market_place/presentations/my-listings/controller/listings_controller.dart';
 import 'package:market_place/presentations/navigation/controller/navigation_controller.dart';
 import 'package:market_place/presentations/product/controller/product_controller.dart';
 import 'package:market_place/presentations/product/views/seller_profile_page.dart';
+import 'package:market_place/presentations/sell-now/controller/sell_controller.dart';
 
 import '../../../core/components/custom_loading_widget.dart';
 import '../../home/widgets/product_card_item_widget.dart';
@@ -124,6 +127,7 @@ class ProductDetailsPage extends StatelessWidget {
                                       .to
                                       .selectedImageIndex
                                       .value = index;
+                                  logger.d( "${ApiService().baseUrl}/${product.img?[index]}");
                                 },
                                 child: CustomNetworkImage(
                                   radius: 2.r,
@@ -148,7 +152,21 @@ class ProductDetailsPage extends StatelessWidget {
                       style: poppinsSemiBold,
                       fontSize: getFontSizeDefault(),
                     ),
-
+                    Row(
+                      spacing: 4.sp,
+                      children: [
+                        Icon(
+                          Icons.location_on_sharp,
+                          color: AppColors.kPrimaryColor,
+                          size: 15.sp,
+                        ),
+                        CustomText(
+                          fontSize: getFontSizeSmall(),
+                          text:
+                              "${product.divisions?.name}, ${product.cities?.name}",
+                        ),
+                      ],
+                    ),
                     fromSeller
                         ? SizedBox.shrink()
                         : Padding(
@@ -249,7 +267,11 @@ class ProductDetailsPage extends StatelessWidget {
                               title: AppStaticStrings.editListingInfo.tr,
                               color: AppColors.kPrimaryColor,
                               icon: editIcon,
-                              action: () {},
+                              action: () {
+                                SellController.to.editProduct(
+                                  productDetails: product,
+                                );
+                              },
                             ),
                             Obx(() {
                               return ListingsController.to.productStats.value ==

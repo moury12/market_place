@@ -1,4 +1,6 @@
 
+import 'package:market_place/presentations/home/model/category_subcategory_model.dart';
+
 class ProductModel {
   String? sId;
   String? name;
@@ -46,16 +48,19 @@ class ProductDetailsModel {
   int? price;
   List<String>? img;
   String? condition;
+  bool? isFavorite;
   String? categoryName;
   String? categoryId;
   String? subCategoryName;
+  CategoryModel? categories;
+  SubCategoryModel? subCategories;
+  CategoryModel? divisions;
+  CityModel? cities;
   String? userName;
   String? userEmail;
   String? userPhone;
   String? userImg;
   String? userId;
-  bool? isFavorite;
-
 
   ProductDetailsModel(
       {this.sId,
@@ -64,14 +69,18 @@ class ProductDetailsModel {
         this.price,
         this.img,
         this.condition,
+        this.isFavorite,
         this.categoryName,
         this.categoryId,
         this.subCategoryName,
+        this.categories,
+        this.subCategories,
+        this.divisions,
+        this.cities,
         this.userName,
         this.userEmail,
         this.userPhone,
         this.userImg,
-        this.isFavorite,
         this.userId});
 
   ProductDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -81,15 +90,26 @@ class ProductDetailsModel {
     price = json['price'];
     img = json['img'].cast<String>();
     condition = json['condition'];
+    isFavorite = json['is_favorite'];
     categoryName = json['category_name'];
     categoryId = json['category_id'];
     subCategoryName = json['sub_category_name'];
+    categories = json['categories'] != null
+        ? CategoryModel.fromJson(json['categories'])
+        : null;
+    subCategories = json['sub_categories'] != null
+        ? SubCategoryModel.fromJson(json['sub_categories'])
+        : null;
+    divisions = json['divisions'] != null
+        ? CategoryModel.fromJson(json['divisions'])
+        : null;
+    cities =
+    json['cities'] != null ? CityModel.fromJson(json['cities']) : null;
     userName = json['user_name'];
     userEmail = json['user_email'];
     userPhone = json['user_phone'];
     userImg = json['user_img'];
     userId = json['user_id'];
-    isFavorite = json['is_favorite'];
   }
 
   Map<String, dynamic> toJson() {
@@ -100,15 +120,30 @@ class ProductDetailsModel {
     data['price'] = price;
     data['img'] = img;
     data['condition'] = condition;
+    data['is_favorite'] = isFavorite;
     data['category_name'] = categoryName;
     data['category_id'] = categoryId;
     data['sub_category_name'] = subCategoryName;
+    if (categories != null) {
+      data['categories'] = categories!.toJson();
+    }
+    if (subCategories != null) {
+      data['sub_categories'] = subCategories!.toJson();
+    }
+    if (divisions != null) {
+      data['divisions'] = divisions!.toJson();
+    }
+    if (cities != null) {
+      data['cities'] = cities!.toJson();
+    }
     data['user_name'] = userName;
     data['user_email'] = userEmail;
     data['user_phone'] = userPhone;
     data['user_img'] = userImg;
     data['user_id'] = userId;
-    data['is_favorite'] = isFavorite;
     return data;
   }
 }
+
+
+

@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -9,6 +6,7 @@ import 'package:market_place/core/components/custom_button.dart';
 import 'package:market_place/core/components/custom_button_tap.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/core/constants/color_constants.dart';
+import 'package:market_place/core/constants/custom_space.dart';
 import 'package:market_place/core/constants/custom_text.dart';
 import 'package:market_place/core/constants/fontsize_constant.dart';
 import 'package:market_place/core/constants/image_constants.dart';
@@ -23,6 +21,7 @@ import '../../../core/components/custom_textfield.dart';
 import '../../../core/utils/variable.dart';
 import '../../home/controller/home_controller.dart';
 import '../../home/model/category_subcategory_model.dart';
+import '../../product/widgets/image_list_widget.dart';
 
 class SellNowPage extends StatelessWidget {
   static const String routeName = "/sell-now";
@@ -38,50 +37,13 @@ class SellNowPage extends StatelessWidget {
           return !SellController.to.addProductInfo.value &&
                   !SellController.to.addLocationInfo.value
               ? Column(
-                spacing: 12.h,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   titleBold(title: AppStaticStrings.uploadProductImages.tr),
-                  Obx(() {
-                    return Wrap(
-                      spacing: 8.w,
-                      runSpacing: 8.w,
-                      children: List.generate(
-                        SellController.to.imgList.length,
-                        (index) {
-                          final img = SellController.to.imgList[index];
-                          return Stack(
-                            children: [
-                              Image.file(
-                                File(img),
-                                height: 110.w,
-                                width: 110.w,
-                                fit: BoxFit.cover,
-                              ),
-                              Positioned(
-                                top: -10,
-                                right: -10,
+                  space8H,
+                  ListOfImages(images: SellController.to.imgList),
+                  ListOfImages(images: SellController.to.editImgList),
 
-                                child: IconButton(
-                                  onPressed: () {
-                                    removeImage(
-                                      uploadImages: SellController.to.imgList,
-                                      imagePath: img,
-                                    );
-                                  },
-                                  icon: Icon(
-                                    CupertinoIcons.multiply_circle_fill,
-                                    size: 20,
-                                    color: AppColors.kPrimaryColor,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    );
-                  }),
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8.r),
@@ -113,10 +75,15 @@ class SellNowPage extends StatelessWidget {
                       ),
                     ),
                   ),
+                  space12H,
                   CustomButton(
                     onTap: () {
                       if (SellController.to.imgList.isNotEmpty) {
                         SellController.to.addProductInfo.value = true;
+                      } else if (SellController.to.isEditMode.value == true &&
+                          SellController.to.editImgList.isNotEmpty) {
+                        SellController.to.addProductInfo.value = true;
+
                       } else {
                         showCustomSnackbar(
                           title: AppStaticStrings.failed.tr,
@@ -150,16 +117,19 @@ class SellNowPage extends StatelessWidget {
                         return null;
                       },
                     ),
-                    // Category Dropdown
+
                     CustomDropdown<CategoryModel>(
                       isRequired: true,
-                      validator: (value) => value == null ? AppStaticStrings.fieldRequired.tr : null,
+                      validator:
+                          (value) =>
+                              value == null
+                                  ? AppStaticStrings.fieldRequired.tr
+                                  : null,
                       isLoading: HomeController.to.isLoadingCategory.value,
                       title: AppStaticStrings.category.tr,
                       items: HomeController.to.catList,
                       onChanged: (value) async {
                         if (value != null) {
-
                           // Clear the subcategory list first
                           HomeController.to.subCatList.clear();
                           HomeController.to.subCatList.value = [];
@@ -175,14 +145,12 @@ class SellNowPage extends StatelessWidget {
                             catId: value.sId.toString(),
                           );
 
-
                           // Force UI update
                           HomeController.to.subCatList.refresh();
-
                         }
                       },
                       displayText: (cat) => cat.name.toString(),
-                      selectedValue: SellController.to.selectedCategory.value,
+                      selectedValue: SellController.to.selectedCategory.value??HomeController.to.catList.first,
                     ),
                     CustomDropdown<SubCategoryModel>(
                       isRequired: true,
@@ -190,7 +158,6 @@ class SellNowPage extends StatelessWidget {
                         SellController.to.selectedSubCategory.value = value;
                       },
                       validator: (value) {
-                        print(value);
                         if ( /*HomeController.to.cityList.isNotEmpty &&*/ value ==
                             null) {
                           return AppStaticStrings.fieldRequired.tr;
@@ -203,11 +170,18 @@ class SellNowPage extends StatelessWidget {
                       title: AppStaticStrings.subCategory.tr,
                       items: HomeController.to.subCatList,
 
-                      selectedValue: SellController.to.selectedSubCategory.value == null
-                          ? null
-                          : HomeController.to.subCatList.firstWhereOrNull(
-                            (e) => e.sId == SellController.to.selectedSubCategory.value!.sId,
-                      ),
+                      selectedValue:
+                          SellController.to.selectedSubCategory.value == null
+                              ? null
+                              : HomeController.to.subCatList.firstWhereOrNull(
+                                (e) =>
+                                    e.sId ==
+                                    SellController
+                                        .to
+                                        .selectedSubCategory
+                                        .value!
+                                        .sId,
+                              ),
                     ),
                     CustomDropdown(
                       isRequired: true,

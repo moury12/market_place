@@ -106,7 +106,7 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>> {
                 child: DropdownButton<T>(
                   dropdownColor: AppColors.kWhiteColor,
                   padding: EdgeInsets.zero,
-                  value: widget.selectedValue,
+                  value: _getMatchedItem(widget.selectedValue, widget.items),
                   isExpanded: true,
                   underline: const SizedBox(), // Removes the default underline
                   style: poppinsMedium.copyWith(
@@ -181,6 +181,21 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>> {
           );
         }
     );
+  }
+  T? _getMatchedItem(T? selected, List<T>? list) {
+    if (selected == null || list == null) return null;
+    for (final item in list) {
+      if (item == selected) return item;
+
+        // Fallback if == is not overridden, use .sId comparison
+        try {
+          if (item != null) {
+            return item;
+          }
+        } catch (_) {}
+
+    }
+    return null;
   }
 
   String _getDisplayText(T? item) {
