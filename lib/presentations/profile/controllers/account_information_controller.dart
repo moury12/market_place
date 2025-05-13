@@ -11,10 +11,15 @@ import '../../../core/helper/helper_function.dart';
 import '../../../core/utils/hive_boxes.dart';
 import '../../../core/utils/variable.dart';
 import '../../home/model/product_model.dart';
+import '../../notification/model/notification_model.dart';
+import '../model/setting_model.dart';
 
 class AccountInformationController extends GetxController{
   static AccountInformationController get to => Get.find();
 RxString profileImgPath ="".obs;
+  Rx<SettingsModel> policyModel = SettingsModel().obs;
+  Rx<SettingsModel> termsModel = SettingsModel().obs;
+
   var tabContent = <Widget>[].obs;
   RxBool isLoadingProfile = false.obs;
   RxBool isLoadingUpdateProfile = false.obs;
@@ -51,7 +56,9 @@ RxString profileImgPath ="".obs;
   void onInit() {
     getUserProfileRequest();
     getFavProductListRequest();
+
     reinitializeProfileControllers();
+    getPrivacyPolicyRequest();
     super.onInit();
   }
   ///------------------------------ get User profile method -------------------------///
@@ -91,6 +98,7 @@ RxString profileImgPath ="".obs;
       isLoadingProfile.value = false;
     }
   }
+
   ///------------------------------ update profile method -------------------------///
 
   Future<void> updateProfileRequest() async {
@@ -197,6 +205,7 @@ RxString profileImgPath ="".obs;
       isFavProductLoadingMore.value = false;
     }
   }
+
   ///------------------------------ change pass method -------------------------///
 
   Future<void> changePassRequest() async {
@@ -227,6 +236,35 @@ RxString profileImgPath ="".obs;
       logger.e(e.toString());
     }
   }
+
+
+  Future<void> getPrivacyPolicyRequest() async {
+    try {
+      isLoadingPolicy.value = true;
+      ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
+
+      final response = await ApiService().request(endpoint: settingPrivacyEndPoint, method: 'GET');
+      isLoadingPolicy.value = false;
+      if (response['success'] == true) {
+        logger.d(response);
+        policyModel.value = SettingsModel.fromJson(response['data']);
+      } else if (response['message'] == AppStaticStrings.noInternet) {
+        showCustomSnackbar(
+          title: 'Failed',
+          message: response['message'],
+          type: SnackBarType.failed,
+          noInternet: true,
+        );
+      } else {
+        logger.e(response);
+        showCustomSnackbar(title: 'Failed', message: response['message'], type: SnackBarType.failed);
+      }
+    } catch (e) {
+      logger.e(e.toString());
+      isLoadingPolicy.value = false;
+    }
+  }
+
   reinitializeProfileControllers() {
     nameController.value.text = userModel.value.name ?? 'n/a';
 

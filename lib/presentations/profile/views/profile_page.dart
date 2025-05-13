@@ -17,10 +17,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../../core/components/custom_button.dart';
 import '../../../core/components/custom_refresh_indicator.dart';
 import '../../../core/constants/app_static_strings.dart';
-import '../../auth/views/login_page.dart';
 import '../../navigation/controller/navigation_controller.dart';
 import '../widgets/language_change_dialog.dart';
 import '../widgets/profile_action_item_widget.dart';
@@ -153,16 +151,16 @@ class ProfilePage extends StatelessWidget {
                   );
                 },
               ),
-              ProfileActionItemWidget(
-                img: helpIcon,
-                title: AppStaticStrings.helpSupport.tr,
-                onTap: () {
-                  Get.toNamed(
-                    TermsPolicyHelpPage.routeName,
-                    arguments: AppStaticStrings.helpSupport.tr,
-                  );
-                },
-              ),
+              // ProfileActionItemWidget(
+              //   img: helpIcon,
+              //   title: AppStaticStrings.helpSupport.tr,
+              //   onTap: () {
+              //     Get.toNamed(
+              //       TermsPolicyHelpPage.routeName,
+              //       arguments: AppStaticStrings.helpSupport.tr,
+              //     );
+              //   },
+              // ),
               ProfileActionItemWidget(
                       img: logoutIcon,
                       title: AppStaticStrings.logOut.tr,
