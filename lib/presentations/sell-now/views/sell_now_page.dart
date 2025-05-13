@@ -78,13 +78,15 @@ class SellNowPage extends StatelessWidget {
                   space12H,
                   CustomButton(
                     onTap: () {
-                      if (SellController.to.imgList.isNotEmpty) {
+                      if (SellController.to.imgList.isNotEmpty ||
+                          (SellController.to.isEditMode.value == true &&
+                              SellController.to.editImgList.isNotEmpty)) {
                         SellController.to.addProductInfo.value = true;
-                      } else if (SellController.to.isEditMode.value == true &&
-                          SellController.to.editImgList.isNotEmpty) {
+                      } /*else if ((SellController.to.isEditMode.value == true &&
+                          SellController.to.editImgList.isNotEmpty)) {
                         SellController.to.addProductInfo.value = true;
 
-                      } else {
+                      }*/ else {
                         showCustomSnackbar(
                           title: AppStaticStrings.failed.tr,
                           message: "At least one image is required",
@@ -150,7 +152,9 @@ class SellNowPage extends StatelessWidget {
                         }
                       },
                       displayText: (cat) => cat.name.toString(),
-                      selectedValue: SellController.to.selectedCategory.value??HomeController.to.catList.first,
+                      selectedValue:
+                          SellController.to.selectedCategory.value ??
+                          HomeController.to.catList.first,
                     ),
                     CustomDropdown<SubCategoryModel>(
                       isRequired: true,

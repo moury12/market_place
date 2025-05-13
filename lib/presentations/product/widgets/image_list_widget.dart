@@ -8,6 +8,8 @@ import 'package:market_place/core/api-client/api_service.dart';
 import 'package:market_place/core/components/custom_network_image.dart';
 import 'package:market_place/core/constants/color_constants.dart';
 import 'package:market_place/core/helper/helper_function.dart';
+import 'package:market_place/core/utils/variable.dart';
+import 'package:market_place/presentations/sell-now/controller/sell_controller.dart';
 
 class ListOfImages extends StatelessWidget {
   final RxList<String> images;
@@ -47,6 +49,10 @@ class ListOfImages extends StatelessWidget {
                       child: IconButton(
                         onPressed: () {
                           removeImage(uploadImages: images, imagePath: img);
+                          if (img.contains(ApiService().baseUrl)) {
+                            SellController.to.removeImgList.add(img);
+                            logger.d( SellController.to.removeImgList.length);
+                          }
                         },
                         icon: Icon(
                           CupertinoIcons.multiply_circle_fill,
