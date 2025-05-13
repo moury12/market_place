@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:market_place/core/api-client/api_service.dart';
 import 'package:market_place/core/components/custom_button_tap.dart';
 import 'package:market_place/core/components/custom_network_image.dart';
 import 'package:market_place/core/constants/custom_text.dart';
-import 'package:market_place/core/utils/variable.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/presentations/home/controller/home_controller.dart';
 import 'package:market_place/presentations/home/model/category_subcategory_model.dart';
-import 'package:market_place/presentations/home/views/search_page.dart';
 
 class CategoryCardItemWidget extends StatelessWidget {
   final CategoryModel categoryModel;

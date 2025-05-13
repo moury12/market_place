@@ -12,13 +12,11 @@ import '../../home/model/product_model.dart';
 
 class ListingsController extends GetxController {
   static ListingsController get to => Get.find();
-  // @override
-  // void onInit() {
-  //   getProductListRequest();
-  //   super.onInit();
-  // }
+
   RxBool isLoadingProduct = false.obs;
   RxBool isLoadingPage = false.obs;
+  RxBool isLoadingDelete = false.obs;
+  final isLoadingProductStatus = <String, bool>{}.obs;
   Rx<Status> productStats = Status.pending.obs;
 
   RxList<ProductModel> productList = <ProductModel>[].obs;
@@ -62,7 +60,8 @@ class ListingsController extends GetxController {
           'limit': itemsProductPerPage.value.toString(),
           'search': searchController.value.text,
           'order': 'desc',
-          'status': productStats.value.name.toUpperCase(),          'user':
+          'status': productStats.value.name.toUpperCase(),
+          'user':
               AccountInformationController.to.userModel.value.sId.toString(),
         },
       );
@@ -104,6 +103,65 @@ class ListingsController extends GetxController {
       logger.e(e.toString());
       isLoadingProduct.value = false;
       isProductLoadingMore.value = false;
+    }
+  }
+
+  ///------------------------------  product status change method -------------------------///
+
+  Future<void> changeProductStatusRequest({required String productId}) async {
+    try {
+      isLoadingProductStatus[productStats.value.name] = true;
+      final response = await ApiService().request(
+        endpoint: "$productStatusEndPoint$productId",
+        method: 'PATCH',
+        body: {"status": productStats.value.name.toUpperCase()},
+      );
+      isLoadingProductStatus[productStats.value.name] = false;
+      if (response['success'] == true) {
+        logger.d(response);
+
+        showCustomSnackbar(title: 'Success', message: response['message']);
+        Get.back();
+      } else {
+        logger.e(response);
+        showCustomSnackbar(
+          title: 'Failed',
+          message: response['message'],
+          type: SnackBarType.failed,
+        );
+      }
+    } catch (e) {
+      isLoadingProductStatus[productStats.value.name] = false;
+      logger.e(e.toString());
+    }
+  }
+
+  ///------------------------------  product status change method -------------------------///
+
+  Future<void> deleteProductRequest({required String productId}) async {
+    try {
+     isLoadingDelete.value = true;
+      final response = await ApiService().request(
+        endpoint: "$productDeleteEndPoint$productId",
+        method: 'DELETE',
+
+      );
+     isLoadingDelete.value = false;
+      if (response['success'] == true) {
+        logger.d(response);
+
+        showCustomSnackbar(title: 'Success', message: response['message']);
+      } else {
+        logger.e(response);
+        showCustomSnackbar(
+          title: 'Failed',
+          message: response['message'],
+          type: SnackBarType.failed,
+        );
+      }
+    } catch (e) {
+     isLoadingDelete.value = false;
+      logger.e(e.toString());
     }
   }
 }

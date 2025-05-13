@@ -16,8 +16,10 @@ import 'package:market_place/core/constants/image_constants.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/constants/pagination_loading_widget.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
+import 'package:market_place/core/utils/enum.dart';
 import 'package:market_place/presentations/auth/views/login_page.dart';
 import 'package:market_place/presentations/home/widgets/view_all_row_widget.dart';
+import 'package:market_place/presentations/my-listings/controller/listings_controller.dart';
 import 'package:market_place/presentations/navigation/controller/navigation_controller.dart';
 import 'package:market_place/presentations/product/controller/product_controller.dart';
 import 'package:market_place/presentations/product/views/seller_profile_page.dart';
@@ -30,8 +32,11 @@ import '../widgets/seller_profile_widgets.dart';
 
 class ProductDetailsPage extends StatelessWidget {
   static const String routeName = "/product-details";
+
   ProductDetailsPage({super.key});
+
   final fromSeller = Get.arguments;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +47,7 @@ class ProductDetailsPage extends StatelessWidget {
               ? SizedBox.shrink()
               : ButtonTapWidget(
                 onTap: () async {
-                 if(NavigationController.to.isLoggedIn) {
+                  if (NavigationController.to.isLoggedIn) {
                     bool isFav = await ProductController.to.favProductRequest(
                       parentId: ProductController.to.productModel.value.sId,
                     );
@@ -53,30 +58,32 @@ class ProductDetailsPage extends StatelessWidget {
                         }
                       });
                     }
-                  }else{
-                   Get.toNamed(LoginPage.routeName);
-                 }
+                  } else {
+                    Get.toNamed(LoginPage.routeName);
+                  }
                 },
                 child: Padding(
                   padding: padding8,
-                  child: Obx(
-                    () {
-                      return Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          SvgPicture.asset(backgroundCircleIcon),
-                          ProductController.to.isLoadingProductDetails.value
-                              ? PaginationLoadingWidget()
-                              :  SvgPicture.asset(
-                            ProductController.to.productModel.value.isFavorite ==
-                                    true
-                                ? favFillIcon
-                                : favOutlineIcon,
-                          ),
-                        ],
-                      );
-                    }
-                  ),
+                  child: Obx(() {
+                    return Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        SvgPicture.asset(backgroundCircleIcon),
+                        ProductController.to.isLoadingProductDetails.value
+                            ? PaginationLoadingWidget()
+                            : SvgPicture.asset(
+                              ProductController
+                                          .to
+                                          .productModel
+                                          .value
+                                          .isFavorite ==
+                                      true
+                                  ? favFillIcon
+                                  : favOutlineIcon,
+                            ),
+                      ],
+                    );
+                  }),
                 ),
               ),
         ],
@@ -149,10 +156,11 @@ class ProductDetailsPage extends StatelessWidget {
                           child: Column(
                             spacing: 8.h,
                             children: [
-                            if(NavigationController.to.isLoggedIn)  CallAndChatButtons(
-                                number: product.userPhone ?? "013230443",
-                                userID: product.userId.toString(),
-                              ),
+                              if (NavigationController.to.isLoggedIn)
+                                CallAndChatButtons(
+                                  number: product.userPhone ?? "013230443",
+                                  userID: product.userId.toString(),
+                                ),
 
                               ///----------------------- seller info ------------------------///
                               Row(
@@ -189,11 +197,13 @@ class ProductDetailsPage extends StatelessWidget {
                                     flex: 2,
                                     child: CustomButton(
                                       onTap: () {
-                                        if(NavigationController.to.isLoggedIn) {
+                                        if (NavigationController
+                                            .to
+                                            .isLoggedIn) {
                                           Get.toNamed(
                                             SellerProfilePage.routeName,
                                           );
-                                        }else{
+                                        } else {
                                           Get.toNamed(LoginPage.routeName);
                                         }
                                       },
@@ -234,7 +244,6 @@ class ProductDetailsPage extends StatelessWidget {
                     space8H,
                     fromSeller
                         ? Column(
-                          spacing: 8.h,
                           children: [
                             ManageOptionWidget(
                               title: AppStaticStrings.editListingInfo.tr,
@@ -242,24 +251,124 @@ class ProductDetailsPage extends StatelessWidget {
                               icon: editIcon,
                               action: () {},
                             ),
-                            ManageOptionWidget(
-                              title: AppStaticStrings.markAsSold.tr,
-                              color: AppColors.kPrimaryColor,
-                              icon: markSoldIcon,
-                              action: () {},
-                            ),
-                            ManageOptionWidget(
-                              title: AppStaticStrings.archiveListings.tr,
-                              color: AppColors.kYellowColor,
-                              icon: archiveListingsIcon,
-                              action: () {},
-                            ),
-                            ManageOptionWidget(
-                              title: AppStaticStrings.deletePermanently.tr,
-                              color: AppColors.kRedColor,
-                              icon: deleteIcon,
-                              action: () {},
-                            ),
+                            Obx(() {
+                              return ListingsController.to.productStats.value ==
+                                      Status.active
+                                  ? ManageOptionWidget(
+                                    title: AppStaticStrings.markAsSold.tr,
+                                    color: AppColors.kPrimaryColor,
+                                    icon: markSoldIcon,
+                                    isLoading:
+                                        ListingsController
+                                            .to
+                                            .isLoadingProductStatus[Status
+                                            .sold
+                                            .name],
+
+                                    action: () {
+                                      ListingsController.to.productStats.value =
+                                          Status.sold;
+                                      ListingsController.to
+                                          .changeProductStatusRequest(
+                                            productId: product.sId.toString(),
+                                          );
+                                    },
+                                  )
+                                  : SizedBox.shrink();
+                            }),
+                            Obx(() {
+                              return ListingsController.to.productStats.value ==
+                                          Status.active ||
+                                      ListingsController
+                                              .to
+                                              .productStats
+                                              .value ==
+                                          Status.pending
+                                  ? ManageOptionWidget(
+                                    title: AppStaticStrings.archiveListings.tr,
+                                    color: AppColors.kYellowColor,
+                                    icon: archiveListingsIcon,
+                                    isLoading:
+                                        ListingsController
+                                            .to
+                                            .isLoadingProductStatus[Status
+                                            .archived
+                                            .name],
+
+                                    action: () {
+                                      ListingsController.to.productStats.value =
+                                          Status.archived;
+                                      ListingsController.to
+                                          .changeProductStatusRequest(
+                                            productId: product.sId.toString(),
+                                          );
+                                    },
+                                  )
+                                  : ListingsController.to.productStats.value ==
+                                          Status.archived ||
+                                      ListingsController
+                                              .to
+                                              .productStats
+                                              .value ==
+                                          Status.rejected
+                                  ? ManageOptionWidget(
+                                    title: AppStaticStrings.repostListing.tr,
+                                    color: AppColors.kYellowColor,
+                                    icon: archiveListingsIcon,
+                                    isLoading:
+                                        ListingsController
+                                            .to
+                                            .isLoadingProductStatus[Status
+                                            .pending
+                                            .name],
+
+                                    action: () {
+                                      ListingsController.to.productStats.value =
+                                          Status.pending;
+                                      ListingsController.to
+                                          .changeProductStatusRequest(
+                                            productId: product.sId.toString(),
+                                          );
+                                    },
+                                  )
+                                  : ListingsController.to.productStats.value ==
+                                      Status.sold
+                                  ? ManageOptionWidget(
+                                    title: AppStaticStrings.relistingForSale.tr,
+                                    color: AppColors.kYellowColor,
+                                    icon: archiveListingsIcon,
+                                    isLoading:
+                                        ListingsController
+                                            .to
+                                            .isLoadingProductStatus[Status
+                                            .active
+                                            .name],
+
+                                    action: () {
+                                      ListingsController.to.productStats.value =
+                                          Status.active;
+                                      ListingsController.to
+                                          .changeProductStatusRequest(
+                                            productId: product.sId.toString(),
+                                          );
+                                    },
+                                  )
+                                  : SizedBox.shrink();
+                            }),
+                            Obx(() {
+                              return ManageOptionWidget(
+                                title: AppStaticStrings.deletePermanently.tr,
+                                color: AppColors.kRedColor,
+                                icon: deleteIcon,
+                                isLoading:
+                                    ListingsController.to.isLoadingDelete.value,
+                                action: () {
+                                  ListingsController.to.deleteProductRequest(
+                                    productId: product.sId.toString(),
+                                  );
+                                },
+                              );
+                            }),
                           ],
                         )
                         : ViewAllRow(

@@ -14,7 +14,6 @@ import 'package:market_place/presentations/notification/views/notification_page.
 
 import '../../../core/components/custom_appbar.dart';
 import '../../../core/constants/app_static_strings.dart';
-import '../../../core/utils/hive_boxes.dart';
 import '../../../core/utils/variable.dart';
 import '../controller/navigation_controller.dart';
 

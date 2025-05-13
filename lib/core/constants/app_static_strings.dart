@@ -117,7 +117,8 @@ class AppStaticStrings {
   static  String wilaya = 'wilaya';
   static  String category = 'category';
   static  String subCategory = 'subCategory';
-
+  static const String relistingForSale = 'relistingForSale';
+  static const String repostListing = 'repostListing';
   // Password Reset
   static  String setNewPassword = 'setNewPassword';
   static  String otpDescription = 'otpDescription';

@@ -76,6 +76,7 @@ class MyListingsPage extends StatelessWidget {
                     try {
                       ListingsController.to.productStats.value =
                           listingData[index].productStatus;
+                      logger.d(ListingsController.to.productStats.value);
                       await ListingsController.to.getProductListRequest();
 
                       // Navigate after loading completes

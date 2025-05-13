@@ -12,9 +12,9 @@
   "passwordLowercase": "Le mot de passe doit contenir au moins une lettre minuscule.",
   "warning": "Avertissement",
   "relatedProduct": "Produit associé",
-
+  "relistingForSale": "Reliste pour la vente",
+  "repostListing": "Republiée annonce",
   "ok": "OK",
-
   "updatePasswordConfirmation": "Êtes-vous sûr de vouloir mettre à jour votre mot de passe ?",
   "passwordUpdated": "Votre mot de passe a été mis à jour avec succès.",
   "saveChangesConfirmation": "Êtes-vous sûr de vouloir enregistrer les modifications de cette annonce ?",

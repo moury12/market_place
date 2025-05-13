@@ -3,14 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/presentations/auth/controller/auth_controller.dart';
-import 'package:market_place/presentations/auth/model/package_model.dart';
 import 'package:market_place/presentations/auth/widgets/auth_title_widget.dart';
 
 import '../../../core/components/custom_loading_widget.dart';
 import '../../../core/components/tab-bar/dynamic_tab_widget.dart';
 import '../../../core/constants/padding_constant.dart';
 import '../../../core/utils/enum.dart';
-import '../widgets/subscription_plan_card_widget.dart';
 
 class SubscriptionPage extends StatelessWidget {
   static const String routeName = "/subscription";

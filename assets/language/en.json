@@ -10,7 +10,8 @@
   "passwordSpecialChar": "Password must contain at least one special character.",
   "passwordNumber": "Password must contain at least one number.",
   "passwordLowercase": "Password must contain at least one lowercase letter.",
-
+  "relistingForSale": "Re-listing for sale",
+  "repostListing": "Repost Listing",
   "language": "Language",
   "addToCard": "Add to cart",
   "checkout": "Check Out",

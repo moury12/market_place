@@ -1,14 +1,17 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/api-client/api_endpoints.dart';
 import 'package:market_place/core/api-client/api_service.dart';
 import 'package:market_place/core/utils/hive_boxes.dart' show Boxes;
 import 'package:market_place/core/utils/variable.dart';
+import 'package:market_place/presentations/home/controller/home_controller.dart';
 
 import '../../../core/helper/helper_function.dart';
 import '../../home/model/category_subcategory_model.dart';
+import '../../home/model/product_model.dart';
 import '../../navigation/controller/navigation_controller.dart';
 
 class SellController extends GetxController {
@@ -22,6 +25,9 @@ class SellController extends GetxController {
   var selectedCity = Rx<CityModel?>(null);
   var selectedCondition = Rx<String?>(null);
   RxBool isLoadingAddProduct = false.obs;
+  RxBool isEditMode = false.obs;
+  var product = Rx<ProductDetailsModel?>(null);
+
   @override
   void onInit() {
     reinitializeController();
@@ -38,7 +44,7 @@ class SellController extends GetxController {
     try {
       isLoadingAddProduct.value = true;
 
-      ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString(),);
+      ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
       Map<String, String> fields = {
         'name': nameController.value.text,
         'description': descriptionController.value.text,
@@ -88,8 +94,98 @@ class SellController extends GetxController {
   }
 
   reinitializeController() {
-    nameController.value.text = "Test Product";
-    priceController.value.text = "100";
-    descriptionController.value.text = dummyDesc;
+    nameController.value.text =
+        isEditMode.value
+            ? product.value!.name.toString()
+            : kDebugMode
+            ? "Test Product"
+            : "";
+    priceController.value.text =
+        isEditMode.value
+            ? product.value!.price.toString()
+            : kDebugMode
+            ? "100"
+            : "";
+    descriptionController.value.text =
+        isEditMode.value
+            ? product.value!.description.toString()
+            : kDebugMode
+            ? dummyDesc
+            : "";
   }
+
+  // Future<void> _setInitiaDropdown() async {
+  //   await _setInitialCategory();
+  //   await _setInitialSubCategory();
+  //   await _setInitialLocation();
+  // }
+  //
+  // Future<void> _setInitialCategory() async {
+  //   if (isEditMode.value && product.value != null && product.value!.categoryId != null) {
+  //     if (HomeController.to.catList.isEmpty) {
+  //       await HomeController.to.getCategoryListRequest();
+  //     }
+  //
+  //     selectedCategory.value = HomeController.to.catList.firstWhereOrNull(
+  //             (element) => element.sId == product.value!.categoryId
+  //     );
+  //   } else {
+  //     selectedCategory.value = null;
+  //   }
+  // }
+  //
+  // Future<void> _setInitialSubCategory() async {
+  //   if (isEditMode.value &&
+  //       product.value != null &&
+  //       product.value!.subCategoryName != null &&
+  //       selectedCategory.value != null) {
+  //
+  //     if (HomeController.to.subCatList.isEmpty) {
+  //       await HomeController.to.getSubCategoryListRequest(
+  //           catId: selectedCategory.value!.sId.toString()
+  //       );
+  //     }
+  //
+  //     selectedSubCategory.value = HomeController.to.subCatList.firstWhereOrNull(
+  //             (element) => element.name == product.value!.subCategoryName
+  //     );
+  //   } else {
+  //     selectedSubCategory.value = null;
+  //   }
+  // }
+  // Future<void> _setInitialLocation() async {
+  //   if (isEditMode.value && product.value != null) {
+  //     await _setInitialWilaya();
+  //     await _setInitialCity();
+  //   } else {
+  //     selectedWilaya.value = null;
+  //     selectedCity.value = null;
+  //   }
+  // }
+  //
+  // Future<void> _setInitialWilaya() async {
+  //   if (product.value!.wilayaId != null) {
+  //     if (HomeController.to.divisionList.isEmpty) {
+  //       await HomeController.to.getDivisionListRequest();
+  //     }
+  //
+  //     selectedWilaya.value = HomeController.to.divisionList.firstWhereOrNull(
+  //             (element) => element.sId == product.value!.wilayaId
+  //     );
+  //   }
+  // }
+  //
+  // Future<void> _setInitialCity() async {
+  //   if (product.value!. != null && selectedWilaya.value != null) {
+  //     if (HomeController.to.cityList.isEmpty) {
+  //       await HomeController.to.getCityListRequest(
+  //           division: selectedWilaya.value!.sId.toString()
+  //       );
+  //     }
+  //
+  //     selectedCity.value = HomeController.to.cityList.firstWhereOrNull(
+  //             (element) => element.sId == product.value!.cityId
+  //     );
+  //   }
+  // }
 }

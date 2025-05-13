@@ -6,13 +6,11 @@ import 'package:market_place/core/components/custom_refresh_indicator.dart';
 import 'package:market_place/core/components/custom_textfield.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
-import 'package:market_place/core/constants/pagination_loading_widget.dart';
 import 'package:market_place/presentations/home/controller/home_controller.dart';
 import 'package:market_place/presentations/home/loading/category_circle_loading.dart';
 import 'package:market_place/presentations/home/views/category_page.dart';
 import 'package:market_place/presentations/home/views/search_page.dart';
 
-import '../../../core/constants/color_constants.dart';
 import '../widgets/category_card_item_widget.dart';
 import '../widgets/product_card_item_widget.dart';
 import '../widgets/view_all_row_widget.dart';
