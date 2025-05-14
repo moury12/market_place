@@ -80,7 +80,7 @@ class MyListingsPage extends StatelessWidget {
                       await ListingsController.to.getProductListRequest();
 
                       // Navigate after loading completes
-                      await Get.toNamed(
+                       Get.toNamed(
                         ListingProductPage.routeName,
                         arguments: {
                           'title': listingData[index].title,
@@ -89,6 +89,8 @@ class MyListingsPage extends StatelessWidget {
                           "status":  listingData[index].productStatus,
                         },
                       );
+                      ListingsController.to.isLoadingPage.value = false;
+
                     } finally {
                       ListingsController.to.isLoadingPage.value = false;
                     }

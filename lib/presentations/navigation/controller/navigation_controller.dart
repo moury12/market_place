@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/constants/image_constants.dart';
@@ -31,7 +33,8 @@ class NavigationController extends GetxController {
   }
 
   bool get isSubscribed {
-    return  Boxes.getUserData().get(tokenKey) != null && Boxes.getUserData().get(subscribed) ;
+    return Boxes.getUserData().get(tokenKey) != null &&
+        Boxes.getUserData().get(subscribed);
   }
 
   List<Widget> getPages() {
@@ -78,6 +81,20 @@ class NavigationController extends GetxController {
       }
     } catch (e) {
       logger.e(e.toString());
+    }
+  }
+
+  void existApp() {
+    if (selectedNavIndex.value != 0) {
+      selectedNavIndex.value = 0;
+    } else {
+      warningCustomDialog(
+        title: "Are you sure to close the app??",
+        onTap: () {
+          exit(0);
+        },
+        loading: false.obs,
+      );
     }
   }
 

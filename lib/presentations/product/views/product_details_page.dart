@@ -218,6 +218,7 @@ class ProductDetailsPage extends StatelessWidget {
                                         if (NavigationController
                                             .to
                                             .isLoggedIn) {
+                                          ProductController.to.getProductListRequest(userId: product.userId.toString());
                                           Get.toNamed(
                                             SellerProfilePage.routeName,
                                           );

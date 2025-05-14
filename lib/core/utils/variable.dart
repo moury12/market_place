@@ -18,7 +18,7 @@ String tokenKey = 'token';
 String subscribed = 'is_subscribed';
 String verifyTokenKey = 'verify token';
 // Condition options
-final List<String> condition = ['New', 'Used'];
+final List<String> condition = ['NEW', 'USED'];
 
 // Sort By options
 final List<String> sortBy = [

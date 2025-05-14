@@ -43,16 +43,9 @@ class NavigationPage extends StatelessWidget {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
-        if(NavigationController.to.selectedNavIndex.value!=0){
-          NavigationController.to.selectedNavIndex.value=0;
-        }else{
-          warningCustomDialog(title: "Are you sure to close the app??", onTap: () {
-            exit(0);
-          }, loading: false.obs);
-        }
+        NavigationController.to.existApp();
       },
       child: Scaffold(
-
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight),
           child: Obx(() {
@@ -71,22 +64,14 @@ class NavigationPage extends StatelessWidget {
                   },
                 )
                 : CustomDefaultAppbar(
-            onLeading: () {
-              final navIndex = NavigationController.to.selectedNavIndex.value;
-
-              if (navIndex != 0) {
-                NavigationController.to.selectedNavIndex.value = 0;
-              } else {
-                warningCustomDialog(
-                  title: "Are you sure to close the app??",
-                  onTap: () {
-                    exit(0);
+                  onLeading: () {
+                    NavigationController.to.existApp();
                   },
-                  loading: false.obs,
-                );
-              }            },
                   title:
-                      appbarTitle[NavigationController.to.selectedNavIndex.value -
+                      appbarTitle[NavigationController
+                              .to
+                              .selectedNavIndex
+                              .value -
                           1],
                 );
           }),
@@ -131,11 +116,8 @@ class NavigationPage extends StatelessWidget {
                               .to
                               .isLoggedIn /*&&NavigationController.to.selectedNavIndex.value!=0*/ ) {
                             Get.toNamed(LoginPage.routeName);
-                          } else if ((index ==
-                                      1 ||
-                                  index ==
-                                      2) &&
-                              NavigationController.to.isSubscribed==false) {
+                          } else if ((index == 1 || index == 2) &&
+                              NavigationController.to.isSubscribed == false) {
                             Get.toNamed(SubscriptionPage.routeName);
                           } else {
                             NavigationController.to.selectedNavIndex.value =
@@ -146,7 +128,10 @@ class NavigationPage extends StatelessWidget {
                           padding: padding6V,
                           child: Obx(() {
                             bool isSelected =
-                                NavigationController.to.selectedNavIndex.value ==
+                                NavigationController
+                                    .to
+                                    .selectedNavIndex
+                                    .value ==
                                 index;
                             return Column(
                               mainAxisSize:

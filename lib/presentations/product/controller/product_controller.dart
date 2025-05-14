@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../../core/api-client/api_endpoints.dart';
 import '../../../core/api-client/api_service.dart';
 import '../../../core/helper/helper_function.dart';
+import '../../../core/utils/hive_boxes.dart';
 import '../../../core/utils/variable.dart';
 import '../../home/model/product_model.dart';
 
@@ -12,7 +13,16 @@ class ProductController extends GetxController {
   Rx<ProductDetailsModel> productModel = ProductDetailsModel().obs;
   RxList<ProductModel> relatedProductList = <ProductModel>[].obs;
   RxInt selectedImageIndex = 0.obs;
+  RxBool isLoadingProduct = false.obs;
 
+  ///====================product pagination variable========================///
+
+  final RxInt currentProductPage = 1.obs;
+  final RxInt itemsProductPerPage = 10.obs;
+  final RxInt totalProductPages = 5.obs;
+  final RxBool isProductLoadingMore = false.obs;
+
+  RxList<ProductModel> productList = <ProductModel>[].obs;
   ///------------------------------ get Product Details method -------------------------///
 
   Future<void> getProductDetailsRequest({required String productID}) async {
@@ -71,4 +81,81 @@ class ProductController extends GetxController {
       return false;
     }
   }
+
+
+
+  ///------------------------------ get user product list method -------------------------///
+
+  Future<void> getProductListRequest({bool loadMore = false,required String userId}) async {
+    try {
+      // Don't load more if we've reached the last page
+      if (loadMore && currentProductPage.value >= totalProductPages.value) {
+        return;
+      }
+
+      if (loadMore) {
+        isProductLoadingMore.value = true;
+        currentProductPage.value++;
+        // Don't increment page here - we'll do it after successful response
+      } else {
+        isLoadingProduct.value = true;
+        currentProductPage.value = 1;
+      }
+
+      ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
+      final response = await ApiService().request(
+        endpoint: productGetAllEndPoint,
+        method: 'GET',
+        // useAuth: false,
+        queryParams: {
+          'page': currentProductPage.value.toString(),
+          'limit': itemsProductPerPage.value.toString(),
+
+          'order': 'desc',
+          'status': "ACTIVE",
+          'user':userId
+
+        },
+      );
+
+      isLoadingProduct.value = false;
+      isProductLoadingMore.value = false;
+
+      if (response['success'] == true) {
+        if (response['pagination'] != null) {
+          currentProductPage.value = response['pagination']['currentPage'] ?? 1;
+          totalProductPages.value =
+              response['pagination']['totalPages'] ?? 1; // Add this line
+          itemsProductPerPage.value =
+              response['pagination']['itemsPerPage'] ?? 10;
+        }
+
+        final newProducts =
+        (response['data'] as List)
+            .map((e) => ProductModel.fromJson(e))
+            .toList();
+
+        if (loadMore) {
+          // Only increment page after successful load
+
+          productList.addAll(newProducts);
+        } else {
+          productList.value = newProducts;
+        }
+        logger.d(response);
+      } else {
+        logger.e(response);
+        showCustomSnackbar(
+          title: 'Failed',
+          message: response['message'],
+          type: SnackBarType.failed,
+        );
+      }
+    } catch (e) {
+      logger.e(e.toString());
+      isLoadingProduct.value = false;
+      isProductLoadingMore.value = false;
+    }
+  }
+
 }

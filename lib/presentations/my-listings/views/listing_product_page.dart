@@ -30,6 +30,7 @@ class _ListingProductPageState extends State<ListingProductPage> {
   @override
   void initState() {
     super.initState();
+
     final arg = Get.arguments as Map<String, dynamic>;
     title = arg['title'] ?? 'Default Title';
     loading = arg['load'] ?? false;
@@ -79,6 +80,7 @@ class _ListingProductPageState extends State<ListingProductPage> {
                     isLoading: loading!.value,
                   );
                 }),
+
               ],
             ),
           ),
