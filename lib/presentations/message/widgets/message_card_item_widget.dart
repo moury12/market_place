@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:market_place/core/api-client/api_service.dart';
+import 'package:market_place/presentations/message/controllers/message_controller.dart';
+import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
 
 import '../../../core/components/custom_button_tap.dart';
 import '../../../core/components/custom_network_image.dart';
@@ -10,61 +13,98 @@ import '../../../core/constants/fontsize_constant.dart';
 import '../../../core/constants/padding_constant.dart';
 import '../../../core/constants/text_style_constant.dart';
 import '../../../core/utils/variable.dart';
+import '../model/conversation_model.dart';
 import '../views/chatting_page.dart';
+
 class MessageCardItemWidget extends StatelessWidget {
-  final bool? isRead;
-  const MessageCardItemWidget({super.key, this.isRead = false});
+  final ConversationModel conversation;
+
+  const MessageCardItemWidget({super.key, required this.conversation});
 
   @override
   Widget build(BuildContext context) {
+    for (var user in conversation.users ?? []) {
+      if (user.sId == AccountInformationController.to.userModel.value.sId) {
+      } else {
+        MessageController.to.receiverUser.value = user;
+      }
+    }
     return Container(
       decoration: BoxDecoration(
-        color: isRead == false ? AppColors.kPrimaryAccentColor : AppColors.kWhiteColor,
+        color: AppColors.kWhiteColor,
         borderRadius: BorderRadius.circular(16.r),
-        boxShadow: [BoxShadow(color: AppColors.kBlackColor.withValues(alpha: .1),blurRadius: 12.r)],
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.kBlackColor.withValues(alpha: .1),
+            blurRadius: 12.r,
+          ),
+        ],
       ),
       child: ButtonTapWidget(
         radius: 16.r,
-        onTap: () {
-Get.toNamed(ChattingPage.routeName);
+        onTap: () async {
+          logger.d(
+            'new-message::${conversation.sId}-${AccountInformationController.to.userModel.value.sId}',
+          );
+          MessageController.to.socket.on(
+            'new-message::${conversation.sId}-${AccountInformationController.to.userModel.value.sId}',
+            (data) {
+              MessageController.to.getMessageListRequest(
+                conversationId: conversation.sId.toString(),
+              );
+            },
+          );
+          await MessageController.to.getMessageListRequest(
+            conversationId: conversation.sId.toString(),
+          );
+          Get.toNamed(
+            ChattingPage.routeName,
+            arguments: conversation.sId.toString(),
+          );
         },
         child: Padding(
           padding: padding12,
-          child: Row(
-            spacing: 12.w,
-            children: [
-              CustomNetworkImage(
-                imageUrl: dummyProfileImage,
-                boxShape: BoxShape.circle,
-                height: 50.w,
-                width: 50.w,
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ///=============================dynamic user name =============================///
-                    CustomText(text: 'Alex Wheeler', style: poppinsSemiBold),
-
-
-
-                    ///=============================dynamic message =============================///
-                    CustomText(
-                      text: 'Hello! Im available to pick you up. Ill be th..',
-                      style: poppinsRegular,
-                      fontSize: getFontSizeSmall(),
-                    ),
-                  ],
+          child: Obx(() {
+            return Row(
+              spacing: 12.w,
+              children: [
+                CustomNetworkImage(
+                  imageUrl:
+                      "${ApiService().baseUrl}/${MessageController.to.receiverUser.value.img}",
+                  boxShape: BoxShape.circle,
+                  height: 50.w,
+                  width: 50.w,
                 ),
-              ),
-              CustomText(
-                text: '09/27/24',
-                style: poppinsRegular,
-                color: AppColors.kExtraLightGreyTextColor,
-                fontSize: getFontSizeSmall(),
-              ),
-            ],
-          ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ///=============================dynamic user name =============================///
+                      CustomText(
+                        text:
+                            MessageController.to.receiverUser.value.name ??
+                            'User Name',
+                        style: poppinsSemiBold,
+                      ),
+
+                      ///=============================dynamic message =============================///
+                      CustomText(
+                        text: 'New message',
+                        style: poppinsRegular,
+                        fontSize: getFontSizeSmall(),
+                      ),
+                    ],
+                  ),
+                ),
+                // CustomText(
+                //   text: '09/27/24',
+                //   style: poppinsRegular,
+                //   color: AppColors.kExtraLightGreyTextColor,
+                //   fontSize: getFontSizeSmall(),
+                // ),
+              ],
+            );
+          }),
         ),
       ),
     );

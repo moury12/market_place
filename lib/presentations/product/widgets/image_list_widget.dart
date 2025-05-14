@@ -14,8 +14,10 @@ import 'package:market_place/presentations/sell-now/controller/sell_controller.d
 class ListOfImages extends StatelessWidget {
   final RxList<String> images;
   final bool isNetworkImage ;
+  final double? size;
+  final bool? isShowCross;
 
-  const ListOfImages({super.key, required this.images,  this.isNetworkImage =true});
+  const ListOfImages({super.key, required this.images,  this.isNetworkImage =true, this.size, this.isShowCross =true});
 
   @override
   Widget build(BuildContext context) {
@@ -34,16 +36,16 @@ class ListOfImages extends StatelessWidget {
                    isNetworkImage
                         ? CustomNetworkImage(
                           imageUrl: "${ApiService().baseUrl}/$img",
-                          height: 110.w,
-                          width: 110.w,
+                          height:size?? 110.w,
+                          width:size?? 110.w,
                         )
                         : Image.file(
                           File(img),
-                          height: 110.w,
-                          width: 110.w,
+                          height:size?? 110.w,
+                          width:size?? 110.w,
                           fit: BoxFit.cover,
                         ),
-                    Positioned(
+               isShowCross==true?     Positioned(
                       top: -10,
                       right: -10,
 
@@ -61,7 +63,7 @@ class ListOfImages extends StatelessWidget {
                           color: AppColors.kPrimaryColor,
                         ),
                       ),
-                    ),
+                    ):SizedBox.shrink(),
                   ],
                 );
               }),

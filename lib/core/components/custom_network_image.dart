@@ -12,6 +12,7 @@ class CustomNetworkImage extends StatefulWidget {
   final String imageUrl;
   final double? height;
   final double? width;
+  final BoxFit? fit;
   final Border? border;
   final double? radius;
   final BorderRadius? borderRadius;
@@ -33,7 +34,7 @@ class CustomNetworkImage extends StatefulWidget {
     this.border,
     this.radius,
     this.boxShape = BoxShape.rectangle,
-    this.borderRadius,
+    this.borderRadius, this.fit,
   });
 
   @override
@@ -103,6 +104,7 @@ class _CustomNetworkImageState extends State<CustomNetworkImage> {
             ),
           )
         : CachedNetworkImage(
+      fit:widget.fit?? BoxFit.cover,
             imageUrl: widget.imageUrl,
             imageBuilder: (context, imageProvider) {
               return Container(
