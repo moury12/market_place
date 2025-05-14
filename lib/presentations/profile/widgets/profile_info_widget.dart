@@ -50,7 +50,7 @@ class ProfileInfoDetailsWidget extends StatelessWidget {
                 children: [
                   Expanded(
                     child: CustomText(
-                      text:name?? "Ely Mohammed",
+                      text:name?? "User Name",
                       style: poppinsMedium,
                     ),
                   ),
@@ -92,7 +92,7 @@ class ProfileInfoDetailsWidget extends StatelessWidget {
                   SvgPicture.asset(mainIcon),
                   Expanded(
                     child: CustomText(
-                      text:email?? "Marvin@gmail.com",
+                      text:email?? "user.email@gmail.com",
                       style: poppinsRegular,
                       fontSize: 10.sp,
                     ),
@@ -111,7 +111,7 @@ class ProfileInfoDetailsWidget extends StatelessWidget {
                   ),
                   Expanded(
                     child: CustomText(
-                      text:phone?? "(555) 123-4567",
+                      text:phone?? "00000-000000",
                       style: poppinsRegular,
                       fontSize: 10.sp,
                     ),

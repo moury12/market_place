@@ -13,8 +13,9 @@ import 'package:market_place/presentations/sell-now/controller/sell_controller.d
 
 class ListOfImages extends StatelessWidget {
   final RxList<String> images;
+  final bool isNetworkImage ;
 
-  const ListOfImages({super.key, required this.images});
+  const ListOfImages({super.key, required this.images,  this.isNetworkImage =true});
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +31,9 @@ class ListOfImages extends StatelessWidget {
                 final img = images[index];
                 return Stack(
                   children: [
-                    img.contains(ApiService().baseUrl)
+                   isNetworkImage
                         ? CustomNetworkImage(
-                          imageUrl: img,
+                          imageUrl: "${ApiService().baseUrl}/$img",
                           height: 110.w,
                           width: 110.w,
                         )
@@ -49,7 +50,7 @@ class ListOfImages extends StatelessWidget {
                       child: IconButton(
                         onPressed: () {
                           removeImage(uploadImages: images, imagePath: img);
-                          if (img.contains(ApiService().baseUrl)) {
+                          if (isNetworkImage) {
                             SellController.to.removeImgList.add(img);
                             logger.d( SellController.to.removeImgList.length);
                           }

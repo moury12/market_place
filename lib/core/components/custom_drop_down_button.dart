@@ -184,19 +184,23 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>> {
   }
   T? _getMatchedItem(T? selected, List<T>? list) {
     if (selected == null || list == null) return null;
+
     for (final item in list) {
       if (item == selected) return item;
 
-        // Fallback if == is not overridden, use .sId comparison
-        try {
-          if (item != null) {
-            return item;
-          }
-        } catch (_) {}
+      // Fallback for models that use `sId` or similar identifier
+      try {
+        final selectedId = (selected as dynamic).sId;
+        final itemId = (item as dynamic).sId;
 
+        if (selectedId != null && itemId != null && selectedId == itemId) {
+          return item;
+        }
+      } catch (_) {}
     }
     return null;
   }
+
 
   String _getDisplayText(T? item) {
     if (item == null) return '';

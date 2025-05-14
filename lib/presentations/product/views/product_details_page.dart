@@ -266,6 +266,7 @@ class ProductDetailsPage extends StatelessWidget {
                             ManageOptionWidget(
                               title: AppStaticStrings.editListingInfo.tr,
                               color: AppColors.kPrimaryColor,
+                              isLoading: SellController.to.isLoadingEditProduct.value,
                               icon: editIcon,
                               action: () {
                                 SellController.to.editProduct(

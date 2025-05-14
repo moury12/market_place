@@ -83,7 +83,8 @@ class ProductCardItemWidget extends StatelessWidget {
                       ),
                       CustomText(
                         text: product.categoryName.toString(),
-                        maxLines: 2,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: poppinsRegular,
                         color: AppColors.kExtraLightTextColor,
                       ),

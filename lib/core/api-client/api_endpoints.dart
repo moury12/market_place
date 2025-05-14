@@ -21,6 +21,7 @@ String subscribeEndPoint ='subscription/create';
 String productCreateEndPoint ='product/create';
 String productStatusEndPoint ='product/status/';
 String productDeleteEndPoint ='product/delete/';
+String productUpdateEndPoint ='product/update/';
 String conversationCreateEndPoint ='conversation/create';
 String messageCreateEndPoint ='message/create';
 String conversationListEndPoint ='conversation/get-all';
@@ -29,14 +30,3 @@ String getNotificationEndPoint ='notification/get-all';
 String settingTermsEndPoint ='setting/terms';
 String settingPrivacyEndPoint ='setting/privacy';
 
-String addToCartEndPoint ='cart/create';
-String getAllCartEndPoint ='cart/get-all';
-String deleteCartEndPoint ='cart/delete-item/';
-String orderCreateEndPoint ='order/create';
-
-String deletesShippingAddressEndPoint ='shipping-address/delete/';
-String shippingAddressCreateEndPoint ='shipping-address/create';
-String shippingAddressGetEndPoint ='shipping-address/get-all';
-String pickAddressEndPoint ='pick-address/get-all';
-String getOrderEndPoint ='order/get-all';
-String paymentCreateEndPoint ='payment/create';

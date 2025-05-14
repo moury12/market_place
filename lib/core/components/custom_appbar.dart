@@ -12,6 +12,8 @@ import 'package:market_place/core/constants/fontsize_constant.dart';
 import 'package:market_place/presentations/navigation/controller/navigation_controller.dart';
 import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
 
+import '../utils/variable.dart';
+
 class CustomAuthAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   const CustomAuthAppbar({super.key, required this.title});
@@ -39,24 +41,28 @@ class CustomDefaultAppbar extends StatelessWidget
   final String? title;
   final Widget? leading;
   final Widget? titleWidget;
+  final Function()? onLeading;
   final List<Widget>? action;
   const CustomDefaultAppbar({
     super.key,
     this.title,
     this.leading,
     this.action,
-    this.titleWidget,
+    this.titleWidget, this.onLeading,
   });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      automaticallyImplyLeading: true,
+
       // backgroundColor: AppColors.kPrimaryColor,
       // foregroundColor: AppColors.kWhiteColor,
       centerTitle: true,
       leading: ButtonTapWidget(
         shape: CircleBorder(),
-        onTap: () {
+        onTap:onLeading?? () {
+
           Get.back();
         },
         child: Padding(padding: padding8, child: SvgPicture.asset(backIcon)),

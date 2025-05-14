@@ -86,6 +86,7 @@ class MyListingsPage extends StatelessWidget {
                           'title': listingData[index].title,
                           'products': ListingsController.to.productList,
                           "load": ListingsController.to.isLoadingProduct,
+                          "status":  listingData[index].productStatus,
                         },
                       );
                     } finally {

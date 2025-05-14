@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -38,17 +39,43 @@ class ApiService {
 
   // Check internet connectivity
   Future<bool> checkInternetConnection() async {
-    var connectivityResult = await Connectivity().checkConnectivity();
-    if (connectivityResult.contains(ConnectivityResult.none)) {
-      return false;
-    }
-
     try {
-      final response = await http
-          .get(Uri.parse('https://www.google.com'))
-          .timeout(const Duration(seconds: 5));
-      return response.statusCode == 200;
+      // First check basic connectivity status
+      final connectivityResult = await (Connectivity().checkConnectivity());
+
+      // If no connection at all, return immediately
+      if (connectivityResult.contains(ConnectivityResult.none)) {
+        return false;
+      }
+
+      // For mobile data/WiFi, verify actual internet access
+      const testUrls = [
+        'https://www.google.com',  // Primary test
+        'https://www.cloudflare.com',  // Fallback
+        'https://www.apple.com'  // Additional fallback
+      ];
+
+      // Try multiple endpoints in case one is blocked
+      for (final url in testUrls) {
+        try {
+          final response = await http.get(
+            Uri.parse(url),
+            headers: {'Cache-Control': 'no-cache'},
+          ).timeout(const Duration(seconds: 3));
+
+          if (response.statusCode == 200) {
+            return true;
+          }
+        } catch (e) {
+          // Continue to next URL if this one fails
+          continue;
+        }
+      }
+
+      return false;
     } catch (e) {
+      // Catch any unexpected errors in the overall process
+      debugPrint('Connection check error: $e');
       return false;
     }
   }
@@ -62,7 +89,6 @@ class ApiService {
     bool useAuth = true,
   })
   async {
-    // Check internet connection first
     bool isConnected = await checkInternetConnection();
     if (!isConnected) {
       return {

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:market_place/core/components/custom_appbar.dart';
 import 'package:market_place/core/components/custom_refresh_indicator.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
+import 'package:market_place/core/utils/enum.dart';
 import 'package:market_place/presentations/home/widgets/product_card_item_widget.dart';
 import 'package:market_place/presentations/my-listings/controller/listings_controller.dart';
 import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
@@ -23,6 +24,7 @@ class _ListingProductPageState extends State<ListingProductPage> {
   String? title;
   RxList<ProductModel>? products;
   RxBool? loading;
+  Status? productStatus;
   final ScrollController scrollController = ScrollController();
 
   @override
@@ -31,6 +33,7 @@ class _ListingProductPageState extends State<ListingProductPage> {
     final arg = Get.arguments as Map<String, dynamic>;
     title = arg['title'] ?? 'Default Title';
     loading = arg['load'] ?? false;
+    productStatus = arg['status'] ?? Status.pending;
     products = arg['products'] ?? <ProductModel>[].obs;
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
@@ -54,7 +57,8 @@ class _ListingProductPageState extends State<ListingProductPage> {
         onRefresh: () async {
           if (title == AppStaticStrings.favoriteItems.tr) {
             AccountInformationController.to.getFavProductListRequest();
-          }else{
+          } else {
+            ListingsController.to.productStats.value = productStatus!;
             ListingsController.to.getProductListRequest();
           }
         },
