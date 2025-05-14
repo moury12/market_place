@@ -96,12 +96,7 @@ class MessageCardItemWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                // CustomText(
-                //   text: '09/27/24',
-                //   style: poppinsRegular,
-                //   color: AppColors.kExtraLightGreyTextColor,
-                //   fontSize: getFontSizeSmall(),
-                // ),
+
               ],
             );
           }),
