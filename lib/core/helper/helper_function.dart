@@ -14,8 +14,6 @@ import 'package:market_place/core/constants/image_constants.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../presentations/navigation/controller/navigation_controller.dart';
 import '../components/custom_button.dart';
 import '../components/custom_button_tap.dart';
 import '../constants/app_static_strings.dart';
@@ -333,7 +331,14 @@ Future<String?> selectAndFormatTime({
     return null;
   }
 }
+String dateFormateChange({required String date}) {
 
+
+  DateTime utcTime = DateTime.parse(date).toLocal(); // Convert to local time
+  String formatted = DateFormat('dd-MM-yyyy hh:mm a').format(utcTime);
+
+ return formatted; // Output: 15-05-2025 11:42 AM
+}
 enum SnackBarType { success, failed, alert }
 
 void showCustomSnackbar({

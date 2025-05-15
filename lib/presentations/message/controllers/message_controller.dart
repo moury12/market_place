@@ -19,6 +19,7 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 class MessageController extends GetxController {
   final messages = <ChatMessage>[].obs;
   RxList<String> imgList = <String>[].obs;
+  RxString img = "".obs;
 
   static MessageController get to => Get.find();
   RxBool isLoadingCreateConversation = false.obs;
@@ -32,12 +33,20 @@ class MessageController extends GetxController {
   TextEditingController messageController = TextEditingController();
   late IO.Socket socket;
 
-  ///====================category pagination variable========================///
+  ///====================conversation pagination variable========================///
 
   final RxInt currentPage = 1.obs;
-  final RxInt itemsPerPage = 100.obs;
+  final RxInt itemsPerPage = 10.obs;
   final RxInt totalCategoryPages = 5.obs;
   final RxBool isLoadingMore = false.obs;
+
+  ///===============================message pagination variable======================///
+  RxInt messageCurrentPage = 1.obs;
+  RxInt totalMessagePages = 1.obs;
+  RxInt messageItemsPerPage = 10.obs;
+  RxBool isLoadingMoreMessages = false.obs;
+
+
 
   @override
   void onInit() {
@@ -140,23 +149,58 @@ class MessageController extends GetxController {
 
   ///------------------------------ get message list method -------------------------///
 
-  Future<void> getMessageListRequest({required String conversationId}) async {
+  Future<void> getMessageListRequest({
+    required String conversationId,
+    bool loadMore = false,
+  }) async {
     try {
-      isLoadingMessage.value = true;
+      if (loadMore && messageCurrentPage.value >= totalMessagePages.value) {
+        return;
+      }
+
+      if (loadMore) {
+        messageCurrentPage.value++;
+        isLoadingMoreMessages.value = true;
+      } else {
+        messageCurrentPage.value = 1;
+        isLoadingMessage.value = true;
+      }
+
       ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
 
       final response = await ApiService().request(
         endpoint: messageListEndPoint,
-        queryParams: {"conversation_id": conversationId},
+        queryParams: {
+          "conversation_id": conversationId,
+          "page": messageCurrentPage.value.toString(),
+          "limit": messageItemsPerPage.value.toString(),
+          "sort": "createdAt",
+          "order": "desc", // or "asc" depending on your display order
+        },
         method: 'GET',
       );
+
       isLoadingMessage.value = false;
+      isLoadingMoreMessages.value = false;
+
       if (response['success'] == true) {
         logger.d(response);
-        messageList.value =
-            (response['data'] as List)
-                .map((e) => MessageModel.fromJson(e))
-                .toList();
+
+        if (response['pagination'] != null) {
+          messageCurrentPage.value = response['pagination']['currentPage'] ?? 1;
+          totalMessagePages.value = response['pagination']['totalPages'] ?? 1;
+          messageItemsPerPage.value = response['pagination']['itemsPerPage'] ?? 20;
+        }
+
+        final newMessages = (response['data'] as List)
+            .map((e) => MessageModel.fromJson(e))
+            .toList();
+
+        if (loadMore) {
+          messageList.addAll(newMessages); // append
+        } else {
+          messageList.value = newMessages; // reset
+        }
       } else {
         logger.e(response);
         showCustomSnackbar(
@@ -168,8 +212,10 @@ class MessageController extends GetxController {
     } catch (e) {
       logger.e(e.toString());
       isLoadingMessage.value = false;
+      isLoadingMoreMessages.value = false;
     }
   }
+
 
   ///------------------------------  create conversation method -------------------------///
 
@@ -206,42 +252,38 @@ class MessageController extends GetxController {
 
   ///------------------------------  create Message method -------------------------///
 
-  Future<void> createMessageRequest({required String conversationId})
-  async {
+  Future<void> createMessageRequest({required String conversationId}) async {
     try {
       isLoadingCreateMessage.value = true;
 
       ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
+
       Map<String, String> fields = {
         'message': messageController.value.text,
         'conversation_id': conversationId,
       };
+
       Map<String, dynamic> files = {};
-      if (imgList.isNotEmpty) {
-        List<File> docFiles = [];
-        for (String path in imgList) {
-          if (path.isNotEmpty) {
-            docFiles.add(File(path));
-          }
-        }
-        if (docFiles.isNotEmpty) {
-          files['img'] = docFiles;
-        }
+
+      if (img.value.isNotEmpty) {
+        File imageFile = File(img.value);
+        files['img'] = [imageFile]; // Send as a list even if single
       }
+
       final response = await ApiService().multipartRequest(
         endpoint: messageCreateEndPoint,
         method: 'POST',
-
         fields: fields,
         files: files,
       );
+
       messageController.clear();
+      img.value = "";
       isLoadingCreateMessage.value = false;
+
       if (response['success'] == true) {
         logger.d(response);
         getMessageListRequest(conversationId: conversationId);
-        imgList.clear();
-
         // showCustomSnackbar(title: 'Success', message: response['message']);
       } else {
         logger.e(response);
@@ -256,4 +298,5 @@ class MessageController extends GetxController {
       isLoadingCreateMessage.value = false;
     }
   }
+
 }

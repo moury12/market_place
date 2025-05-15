@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/constants/custom_text.dart';
+import 'package:market_place/core/helper/helper_function.dart';
 import 'package:market_place/presentations/message/model/message_model.dart';
 import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
 
@@ -106,7 +107,7 @@ class ChatMessageCardItemWidget extends StatelessWidget {
                               : 8,
                     ),
                     child: Text(
-                      message.createdAt.toString(),
+                      dateFormateChange(date: message.createdAt.toString()),
                       style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                     ),
                   ),
