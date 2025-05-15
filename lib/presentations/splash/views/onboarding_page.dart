@@ -20,7 +20,7 @@ class OnboardingPage extends StatelessWidget {
        canPop: false,
       onPopInvokedWithResult: (didPop, result) {
 if(OnboardingController.to.currentIndex.value>0){
-  OnboardingController.to.pageController!.value.animateToPage(
+  OnboardingController.to.pageController.value.animateToPage(
       OnboardingController.to.currentIndex.value - 1,
       duration: Duration(milliseconds: 300),
       curve: Easing.linear);

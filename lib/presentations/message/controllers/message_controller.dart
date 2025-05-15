@@ -206,7 +206,8 @@ class MessageController extends GetxController {
 
   ///------------------------------  create Message method -------------------------///
 
-  Future<void> createMessageRequest({required String conversationId}) async {
+  Future<void> createMessageRequest({required String conversationId})
+  async {
     try {
       isLoadingCreateMessage.value = true;
 
@@ -234,12 +235,13 @@ class MessageController extends GetxController {
         fields: fields,
         files: files,
       );
+      messageController.clear();
       isLoadingCreateMessage.value = false;
       if (response['success'] == true) {
         logger.d(response);
         getMessageListRequest(conversationId: conversationId);
         imgList.clear();
-        messageController.clear();
+
         // showCustomSnackbar(title: 'Success', message: response['message']);
       } else {
         logger.e(response);

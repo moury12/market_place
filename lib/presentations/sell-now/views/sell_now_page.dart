@@ -79,6 +79,22 @@ class SellNowPage extends StatelessWidget {
                         ),
                       ),
                     ),
+                    space8H,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(Icons.warning_amber_rounded, color: Colors.orangeAccent, size: 20),
+                        SizedBox(width: 6),
+                        CustomText(
+                          text: 'maxFiveImagesAllowed'.tr,
+                          style: poppinsSemiBold.copyWith(
+                            color: Colors.orangeAccent,
+                            fontSize: getFontSizeSmall(),
+                          ),
+                        ),
+                      ],
+                    ),
                     space12H,
                     CustomButton(
                       onTap: () {

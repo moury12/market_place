@@ -16,6 +16,7 @@ import '../utils/variable.dart';
 
 class CustomAuthAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
+
   const CustomAuthAppbar({super.key, required this.title});
 
   @override
@@ -43,6 +44,7 @@ class CustomDefaultAppbar extends StatelessWidget
   final Widget? titleWidget;
   final Function()? onLeading;
   final List<Widget>? action;
+
   const CustomDefaultAppbar({
     super.key,
     this.title,
@@ -61,15 +63,14 @@ class CustomDefaultAppbar extends StatelessWidget
       centerTitle: true,
       leading: ButtonTapWidget(
         shape: CircleBorder(),
-        onTap:onLeading?? () {
-
+        onTap: onLeading ?? () {
           Get.back();
         },
         child: Padding(padding: padding8, child: SvgPicture.asset(backIcon)),
       ),
       actions: action,
       title:
-          titleWidget ??
+      titleWidget ??
           CustomText(
             text: title ?? "",
             style: poppinsMedium,
@@ -86,6 +87,7 @@ class CustomDefaultAppbar extends StatelessWidget
 
 class CustomHomeAppbar extends StatelessWidget {
   final Function()? onActionTap;
+
   const CustomHomeAppbar({super.key, this.onActionTap});
 
   @override
@@ -108,12 +110,15 @@ class CustomHomeAppbar extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomText(
-                  text:
-                      'Hello ${NavigationController.to.isLoggedIn ? AccountInformationController.to.userModel.value.name ?? "User" : "Guest User"}',
-                  style: poppinsBold,
-                  fontSize: getFontSizeSemiSmall(),
-                ),
+                Obx(() {
+                  return CustomText(
+                    text:
+                    'Hello ${ AccountInformationController.to.userModel.value
+                        .name ?? "Guest User" }',
+                    style: poppinsBold,
+                    fontSize: getFontSizeSemiSmall(),
+                  );
+                }),
                 CustomText(
                   text: 'Welcome to Bazarya',
 

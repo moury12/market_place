@@ -77,7 +77,7 @@ class ProductCardItemWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
-                        text: AppStaticStrings.productCategories.tr * 2,
+                        text: product.name.toString(),
                         maxLines: 2,
                         style: poppinsSemiBold,
                       ),

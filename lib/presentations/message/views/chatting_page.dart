@@ -10,6 +10,7 @@ import 'package:market_place/core/constants/custom_space.dart';
 import 'package:market_place/core/constants/custom_text.dart';
 import 'package:market_place/core/constants/fontsize_constant.dart';
 import 'package:market_place/core/constants/image_constants.dart';
+import 'package:market_place/core/constants/pagination_loading_widget.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/core/helper/helper_function.dart';
 import 'package:market_place/presentations/product/widgets/image_list_widget.dart';
@@ -27,6 +28,7 @@ class ChattingPage extends StatelessWidget {
   static const String routeName = '/chatting';
 
   ChattingPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final args = Get.arguments as Map<String, dynamic>;
@@ -49,13 +51,13 @@ class ChattingPage extends StatelessWidget {
             Expanded(
               child: SingleChildScrollView(
                 child: Obx(() {
-                  return !MessageController.to.isLoadingMessage.value?
+                  return /*!MessageController.to.isLoadingMessage.value?
                   CustomLoadingWidget(
                     height: ScreenUtil().screenHeight,
                     size: 30.sp,
                     width: ScreenUtil().screenWidth,
                   )
-                      : Column(
+                      :*/ Column(
                     children: [
                       CustomNetworkImage(
                         imageUrl: "${ApiService().baseUrl}/${receiverUser.img}",
@@ -82,7 +84,10 @@ class ChattingPage extends StatelessWidget {
                           final message =
                               MessageController.to.messageList[index];
 
-                          return ChatMessageCardItemWidget(message: message, receiverUser: receiverUser,);
+                          return ChatMessageCardItemWidget(
+                            message: message,
+                            receiverUser: receiverUser,
+                          );
                         },
                       ),
                     ],
@@ -122,21 +127,25 @@ class ChattingPage extends StatelessWidget {
                       contentPadding: EdgeInsets.zero,
                     ),
                   ),
-                  IconButton(
-                    onPressed: () {
-                      if (MessageController
-                              .to
-                              .messageController
-                              .text
-                              .isNotEmpty ||
-                          MessageController.to.imgList.isNotEmpty) {
-                        MessageController.to.createMessageRequest(
-                          conversationId: conversationId,
+                  Obx(() {
+                        return  MessageController.to.isLoadingCreateMessage.value
+                            ? PaginationLoadingWidget()  : IconButton(
+                          onPressed: () {
+                            if (MessageController
+                                .to
+                                .messageController
+                                .text
+                                .isNotEmpty ||
+                                MessageController.to.imgList.isNotEmpty) {
+                              MessageController.to.createMessageRequest(
+                                conversationId: conversationId,
+                              );
+                            }
+                          },
+                          icon: SvgPicture.asset(sendMessageIcon),
                         );
-                      }
-                    },
-                    icon: SvgPicture.asset(sendMessageIcon),
-                  ),
+                      })
+                    ,
                 ],
               ),
             ),
