@@ -5,6 +5,8 @@ import 'package:market_place/core/utils/hive_boxes.dart';
 import 'package:market_place/core/utils/variable.dart';
 import 'package:market_place/presentations/navigation/controller/navigation_controller.dart';
 import 'package:market_place/presentations/notification/controller/notification_controller.dart';
+import 'package:market_place/presentations/splash/controller/onboarding_controller.dart';
+import 'package:market_place/presentations/splash/controller/onboarding_controller.dart';
 
 import '../../presentations/auth/controller/auth_controller.dart';
 import '../../presentations/home/controller/home_controller.dart';
@@ -20,6 +22,11 @@ class SplashBinding extends Bindings {
   @override
   void dependencies() {
     Get.put(SplashController());
+  }
+}class OnboardingBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.put(OnboardingController());
   }
 }
 

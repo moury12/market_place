@@ -32,62 +32,98 @@ class MessageController extends GetxController {
   TextEditingController messageController = TextEditingController();
   late IO.Socket socket;
 
+  ///====================category pagination variable========================///
+
+  final RxInt currentPage = 1.obs;
+  final RxInt itemsPerPage = 100.obs;
+  final RxInt totalCategoryPages = 5.obs;
+  final RxBool isLoadingMore = false.obs;
+
   @override
   void onInit() {
     super.onInit();
     // if (AccountInformationController.to.userModel.value.sId != null &&
     //     AccountInformationController.to.userModel.value.sId!.isNotEmpty) {
-      socket = IO.io(
-        '${ApiService().baseUrl}?user_id=${AccountInformationController.to.userModel.value.sId}',
-        IO.OptionBuilder()
-            .setTransports(['websocket'])
-            .disableAutoConnect()
-            .build(),
-      );
+    socket = IO.io(
+      '${ApiService().baseUrl}?user_id=${AccountInformationController.to.userModel.value.sId}',
+      IO.OptionBuilder()
+          .setTransports(['websocket'])
+          .disableAutoConnect()
+          .build(),
+    );
 
-      socket.connect();
+    socket.connect();
 
-      socket.onConnect((_) {
-        logger.d('✅ Socket connected');
-        socket.emit('msg', 'test');
-      });
+    socket.onConnect((_) {
+      logger.d('✅ Socket connected');
+      socket.emit('msg', 'test');
+    });
 
-      socket.onConnectError((data) {
-        logger.e('❌ Socket connect error: $data');
-      });
+    socket.onConnectError((data) {
+      logger.e('❌ Socket connect error: $data');
+    });
 
-      socket.onError((data) {
-        logger.e('❌ Socket error: $data');
-      });
+    socket.onError((data) {
+      logger.e('❌ Socket error: $data');
+    });
 
-      socket.onDisconnect((_) {
-        logger.e('🔌 Socket disconnected');
-      });
+    socket.onDisconnect((_) {
+      logger.e('🔌 Socket disconnected');
+    });
 
-
-  // }
+    // }
     getConversationListRequest();
   }
 
-  ///------------------------------ get conversation list method -------------------------///
+  ///------------------------------  get conversation list method -------------------------///
 
-  Future<void> getConversationListRequest() async {
+  Future<void> getConversationListRequest({bool loadMore = false}) async {
     try {
-      isLoadingConversation.value = true;
+      if (loadMore && currentPage.value >= totalCategoryPages.value) {
+        return;
+      }
+
+      if (loadMore) {
+        currentPage.value++;
+        isLoadingMore.value = true;
+      } else {
+        isLoadingConversation.value = true;
+        currentPage.value = 1;
+      }
       ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
 
       final response = await ApiService().request(
         endpoint: conversationListEndPoint,
-
         method: 'GET',
+        queryParams: {
+          'page': currentPage.value.toString(),
+          'limit': itemsPerPage.value.toString(),
+          'sort': 'updatedAt',
+          'order': 'desc',
+        },
       );
+
       isLoadingConversation.value = false;
+      isLoadingMore.value = false;
       if (response['success'] == true) {
-        logger.d(response);
-        conversationList.value =
+        if (response['pagination'] != null) {
+          currentPage.value = response['pagination']['currentPage'] ?? 1;
+          totalCategoryPages.value =
+              response['pagination']['totalPages'] ?? 1; // Add this line
+
+          itemsPerPage.value = response['pagination']['itemsPerPage'] ?? 10;
+        }
+        final newCategories =
             (response['data'] as List)
                 .map((e) => ConversationModel.fromJson(e))
                 .toList();
+
+        if (loadMore) {
+          conversationList.addAll(newCategories); // Append for load more
+        } else {
+          conversationList.value = newCategories; // Replace for refresh
+        }
+        logger.d(response);
       } else {
         logger.e(response);
         showCustomSnackbar(
@@ -140,6 +176,8 @@ class MessageController extends GetxController {
   Future<void> createConversationRequest({required String userId}) async {
     try {
       isLoadingCreateConversation.value = true;
+      ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
+
       final response = await ApiService().request(
         endpoint: conversationCreateEndPoint,
         method: 'POST',
@@ -202,7 +240,7 @@ class MessageController extends GetxController {
         getMessageListRequest(conversationId: conversationId);
         imgList.clear();
         messageController.clear();
-        showCustomSnackbar(title: 'Success', message: response['message']);
+        // showCustomSnackbar(title: 'Success', message: response['message']);
       } else {
         logger.e(response);
         showCustomSnackbar(

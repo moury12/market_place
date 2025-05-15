@@ -73,6 +73,7 @@ class MyApp extends StatelessWidget {
             )}");
             return locale;
           },
+
             getPages: AppRoutes.route(),
             initialBinding: CommonBinding(),
             debugShowCheckedModeBanner: false,

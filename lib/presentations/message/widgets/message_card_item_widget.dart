@@ -18,17 +18,13 @@ import '../views/chatting_page.dart';
 
 class MessageCardItemWidget extends StatelessWidget {
   final ConversationModel conversation;
+  final Users receiverUser; // ✅ Add this
 
-  const MessageCardItemWidget({super.key, required this.conversation});
+  const MessageCardItemWidget({super.key, required this.conversation, required this.receiverUser});
 
   @override
   Widget build(BuildContext context) {
-    for (var user in conversation.users ?? []) {
-      if (user.sId == AccountInformationController.to.userModel.value.sId) {
-      } else {
-        MessageController.to.receiverUser.value = user;
-      }
-    }
+
     return Container(
       decoration: BoxDecoration(
         color: AppColors.kWhiteColor,
@@ -46,6 +42,7 @@ class MessageCardItemWidget extends StatelessWidget {
           logger.d(
             'new-message::${conversation.sId}-${AccountInformationController.to.userModel.value.sId}',
           );
+          MessageController.to.messageList.clear();
           MessageController.to.socket.on(
             'new-message::${conversation.sId}-${AccountInformationController.to.userModel.value.sId}',
             (data) {
@@ -54,23 +51,23 @@ class MessageCardItemWidget extends StatelessWidget {
               );
             },
           );
-          await MessageController.to.getMessageListRequest(
+           MessageController.to.getMessageListRequest(
             conversationId: conversation.sId.toString(),
           );
           Get.toNamed(
             ChattingPage.routeName,
-            arguments: conversation.sId.toString(),
+            arguments: {"conversation_id":conversation.sId.toString(),
+            "receive_user":receiverUser},
           );
         },
         child: Padding(
           padding: padding12,
-          child: Obx(() {
-            return Row(
+          child:  Row(
               spacing: 12.w,
               children: [
                 CustomNetworkImage(
                   imageUrl:
-                      "${ApiService().baseUrl}/${MessageController.to.receiverUser.value.img}",
+                      "${ApiService().baseUrl}/${receiverUser.img}",
                   boxShape: BoxShape.circle,
                   height: 50.w,
                   width: 50.w,
@@ -82,7 +79,7 @@ class MessageCardItemWidget extends StatelessWidget {
                       ///=============================dynamic user name =============================///
                       CustomText(
                         text:
-                            MessageController.to.receiverUser.value.name ??
+                            receiverUser.name ??
                             'User Name',
                         style: poppinsSemiBold,
                       ),
@@ -98,8 +95,7 @@ class MessageCardItemWidget extends StatelessWidget {
                 ),
 
               ],
-            );
-          }),
+            )
         ),
       ),
     );

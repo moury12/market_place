@@ -6,6 +6,11 @@ import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/utils/variable.dart';
 import 'package:market_place/presentations/auth/views/login_page.dart';
 import 'package:market_place/presentations/navigation/views/navigation_page.dart';
+import 'package:market_place/presentations/splash/controller/onboarding_controller.dart';
+import 'package:market_place/presentations/splash/controller/onboarding_controller.dart';
+import 'package:market_place/presentations/splash/controller/onboarding_controller.dart';
+import 'package:market_place/presentations/splash/controller/onboarding_controller.dart';
+import 'package:market_place/presentations/splash/controller/onboarding_controller.dart';
 import 'package:market_place/presentations/splash/controller/splash_controller.dart';
 
 import '../../../core/components/custom_button.dart';
@@ -64,12 +69,12 @@ class OnboardingItemContentWidget extends StatelessWidget {
                 (index) => Obx(() {
               return Container(
                 height: 4,
-                width: SplashController.to.currentIndex.value == index
+                width: OnboardingController.to.currentIndex.value == index
                     ? 20.w:4.w,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(3.r),
                     color:
-                    SplashController.to.currentIndex.value == index
+                    OnboardingController.to.currentIndex.value == index
                         ? AppColors.kPrimaryColor
                         : AppColors.kTextColor.withValues(alpha: .3)),
               );
@@ -82,10 +87,10 @@ class OnboardingItemContentWidget extends StatelessWidget {
           child: CustomButton(
             title:AppStaticStrings.next.tr,
             onTap: () {
-              if (SplashController.to.currentIndex.value <
+              if (OnboardingController.to.currentIndex.value <
                   onboardingData.length - 1) {
-                SplashController.to.pageController!.value.animateToPage(
-                    SplashController.to.currentIndex.value + 1,
+                OnboardingController.to.pageController.value.animateToPage(
+                    OnboardingController.to.currentIndex.value + 1,
                     duration: Duration(milliseconds: 300),
                     curve: Easing.linear);
 

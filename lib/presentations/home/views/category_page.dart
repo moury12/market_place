@@ -25,16 +25,15 @@ class _CategoryPageState extends State<CategoryPage> {
 
   @override
   void initState() {
-    scrollController.addListener(
-          () {
-        if (scrollController.position.pixels ==
-            scrollController.position.maxScrollExtent) {
-          HomeController.to.getCategoryListRequest(loadMore: true);
-        }
-      },
-    );
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        HomeController.to.getCategoryListRequest(loadMore: true);
+      }
+    });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,44 +51,39 @@ class _CategoryPageState extends State<CategoryPage> {
                 padding: padding12.copyWith(top: 0),
                 child: Column(
                   children: [
-                    // CustomTextField(
-                    //   textEditingController: HomeController.to.searchCatField,
-                    //   prefixIcon: Icon(CupertinoIcons.search, color: Colors.black),
-                    //   onChanged: (p0) {
-                    //     HomeController.to.getCategoryListRequest();
-                    //   },
-                    // ),
-                    // space8H,
-                    Obx(
-                   () {
-                        return HomeController.to.isLoadingCategory.value?
-                            CategoryGridLoading(): Wrap(
-                          spacing: 8.w,
-                          runSpacing: 8.w,
+                    Obx(() {
+                      return HomeController.to.isLoadingCategory.value
+                          ? CategoryGridLoading()
+                          : Wrap(
+                            spacing: 8.w,
+                            runSpacing: 8.w,
 
-                          children: List.generate(
-                            HomeController.to.catList.length,
-                            (index) => CategoryDetailsCardItemWidget(
-                              categoryModel: HomeController.to.catList[index],
+                            children: List.generate(
+                              HomeController.to.catListWithPagination.length,
+                              (index) => CategoryDetailsCardItemWidget(
+                                categoryModel:
+                                    HomeController
+                                        .to
+                                        .catListWithPagination[index],
+                              ),
                             ),
-                          ),
-                        );
-                      }
-                    ),
-                    Obx(
-                          () {
-                        return HomeController.to.isLoadingMore.value
-                            ? PaginationLoadingWidget()
-                            : SizedBox.shrink();
-                      },
-                    )
+                          );
+                    }),
+                    Obx(() {
+                      return HomeController.to.isLoadingMore.value
+                          ? PaginationLoadingWidget()
+                          : SizedBox.shrink();
+                    }),
                   ],
                 ),
               ),
             ),
-            Obx(() => HomeController.to.isLoadingFilterCategory.value
-                ? buildLoadingOverlay()
-                : SizedBox.shrink()),
+            Obx(
+              () =>
+                  HomeController.to.isLoadingFilterCategory.value
+                      ? buildLoadingOverlay()
+                      : SizedBox.shrink(),
+            ),
           ],
         ),
       ),

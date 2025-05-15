@@ -22,8 +22,8 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomRefreshIndicatorWidget(
-      onRefresh: () async{
-       await HomeController.to.refreshHome();
+      onRefresh: () async {
+        await HomeController.to.refreshHome();
       },
       child: Stack(
         children: [
@@ -40,7 +40,10 @@ class HomePage extends StatelessWidget {
                     },
                     child: CustomTextField(
                       isEnable: false,
-                      prefixIcon: Icon(CupertinoIcons.search, color: Colors.black),
+                      prefixIcon: Icon(
+                        CupertinoIcons.search,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
                   ViewAllRow(
@@ -58,11 +61,17 @@ class HomePage extends StatelessWidget {
                           runSpacing: 8.w,
 
                           children: List.generate(
-                            HomeController.to.catList.length > 8
+                            HomeController.to.catListWithPagination.length > 8
                                 ? 8
-                                : HomeController.to.catList.length,
+                                : HomeController
+                                    .to
+                                    .catListWithPagination
+                                    .length,
                             (index) => CategoryCardItemWidget(
-                              categoryModel: HomeController.to.catList[index],
+                              categoryModel:
+                                  HomeController
+                                      .to
+                                      .catListWithPagination[index],
                             ),
                           ),
                         );
@@ -87,12 +96,14 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
-          Obx(() => HomeController.to.isLoadingFilterCategory.value
-              ? buildLoadingOverlay()
-              : SizedBox.shrink()),
+          Obx(
+            () =>
+                HomeController.to.isLoadingFilterCategory.value
+                    ? buildLoadingOverlay()
+                    : SizedBox.shrink(),
+          ),
         ],
       ),
     );
   }
-
 }

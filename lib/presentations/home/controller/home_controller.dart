@@ -22,6 +22,7 @@ class HomeController extends GetxController {
   var selectedSortBy = Rx<String?>(null);
   Rx<RangeValues> rangeValues = RangeValues(0, 500).obs;
   RxList<CategoryModel> catList = <CategoryModel>[].obs;
+  RxList<CategoryModel> catListWithPagination = <CategoryModel>[].obs;
   RxList<CategoryModel> divisionList = <CategoryModel>[].obs;
   RxList<CityModel> cityList = <CityModel>[].obs;
   RxList<ProductModel> productList = <ProductModel>[].obs;
@@ -43,6 +44,7 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     getCategoryListRequest();
+    getAllCategoryListRequestWithoutPagination();
     getProductListForHomeRequest();
     getDivisionListRequest();
     getProductListRequest();
@@ -63,6 +65,7 @@ class HomeController extends GetxController {
     getProductListForHomeRequest();
     getDivisionListRequest();
     getCategoryListRequest();
+    getAllCategoryListRequestWithoutPagination();
   }
 
   getMaximumRange() async {
@@ -87,7 +90,7 @@ class HomeController extends GetxController {
   ///====================category pagination variable========================///
 
   final RxInt currentPage = 1.obs;
-  final RxInt itemsPerPage = 100.obs;
+  final RxInt itemsPerPage = 10.obs;
   final RxInt totalCategoryPages = 5.obs;
   final RxBool isLoadingMore = false.obs;
 
@@ -142,9 +145,9 @@ class HomeController extends GetxController {
                 .toList();
 
         if (loadMore) {
-          catList.addAll(newCategories); // Append for load more
+          catListWithPagination.addAll(newCategories); // Append for load more
         } else {
-          catList.value = newCategories; // Replace for refresh
+          catListWithPagination.value = newCategories; // Replace for refresh
         }
         logger.d(response);
       } else {
@@ -160,6 +163,48 @@ class HomeController extends GetxController {
       isLoadingCategory.value = false;
     }
   }
+
+
+  Future<void> getAllCategoryListRequestWithoutPagination() async {
+    try {
+      isLoadingCategory.value = true;
+
+      ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
+
+      final response = await ApiService().request(
+        endpoint: catGetAllEndPoint,
+        method: 'GET',
+        queryParams: {
+          'sort': 'updatedAt',
+          'order': 'desc',
+        },
+      );
+
+      isLoadingCategory.value = false;
+
+      if (response['success'] == true) {
+        final newCategories = (response['data'] as List)
+            .map((e) => CategoryModel.fromJson(e))
+            .toList();
+
+        /// Replace list
+        catList.value = newCategories;
+
+        logger.d(response);
+      } else {
+        logger.e(response);
+        showCustomSnackbar(
+          title: 'Failed',
+          message: response['message'],
+          type: SnackBarType.failed,
+        );
+      }
+    } catch (e) {
+      logger.e(e.toString());
+      isLoadingCategory.value = false;
+    }
+  }
+
 
   ///------------------------------ get sub category list method -------------------------///
 

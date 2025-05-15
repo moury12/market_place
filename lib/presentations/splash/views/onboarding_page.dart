@@ -6,6 +6,7 @@ import 'package:market_place/core/components/custom_text_button.dart';
 import '../../../core/utils/hive_boxes.dart';
 import '../../../core/utils/variable.dart';
 import '../../auth/views/login_page.dart';
+import '../controller/onboarding_controller.dart';
 import '../controller/splash_controller.dart';
 import '../widgets/onboarding_item_content_widget.dart';
 
@@ -18,9 +19,9 @@ class OnboardingPage extends StatelessWidget {
     return PopScope(
        canPop: false,
       onPopInvokedWithResult: (didPop, result) {
-if(SplashController.to.currentIndex.value>0){
-  SplashController.to.pageController!.value.animateToPage(
-      SplashController.to.currentIndex.value - 1,
+if(OnboardingController.to.currentIndex.value>0){
+  OnboardingController.to.pageController!.value.animateToPage(
+      OnboardingController.to.currentIndex.value - 1,
       duration: Duration(milliseconds: 300),
       curve: Easing.linear);
 }else{
@@ -37,10 +38,10 @@ if(SplashController.to.currentIndex.value>0){
           },)],
         ),
         body: PageView.builder(
-          controller: SplashController.to.pageController!.value,
+          controller: OnboardingController.to.pageController!.value,
           onPageChanged: (value) {
 
-            SplashController.to.currentIndex.value=value;
+            OnboardingController.to.currentIndex.value=value;
           },
           itemCount: onboardingData.length,
           itemBuilder: (context, index) {

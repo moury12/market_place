@@ -33,7 +33,7 @@ class AppRoutes {
     GetPage(
       name: OnboardingPage.routeName,
       page: () => OnboardingPage(),
-      binding: SplashBinding(),
+      binding: OnboardingBinding(),
     ),
     GetPage(
       name: LoginPage.routeName,

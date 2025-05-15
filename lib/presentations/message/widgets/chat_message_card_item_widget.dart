@@ -4,34 +4,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/constants/custom_text.dart';
-import 'package:market_place/core/utils/variable.dart';
-import 'package:market_place/presentations/message/controllers/message_controller.dart';
 import 'package:market_place/presentations/message/model/message_model.dart';
-import 'package:market_place/presentations/product/widgets/image_list_widget.dart';
 import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
 
 import '../../../core/api-client/api_service.dart';
-import '../model/chat_message_model.dart';
+import '../model/conversation_model.dart';
 
 class ChatMessageCardItemWidget extends StatelessWidget {
-  const ChatMessageCardItemWidget({super.key, required this.message});
+  const ChatMessageCardItemWidget({super.key, required this.message,
+    required this.receiverUser});
 
   final MessageModel message;
+  final Users receiverUser;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(bottom: 24),
-      child: Obx(() {
-        return Row(
+      child:
+         Row(
           mainAxisAlignment:
-              message.sender != MessageController.to.receiverUser.value.sId
+              message.sender != receiverUser.sId
                   ? MainAxisAlignment.start
                   : MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Driver avatar (only for driver messages)
-            if (message.sender != MessageController.to.receiverUser.value.sId)
+            if (message.sender != receiverUser.sId)
               CustomNetworkImage(
                 imageUrl:
                     "${ApiService().baseUrl}/${AccountInformationController.to.userModel.value.img}",
@@ -44,7 +43,7 @@ class ChatMessageCardItemWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment:
                     message.sender !=
-                            MessageController.to.receiverUser.value.sId
+                            receiverUser.sId
                         ? CrossAxisAlignment.start
                         : CrossAxisAlignment.end,
                 children: [
@@ -53,12 +52,12 @@ class ChatMessageCardItemWidget extends StatelessWidget {
                     margin: EdgeInsets.only(
                       left:
                           message.sender !=
-                                  MessageController.to.receiverUser.value.sId
+                                  receiverUser.sId
                               ? 8
                               : 0,
                       right:
                           message.sender !=
-                                  MessageController.to.receiverUser.value.sId
+                                  receiverUser.sId
                               ? 0
                               : 8,
                     ),
@@ -97,12 +96,12 @@ class ChatMessageCardItemWidget extends StatelessWidget {
                       top: 4,
                       left:
                           message.sender !=
-                                  MessageController.to.receiverUser.value.sId
+                                  receiverUser.sId
                               ? 8
                               : 0,
                       right:
                           message.sender !=
-                                  MessageController.to.receiverUser.value.sId
+                                  receiverUser.sId
                               ? 0
                               : 8,
                     ),
@@ -116,17 +115,17 @@ class ChatMessageCardItemWidget extends StatelessWidget {
             ),
 
             // User avatar (only for user messages)
-            if (message.sender == MessageController.to.receiverUser.value.sId)
+            if (message.sender == receiverUser.sId)
               CustomNetworkImage(
                 imageUrl:
-                    "${ApiService().baseUrl}/${MessageController.to.receiverUser.value.img}",
+                    "${ApiService().baseUrl}/${receiverUser.img}",
                 height: 50.w,
                 boxShape: BoxShape.circle,
                 width: 50.w,
               ),
           ],
-        );
-      }),
+        )
+
     );
   }
 }

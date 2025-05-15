@@ -121,11 +121,11 @@ class AuthController extends GetxController {
 
       if (response['success'] == true) {
         logger.d(response);
-        Boxes.getUserData().put(verifyTokenKey, response['data']['resetToken']);
+        Boxes.getUserData().put(verifyTokenKey, response['data']['token']);
         logger.d(
           Boxes.getUserData().put(
             verifyTokenKey,
-            response['data']['resetToken'],
+            response['data']['token'],
           ),
         );
         showCustomSnackbar(title: 'Success', message: response['message']);
@@ -356,15 +356,15 @@ class AuthController extends GetxController {
 
   reinitializeSignUpControllers() {
     if (kDebugMode) {
-      emailSignUpController.value.text = 'kediwiw260@daupload.com';
-      nameSignUpController.text = 'kediwiw260';
+      emailSignUpController.value.text = 'vaxag42656@bamsrad.com';
+      nameSignUpController.text = 'vaxag42656';
       phoneSignUpController.text = '01566026603';
       passSignUpController.text = '12345aA*';
       confirmPassSignUpController.text = '12345aA*';
-      emailLoginController.text = 'calaga8422@bocapies.com';
+      emailLoginController.text = 'tanzibamouri28@gmail.com';
       emailForgetController.value.text =
           'calaga8422@bocapies.com' /*'pihoner651@eligou.com'*/;
-      passLoginController.text = '12345aA!';
+      passLoginController.text = '12345aA*';
       passNewController.text = '12345aA*';
       confirmPassNewController.text = '12345aA*';
     }

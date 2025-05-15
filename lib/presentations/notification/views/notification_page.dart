@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/components/custom_appbar.dart';
+import 'package:market_place/core/components/custom_refresh_indicator.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/presentations/notification/controller/notification_controller.dart';
 import 'package:market_place/presentations/notification/loading/notification_card_loading.dart';
@@ -18,24 +19,30 @@ class NotificationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomDefaultAppbar(title: AppStaticStrings.notifications.tr),
-      body: SingleChildScrollView(
-        physics: AlwaysScrollableScrollPhysics(),
-        child: Padding(
-          padding: padding12,
-          child: Obx(() {
-            return NotificationController.to.isLoadingNotificationList.value
-                ? NotificationCardLoading()
-                : Column(
-                  spacing: 8.h,
-                  children: List.generate(
-                    NotificationController.to.notificationList.length,
-                    (index) => NotificationCardItem(
-                      notificationModel:
-                          NotificationController.to.notificationList[index],
+      body: CustomRefreshIndicatorWidget(
+        onRefresh: () async{
+          await NotificationController.to.getNotificationRequest();
+
+        },
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Padding(
+            padding: padding12,
+            child: Obx(() {
+              return NotificationController.to.isLoadingNotificationList.value
+                  ? NotificationCardLoading()
+                  : Column(
+                    spacing: 8.h,
+                    children: List.generate(
+                      NotificationController.to.notificationList.length,
+                      (index) => NotificationCardItem(
+                        notificationModel:
+                            NotificationController.to.notificationList[index],
+                      ),
                     ),
-                  ),
-                );
-          }),
+                  );
+            }),
+          ),
         ),
       ),
     );
