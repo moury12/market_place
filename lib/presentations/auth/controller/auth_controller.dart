@@ -23,7 +23,9 @@ class AuthController extends GetxController {
   static AuthController get to => Get.find();
   @override
   void onInit() {
-    showCredentialsDialog();
+    Future.delayed(Duration(seconds: 1), () {
+      return showCredentialsDialog();
+    });
     reinitializeSignUpControllers();
     getPackagesRequest();
     ever(packageList, (_) => updateTabContent());

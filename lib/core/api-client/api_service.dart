@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart' as http;
-import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 import '../utils/variable.dart';
 
@@ -40,46 +40,22 @@ class ApiService {
   // Check internet connectivity
   Future<bool> checkInternetConnection() async {
     try {
-      // First check basic connectivity status
-      final connectivityResult = await (Connectivity().checkConnectivity());
-
-      // If no connection at all, return immediately
-      if (connectivityResult.contains(ConnectivityResult.none)) {
-        return false;
-      }
-
-      // For mobile data/WiFi, verify actual internet access
-      const testUrls = [
-        'https://www.google.com',  // Primary test
-        'https://www.cloudflare.com',  // Fallback
-        'https://www.apple.com'  // Additional fallback
-      ];
-
-      // Try multiple endpoints in case one is blocked
-      for (final url in testUrls) {
-        try {
-          final response = await http.get(
-            Uri.parse(url),
-            headers: {'Cache-Control': 'no-cache'},
-          ).timeout(const Duration(seconds: 3));
-
-          if (response.statusCode == 200) {
-            return true;
-          }
-        } catch (e) {
-          // Continue to next URL if this one fails
-          continue;
+      bool result = await InternetConnection().hasInternetAccess;
+      InternetConnection().onStatusChange.listen((InternetStatus status) {
+        switch (status) {
+          case InternetStatus.connected:
+result=true;            break;
+          case InternetStatus.disconnected:
+            result=false;             break;
         }
-      }
-
-      return false;
+      });
+      logger.d(result);
+      return true;
     } catch (e) {
-      // Catch any unexpected errors in the overall process
       debugPrint('Connection check error: $e');
       return false;
     }
   }
-
   // Generic HTTP request method
   Future<dynamic> request({
     required String endpoint,
