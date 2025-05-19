@@ -22,6 +22,7 @@ String notifySettingIcon = 'assets/icons/notify_setting_icon.svg';
 String privacyPolicyIcon = 'assets/icons/privacy_policy_icon.svg';
 String settingIcon = 'assets/icons/setting_icon.svg';
 String termsIcon = 'assets/icons/terms_icon.svg';
+String subscriptionIcon = 'assets/icons/subscription.svg';
 String imgIcon = 'assets/icons/image_icon.svg';
 String appNameImg = 'assets/images/app_name_img.svg';
 String markSoldIcon = 'assets/icons/mark_sold_icon.svg';

@@ -12,7 +12,7 @@ import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/core/helper/helper_function.dart';
 import 'package:market_place/presentations/auth/views/login_page.dart';
-import 'package:market_place/presentations/auth/views/subscription_page.dart';
+import 'package:market_place/presentations/profile/views/subscription_page.dart';
 import 'package:market_place/presentations/notification/views/notification_page.dart';
 
 import '../../../core/components/custom_appbar.dart';

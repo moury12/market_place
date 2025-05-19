@@ -8,8 +8,13 @@ import '../../../core/api-client/api_endpoints.dart';
 import '../../../core/api-client/api_service.dart';
 import '../../../core/constants/app_static_strings.dart';
 import '../../../core/helper/helper_function.dart';
+import '../../../core/utils/common_controller.dart';
+import '../../../core/utils/enum.dart';
 import '../../../core/utils/hive_boxes.dart';
 import '../../../core/utils/variable.dart';
+import '../model/package_model.dart';
+import '../../auth/views/payment_page.dart';
+import '../widgets/subscription_plan_card_widget.dart';
 import '../../home/model/product_model.dart';
 import '../../notification/model/notification_model.dart';
 import '../model/setting_model.dart';
@@ -19,9 +24,11 @@ class AccountInformationController extends GetxController{
 RxString profileImgPath ="".obs;
   Rx<SettingsModel> policyModel = SettingsModel().obs;
   Rx<SettingsModel> termsModel = SettingsModel().obs;
-
+  RxBool isLoadingSubscribe = false.obs;
+  RxList<PackageModel> packageList = <PackageModel>[].obs;
   var tabContent = <Widget>[].obs;
   RxBool isLoadingProfile = false.obs;
+  RxBool isLoadingMyPackage = false.obs;
   RxBool isLoadingUpdateProfile = false.obs;
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController newPasswordController = TextEditingController();
@@ -29,6 +36,9 @@ RxString profileImgPath ="".obs;
   RxBool isLoadingChangePass = false.obs;
   RxBool isLoadingPolicy = false.obs;
   RxList<ProductModel> favProductList = <ProductModel>[].obs;
+  Rx<AuthProcess> loadingProcess = AuthProcess.none.obs;
+
+  bool isLoading(AuthProcess process) => loadingProcess.value == process;
 
   ///=====================add dynmic name ====================///
   Rx<TextEditingController> nameController =
@@ -43,6 +53,7 @@ RxString profileImgPath ="".obs;
   Rx<TextEditingController> contactNumberController =
       TextEditingController().obs;
   Rx<ProfileModel> userModel = ProfileModel().obs;
+  Rx<MyPackageModel> packageModel = MyPackageModel().obs;
 
   ///====================product pagination variable========================///
 
@@ -51,14 +62,18 @@ RxString profileImgPath ="".obs;
   final RxInt totalFavProductPages = 5.obs;
   final RxBool isFavProductLoadingMore = false.obs;
   RxBool isLoadingFavProduct = false.obs;
-
+  RxList<String> tabLabels =
+      [AppStaticStrings.monthly, AppStaticStrings.yearly].obs;
   @override
   void onInit() {
     getUserProfileRequest();
     getFavProductListRequest();
-
+    getPackagesRequest();
     reinitializeProfileControllers();
     getPrivacyPolicyRequest();
+    getUserSubscriptionPackageRequest();
+    ever(packageList, (_) => updateTabContent());
+
     super.onInit();
   }
   ///------------------------------ get User profile method -------------------------///
@@ -97,6 +112,42 @@ RxString profileImgPath ="".obs;
       logger.e(e.toString());
       isLoadingProfile.value = false;
     }
+  }  ///------------------------------ get my subscription method -------------------------///
+
+  Future<void> getUserSubscriptionPackageRequest() async {
+    try {
+      isLoadingMyPackage.value = true;
+      ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
+
+      final response = await ApiService()
+          .request(endpoint: mySubscriptionEndPoint, method: 'GET');
+      isLoadingMyPackage.value = false;
+      if (response['success'] == true) {
+        logger.d(response);
+        packageModel.value = MyPackageModel.fromJson(response['data']);
+        Boxes.getUserData().put(subscribed, userModel.value.isSubscribed);
+        reinitializeProfileControllers();
+      } else if (response['message'] == AppStaticStrings.noInternet) {
+        showCustomSnackbar(
+          title: 'Failed',
+          message: response['message'],
+          type: SnackBarType.failed,
+          noInternet: true,
+          retryTap: () {
+            getUserProfileRequest();
+          },
+        );
+      } else {
+        logger.e(response);
+        showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed);
+      }
+    } catch (e) {
+      logger.e(e.toString());
+      isLoadingMyPackage.value = false;
+    }
   }
 
   ///------------------------------ update profile method -------------------------///
@@ -132,6 +183,44 @@ RxString profileImgPath ="".obs;
     } catch (e) {
       logger.e(e.toString());
       isLoadingUpdateProfile.value = false;
+    }
+  }
+
+  ///------------------------------ subscribe now method -------------------------///
+
+  Future<void> subscribeNowRequest({required String subscribeId}) async {
+    try {
+      isLoadingSubscribe.value = true;
+      ApiService().setAuthToken(
+        Boxes.getUserData().get(tokenKey) != null
+            ? Boxes.getUserData().get(tokenKey).toString()
+            : Boxes.getUserData().get(verifyTokenKey).toString(),
+      );
+      final response = await ApiService().request(
+        endpoint: subscribeEndPoint,
+        method: 'POST',
+        useAuth: true,
+        body: {"subscription_id": subscribeId},
+      );
+
+      isLoadingSubscribe.value = false;
+
+      if (response['success'] == true) {
+        logger.d(response);
+        CommonController.to.stripeUrl.value = response["url"];
+        Get.toNamed(PaymentScreen.routeName);
+        showCustomSnackbar(title: 'Success', message: response['message']);
+      } else {
+        logger.e(response);
+        showCustomSnackbar(
+          title: 'Failed',
+          message: response['message'],
+          type: SnackBarType.failed,
+        );
+      }
+    } catch (e) {
+      isLoadingSubscribe.value = false;
+      logger.e(e.toString());
     }
   }
 
@@ -264,7 +353,63 @@ RxString profileImgPath ="".obs;
       isLoadingPolicy.value = false;
     }
   }
+  ///-----------------------------get package list method------------------------------///
 
+  Future<void> getPackagesRequest() async {
+    try {
+      loadingProcess.value = AuthProcess.packageGet;
+
+      final response = await ApiService().request(
+        endpoint: packageAllListEndPoint,
+        method: 'GET',
+      );
+
+      loadingProcess.value = AuthProcess.none;
+
+      if (response['success'] == true) {
+        logger.d(response);
+        packageList.value =
+            (response['data'] as List)
+                .map((e) => PackageModel.fromJson(e))
+                .toList();
+        if (packageList.isNotEmpty) {
+          tabLabels.value =
+              packageList.map((e) => e.type ?? "Unknown").toList();
+        } else {
+          tabLabels.value = [
+            AppStaticStrings.monthly,
+            AppStaticStrings.yearly,
+          ]; // Fallback
+        }
+      } else {
+        logger.e(response);
+        showCustomSnackbar(
+          title: 'Failed',
+          message: response['message'],
+          type: SnackBarType.failed,
+        );
+      }
+    } catch (e) {
+      loadingProcess.value = AuthProcess.none;
+      logger.e(e.toString());
+    }
+  }
+  void updateTabContent() {
+    tabContent.clear();
+    for (var package in packageList) {
+      tabContent.add(SubscriptionPlanWidget(package: package));
+    }
+
+    if (packageList.isEmpty) {
+      tabContent.addAll([
+        SubscriptionPlanWidget(package: PackageModel(type: 'monthly')),
+        SubscriptionPlanWidget(package: PackageModel(type: 'yearly')),
+      ]);
+      tabLabels.value = [AppStaticStrings.monthly, AppStaticStrings.yearly];
+    } else {
+      tabLabels.value = packageList.map((p) => p.type ?? 'Unknown').toList();
+    }
+  }
   reinitializeProfileControllers() {
     nameController.value.text = userModel.value.name ?? 'n/a';
 

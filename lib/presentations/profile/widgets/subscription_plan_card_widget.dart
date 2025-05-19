@@ -9,7 +9,9 @@ import 'package:market_place/core/constants/fontsize_constant.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/core/utils/variable.dart';
 import 'package:market_place/presentations/auth/controller/auth_controller.dart';
-import 'package:market_place/presentations/auth/model/package_model.dart';
+import 'package:market_place/presentations/profile/model/package_model.dart';
+import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
+import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
 
 import '../../../core/constants/padding_constant.dart';
 
@@ -83,9 +85,9 @@ class SubscriptionPlanWidget extends StatelessWidget {
                 Obx(
                () {
                     return CustomButton(
-                      isLoading: AuthController.to.isLoadingSubscribe.value,
+                      isLoading: AccountInformationController.to.isLoadingSubscribe.value,
                       onTap: () {
-                        AuthController.to.subscribeNowRequest(subscribeId: package!.sId.toString());
+                        AccountInformationController.to.subscribeNowRequest(subscribeId: package!.sId.toString());
                       },
                       title: AppStaticStrings.subscribeNow.tr,
                     );

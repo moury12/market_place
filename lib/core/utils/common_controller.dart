@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/utils/variable.dart';
 import 'package:market_place/presentations/auth/views/login_page.dart';
+import 'package:market_place/presentations/navigation/controller/navigation_controller.dart';
 import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../../presentations/navigation/views/navigation_page.dart';
@@ -55,10 +56,13 @@ class CommonController extends GetxController {
       /* if (request.url.startsWith("https://www.google.com/webhp?hl=en&sa=X&ved=0ahUKEwj4-qy6koSLAxVLRmwGHT7zHXIQPAgI")) {
               return NavigationDecision.prevent;
             }*/
-      if (request.url.contains('${ApiService().baseUrl}/payment/success')) {
-       AccountInformationController.to.getUserProfileRequest();
+      if (request.url.contains('/payment/success')) {
+       if(NavigationController.to.isLoggedIn){
+        AccountInformationController.to.getUserProfileRequest();
+        Get.offAllNamed(NavigationPage.routeName);
+       }
 
-       Get.offAllNamed(NavigationPage.routeName);
+
       }
       return NavigationDecision.navigate;
      },

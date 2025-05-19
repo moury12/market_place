@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
-import 'package:market_place/presentations/auth/controller/auth_controller.dart';
 import 'package:market_place/presentations/auth/widgets/auth_title_widget.dart';
+import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
 
+import '../../../core/components/custom_appbar.dart';
 import '../../../core/components/custom_loading_widget.dart';
 import '../../../core/components/tab-bar/dynamic_tab_widget.dart';
 import '../../../core/constants/padding_constant.dart';
@@ -42,6 +43,9 @@ class SubscriptionPage extends StatelessWidget {
     // }
 
     return Scaffold(
+      appBar: CustomDefaultAppbar(
+        title: AppStaticStrings.subscriptionStatus.tr,
+      ),
       body: Padding(
         padding: padding12.copyWith(
           top: MediaQuery.of(context).viewPadding.top + 16,
@@ -57,7 +61,7 @@ class SubscriptionPage extends StatelessWidget {
                 text: AppStaticStrings.subscriptionDescription.tr,
               ),
               Obx(() {
-                return AuthController.to.loadingProcess.value ==
+                return AccountInformationController.to.loadingProcess.value ==
                         AuthProcess.packageGet
                     ? CustomLoadingWidget(
                       height: ScreenUtil().screenHeight,
@@ -65,8 +69,8 @@ class SubscriptionPage extends StatelessWidget {
                       width: ScreenUtil().screenWidth,
                     )
                     : DynamicTabWidget(
-                      tabs: AuthController.to.tabLabels,
-                      tabContent: AuthController.to.tabContent,
+                      tabs: AccountInformationController.to.tabLabels,
+                      tabContent: AccountInformationController.to.tabContent,
                       function: (p0) {},
                     );
               }),

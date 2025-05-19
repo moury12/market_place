@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
 
 import '../../../core/api-client/api_endpoints.dart';
 import '../../../core/api-client/api_service.dart';
@@ -71,6 +72,8 @@ class ProductController extends GetxController {
     logger.d(response);
     if (response['success'] == true) {
       showCustomSnackbar(title: "Success", message: response['message']);
+
+      AccountInformationController.to.getFavProductListRequest();
       return true;
     } else {
       showCustomSnackbar(

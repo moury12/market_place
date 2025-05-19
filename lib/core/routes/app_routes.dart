@@ -2,7 +2,9 @@ import 'package:get/get.dart';
 import 'package:market_place/core/bindings/bindings.dart';
 import 'package:market_place/presentations/auth/views/payment_page.dart';
 import 'package:market_place/presentations/auth/views/set_new_password_page.dart';
-import 'package:market_place/presentations/auth/views/subscription_page.dart';
+import 'package:market_place/presentations/profile/views/my_subscription_page.dart';
+import 'package:market_place/presentations/profile/views/my_subscription_page.dart';
+import 'package:market_place/presentations/profile/views/subscription_page.dart';
 import 'package:market_place/presentations/auth/views/verify_email_page.dart';
 import 'package:market_place/presentations/auth/views/verify_otp_page.dart';
 import 'package:market_place/presentations/home/views/category_page.dart';
@@ -43,7 +45,11 @@ class AppRoutes {
     GetPage(
       name: SubscriptionPage.routeName,
       page: () => SubscriptionPage(),
-      binding: AuthBinding(),
+      binding: AccountInformationBinding(),
+    ),GetPage(
+      name: MySubscriptionPage.routeName,
+      page: () => MySubscriptionPage(),
+      binding: AccountInformationBinding(),
     ),
     GetPage(
       name: SignUpPage.routeName,

@@ -12,6 +12,8 @@ import 'package:market_place/presentations/notification/views/notification_page.
 import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
 import 'package:market_place/presentations/profile/loading/profile_card_loading.dart';
 import 'package:market_place/presentations/profile/views/account_settings_page.dart';
+import 'package:market_place/presentations/profile/views/my_subscription_page.dart';
+import 'package:market_place/presentations/profile/views/subscription_page.dart';
 import 'package:market_place/presentations/profile/views/term_policy_help_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -123,6 +125,12 @@ class ProfilePage extends StatelessWidget {
                 title: AppStaticStrings.notification.tr,
                 onTap: () {
                   Get.toNamed(NotificationPage.routeName);
+                },
+              ),ProfileActionItemWidget(
+                img: subscriptionIcon,
+                title: AppStaticStrings.subscriptionStatus.tr,
+                onTap: () {
+                  Get.toNamed(MySubscriptionPage.routeName);
                 },
               ),
 

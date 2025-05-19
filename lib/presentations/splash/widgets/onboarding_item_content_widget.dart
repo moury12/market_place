@@ -91,8 +91,8 @@ class OnboardingItemContentWidget extends StatelessWidget {
                   onboardingData.length - 1) {
                 OnboardingController.to.pageController.value.animateToPage(
                     OnboardingController.to.currentIndex.value + 1,
-                    duration: Duration(milliseconds: 100),
-                    curve: Easing.linear);
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.linear);
 
               } else {
                 Boxes.getUserData().put(initialKey, true);

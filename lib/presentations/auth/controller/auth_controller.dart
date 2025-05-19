@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:market_place/presentations/auth/model/package_model.dart';
-import 'package:market_place/presentations/auth/views/subscription_page.dart';
+import 'package:market_place/presentations/profile/model/package_model.dart';
+import 'package:market_place/presentations/profile/views/subscription_page.dart';
 import 'package:market_place/presentations/auth/views/verify_otp_page.dart';
 
 import '../../../core/api-client/api_endpoints.dart';
@@ -17,7 +17,7 @@ import '../../navigation/views/navigation_page.dart';
 import '../views/login_page.dart';
 import '../views/payment_page.dart';
 import '../views/set_new_password_page.dart';
-import '../widgets/subscription_plan_card_widget.dart';
+import '../../profile/widgets/subscription_plan_card_widget.dart';
 
 class AuthController extends GetxController {
   static AuthController get to => Get.find();
@@ -27,18 +27,15 @@ class AuthController extends GetxController {
       return showCredentialsDialog();
     });
     reinitializeSignUpControllers();
-    getPackagesRequest();
-    ever(packageList, (_) => updateTabContent());
+
 
     super.onInit();
   }
 
   RxBool isRememberMe = false.obs;
-  RxBool isLoadingSubscribe = false.obs;
-  RxList<PackageModel> packageList = <PackageModel>[].obs;
 
-  RxList<String> tabLabels =
-      [AppStaticStrings.monthly, AppStaticStrings.yearly].obs;
+
+
   var tabContent = <Widget>[].obs;
   Rx<AuthProcess> loadingProcess = AuthProcess.none.obs;
   bool isLoading(AuthProcess process) => loadingProcess.value == process;
@@ -106,7 +103,8 @@ class AuthController extends GetxController {
   Future<void> verifyEmailRequest({
     required String email,
     required bool isAccVerify,
-  }) async {
+  })
+  async {
     try {
       loadingProcess.value = AuthProcess.activateAccount;
 
@@ -150,7 +148,8 @@ class AuthController extends GetxController {
   }
 
   ///------------------------------ sign in method -------------------------///
-  Future<void> signInRequest() async {
+  Future<void> signInRequest() async
+  {
     try {
       loadingProcess.value = AuthProcess.login;
 
@@ -263,85 +262,8 @@ class AuthController extends GetxController {
     }
   }
 
-  ///-----------------------------get package list method------------------------------///
 
-  Future<void> getPackagesRequest() async {
-    try {
-      loadingProcess.value = AuthProcess.packageGet;
 
-      final response = await ApiService().request(
-        endpoint: packageAllListEndPoint,
-        method: 'GET',
-      );
-
-      loadingProcess.value = AuthProcess.none;
-
-      if (response['success'] == true) {
-        logger.d(response);
-        packageList.value =
-            (response['data'] as List)
-                .map((e) => PackageModel.fromJson(e))
-                .toList();
-        if (packageList.isNotEmpty) {
-          tabLabels.value =
-              packageList.map((e) => e.type ?? "Unknown").toList();
-        } else {
-          tabLabels.value = [
-            AppStaticStrings.monthly,
-            AppStaticStrings.yearly,
-          ]; // Fallback
-        }
-      } else {
-        logger.e(response);
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-        );
-      }
-    } catch (e) {
-      loadingProcess.value = AuthProcess.none;
-      logger.e(e.toString());
-    }
-  }
-
-  ///------------------------------ subscribe now method -------------------------///
-
-  Future<void> subscribeNowRequest({required String subscribeId}) async {
-    try {
-      isLoadingSubscribe.value = true;
-      ApiService().setAuthToken(
-        Boxes.getUserData().get(tokenKey) != null
-            ? Boxes.getUserData().get(tokenKey).toString()
-            : Boxes.getUserData().get(verifyTokenKey).toString(),
-      );
-      final response = await ApiService().request(
-        endpoint: subscribeEndPoint,
-        method: 'POST',
-        useAuth: true,
-        body: {"subscription_id": subscribeId},
-      );
-
-      isLoadingSubscribe.value = false;
-
-      if (response['success'] == true) {
-        logger.d(response);
-        CommonController.to.stripeUrl.value = response["url"];
-        Get.toNamed(PaymentScreen.routeName);
-        showCustomSnackbar(title: 'Success', message: response['message']);
-      } else {
-        logger.e(response);
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-        );
-      }
-    } catch (e) {
-      isLoadingSubscribe.value = false;
-      logger.e(e.toString());
-    }
-  }
 
   clearSignUpController() {
     emailSignUpController.value.clear();
@@ -378,22 +300,7 @@ class AuthController extends GetxController {
     }
   }
 
-  void updateTabContent() {
-    tabContent.clear();
-    for (var package in packageList) {
-      tabContent.add(SubscriptionPlanWidget(package: package));
-    }
 
-    if (packageList.isEmpty) {
-      tabContent.addAll([
-        SubscriptionPlanWidget(package: PackageModel(type: 'monthly')),
-        SubscriptionPlanWidget(package: PackageModel(type: 'yearly')),
-      ]);
-      tabLabels.value = [AppStaticStrings.monthly, AppStaticStrings.yearly];
-    } else {
-      tabLabels.value = packageList.map((p) => p.type ?? 'Unknown').toList();
-    }
-  }
 
   ///------------------------------- OTP section ------------------------------///
   final List<Rx<TextEditingController>> otpControllers = List.generate(

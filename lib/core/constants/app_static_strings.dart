@@ -41,8 +41,13 @@ class AppStaticStrings {
   static  String productInformation = 'productInformation';
   static  String productDescription = 'productDescription';
   static  String previous = 'previous';
-  static const String relatedProduct = 'relatedProduct';
-
+  static  String relatedProduct = 'relatedProduct';
+  static String renewSubscription = 'renewSubscription';
+  static String changeSubscription = 'changeSubscription';
+  static String subscriptionStatus = 'subscriptionStatus';
+  static String subscriptionType = 'subscriptionType';
+  static String lastPurchaseDate = 'lastPurchaseDate';
+  static String subscriptionExpiryDate = 'subscriptionExpiryDate';
   static  String productTitle = 'productTitle';
   static  String uploadProductImages = 'uploadProductImages';
 
