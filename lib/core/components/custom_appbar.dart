@@ -113,8 +113,8 @@ class CustomHomeAppbar extends StatelessWidget {
                 Obx(() {
                   return CustomText(
                     text:
-                    'Hello ${ AccountInformationController.to.userModel.value
-                        .name ?? "Guest User" }',
+                    'Hello ${NavigationController.to.isLoggedIn? AccountInformationController.to.userModel.value
+                        .name ?? "Guest User" :"User".obs}',
                     style: poppinsBold,
                     fontSize: getFontSizeSemiSmall(),
                   );

@@ -23,6 +23,7 @@ class AuthController extends GetxController {
   static AuthController get to => Get.find();
   @override
   void onInit() {
+    showCredentialsDialog();
     reinitializeSignUpControllers();
     getPackagesRequest();
     ever(packageList, (_) => updateTabContent());
@@ -123,10 +124,7 @@ class AuthController extends GetxController {
         logger.d(response);
         Boxes.getUserData().put(verifyTokenKey, response['data']['token']);
         logger.d(
-          Boxes.getUserData().put(
-            verifyTokenKey,
-            response['data']['token'],
-          ),
+          Boxes.getUserData().put(verifyTokenKey, response['data']['token']),
         );
         showCustomSnackbar(title: 'Success', message: response['message']);
 
@@ -168,6 +166,13 @@ class AuthController extends GetxController {
 
       if (response['success'] == true) {
         logger.d(response);
+        if (isRememberMe.value) {
+          saveCredentials(
+            AuthController.to.emailLoginController.text,
+            AuthController.to.passLoginController.text,
+            isRememberMe.value,
+          );
+        }
         showCustomSnackbar(title: 'Success', message: response['message']);
         Boxes.getUserData().put(tokenKey, response['token']);
         ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
@@ -361,10 +366,11 @@ class AuthController extends GetxController {
       phoneSignUpController.text = '01566026603';
       passSignUpController.text = '12345aA*';
       confirmPassSignUpController.text = '12345aA*';
-      emailLoginController.text = 'vaxag42656@bamsrad.com';
+      // emailLoginController.text = 'vaxag42656@bamsrad.com';
+      // passLoginController.text = '12345aA*';
+
       emailForgetController.value.text =
           'calaga8422@bocapies.com' /*'pihoner651@eligou.com'*/;
-      passLoginController.text = '12345aA*';
       passNewController.text = '12345aA*';
       confirmPassNewController.text = '12345aA*';
     }

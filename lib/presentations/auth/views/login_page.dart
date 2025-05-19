@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/constants/image_constants.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
+import 'package:market_place/core/helper/helper_function.dart';
 import 'package:market_place/core/utils/enum.dart';
 import 'package:market_place/presentations/auth/controller/auth_controller.dart'
     show AuthController;
@@ -120,6 +121,7 @@ class LoginPage extends StatelessWidget {
                       ),
                     ],
                   ),
+
                   Obx(
                     () {
                       return CustomButton(

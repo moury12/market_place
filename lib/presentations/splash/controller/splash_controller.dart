@@ -12,7 +12,7 @@ class SplashController extends GetxController {
   static SplashController get to => Get.find();
   @override
   void onInit() {
-    Future.delayed(Duration(milliseconds: 300), () {
+    Future.delayed(Duration(seconds: 1), () {
     /*  if (Boxes.getUserData().get(tokenKey) == null ||
           Boxes.getUserData().get(tokenKey).toString().isEmpty) {
         Get.offAllNamed(LoginPage.routeName);

@@ -19,9 +19,9 @@ class AppStaticStrings {
   static  String enterCodeSent = 'enterCodeSent';
   static  String resetYourPassword = 'resetYourPassword';
   static  String newPassword = 'newPassword';
-  static const String passwordSpecialChar = 'passwordSpecialChar';  // New key for special character
-  static const String passwordNumber = 'passwordNumber';  // New key for number
-  static const String passwordLowercase = 'passwordLowercase';
+  static  String passwordSpecialChar = 'passwordSpecialChar';  // New key for special character
+  static  String passwordNumber = 'passwordNumber';  // New key for number
+  static  String passwordLowercase = 'passwordLowercase';
   static  String confirmNewPassword = 'confirmNewPassword';
   static  String resetPassword = 'resetPassword';
   static  String success = 'success';

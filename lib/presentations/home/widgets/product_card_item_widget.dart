@@ -46,7 +46,8 @@ class ProductCardItemWidget extends StatelessWidget {
         },
         child: Padding(
           padding: padding4,
-          child: Column(
+          child: Column(                    crossAxisAlignment: CrossAxisAlignment.start,
+
             children: [
               Expanded(
                 flex: 3,
@@ -75,6 +76,7 @@ class ProductCardItemWidget extends StatelessWidget {
                   padding: padding4,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       CustomText(
                         text: product.name.toString(),

@@ -20,6 +20,7 @@ void main() async {
   await Hive.initFlutter();
   await Hive.openBox(userBoxName);
   await Hive.openBox(settingBox);
+  await Hive.openBox(authBox);
   final translations = AppTranslations();
   await translations.init();
   Get.put<AppTranslations>(translations);

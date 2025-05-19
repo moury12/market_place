@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
+import 'package:market_place/core/components/custom_text_button.dart';
 import 'package:market_place/core/constants/color_constants.dart';
 import 'package:market_place/core/constants/custom_space.dart';
 import 'package:market_place/core/constants/custom_text.dart';
@@ -13,6 +14,7 @@ import 'package:market_place/core/constants/fontsize_constant.dart';
 import 'package:market_place/core/constants/image_constants.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
+import 'package:market_place/presentations/auth/controller/auth_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../components/custom_button.dart';
 import '../components/custom_button_tap.dart';
@@ -37,6 +39,97 @@ Locale getLocaleFromHive() {
   if (localeString == "fr") return const Locale('fr');
   return const Locale('en', 'US');
 }
+
+Future<void> saveCredentials(
+  String email,
+  String password,
+  bool rememberMe,
+) async {
+  if (rememberMe) {
+    await Boxes.getAuthData().put('email', email);
+    await Boxes.getAuthData().put('password', password);
+  } else {
+    await Boxes.getAuthData().delete('email');
+    await Boxes.getAuthData().delete('password');
+  }
+
+  await Boxes.getAuthData().put('rememberMe', rememberMe);
+}
+
+Future<Map<String, dynamic>> getCredentials() async {
+  final authBox = Boxes.getAuthData();
+  final rememberMe = authBox.get('rememberMe', defaultValue: false);
+
+  if (rememberMe) {
+    return {
+      'email': authBox.get('email'),
+      'password': authBox.get('password'),
+      'rememberMe': rememberMe,
+    };
+  }
+
+  return {};
+}
+
+Future<void> showCredentialsDialog() async {
+  final credentials = await getCredentials();
+
+  if (credentials.isNotEmpty && credentials['rememberMe'] == true) {
+    Get.dialog(
+      AlertDialog(
+
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+
+            CustomText(
+              textAlign: TextAlign.center,
+              text: 'Email: ${credentials['email']}',
+              color: AppColors.kExtraLightTextColor,
+              fontSize: getFontSizeSemiSmall(),
+            ),
+            CustomText(
+              textAlign: TextAlign.center,
+              text:'Password: ${'•' * (credentials['password']?.length ?? 0)}',
+              color: AppColors.kExtraLightTextColor,
+              fontSize: getFontSizeSemiSmall(),
+            ),
+            space8H,
+            Row(
+              spacing: 8.w,
+              children: [
+                Expanded(
+                  child: CustomButton(
+                    textColor: AppColors.kPrimaryColor,
+                    fillColor: Colors.transparent,
+                    onTap: () => Get.back(),
+                    title: AppStaticStrings.cancel.tr,
+                  ),
+                ),
+                Expanded(
+                  child:  CustomButton(
+                      onTap: () {
+                        AuthController.to.emailLoginController.text=credentials['email'];
+                        AuthController.to.passLoginController.text=credentials['password'];
+
+                        Get.back();
+                      },
+                      title: AppStaticStrings.confirm.tr,
+                    )
+                ),
+              ],
+            ),
+
+          ],
+        ),
+
+      ),
+      barrierDismissible: true,
+    );
+  }
+}
+// Usage:
 
 List<PopupMenuEntry<dynamic>> items = [
   PopupMenuItem(value: "Red", child: Text("Red")),
@@ -105,6 +198,7 @@ void callOnPhone({required String phoneNumber}) async {
     throw 'Could not launch $url';
   }
 }
+
 Future<dynamic> successDialogCustom({
   required String title,
   required Function() onTap,
@@ -331,14 +425,14 @@ Future<String?> selectAndFormatTime({
     return null;
   }
 }
+
 String dateFormateChange({required String date}) {
-
-
   DateTime utcTime = DateTime.parse(date).toLocal(); // Convert to local time
   String formatted = DateFormat('dd-MM-yyyy hh:mm a').format(utcTime);
 
- return formatted; // Output: 15-05-2025 11:42 AM
+  return formatted; // Output: 15-05-2025 11:42 AM
 }
+
 enum SnackBarType { success, failed, alert }
 
 void showCustomSnackbar({
