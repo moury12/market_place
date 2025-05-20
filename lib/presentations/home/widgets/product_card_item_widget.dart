@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:market_place/core/api-client/api_service.dart';
 import 'package:market_place/core/components/custom_button_tap.dart';
 import 'package:market_place/core/components/custom_network_image.dart';
+import 'package:market_place/core/components/empty_widget.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/core/constants/color_constants.dart';
 import 'package:market_place/core/constants/custom_text.dart';
@@ -128,7 +129,7 @@ class ProductGridWidget extends StatelessWidget {
       if (isLoading ) {
         return _buildShimmerGrid();
       }else if(productList.isEmpty){
-        return  CustomText( text:"Product List is Empty!!" ,);
+        return  EmptyWidget( text:"Product List is Empty!!" ,);
       }
 
       return GridView.builder(

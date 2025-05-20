@@ -13,7 +13,7 @@ import '../../../core/utils/enum.dart';
 import '../../../core/utils/hive_boxes.dart';
 import '../../../core/utils/variable.dart';
 import '../model/package_model.dart';
-import '../../auth/views/payment_page.dart';
+import '../views/payment_page.dart';
 import '../widgets/subscription_plan_card_widget.dart';
 import '../../home/model/product_model.dart';
 import '../model/setting_model.dart';

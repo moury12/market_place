@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:market_place/core/bindings/bindings.dart';
-import 'package:market_place/presentations/auth/views/payment_page.dart';
+import 'package:market_place/presentations/profile/views/payment_page.dart';
 import 'package:market_place/presentations/auth/views/set_new_password_page.dart';
 import 'package:market_place/presentations/profile/views/my_subscription_page.dart';
 import 'package:market_place/presentations/profile/views/my_subscription_page.dart';

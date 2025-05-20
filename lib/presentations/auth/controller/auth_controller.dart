@@ -16,7 +16,7 @@ import '../../../core/utils/hive_boxes.dart';
 import '../../../core/utils/variable.dart';
 import '../../navigation/views/navigation_page.dart';
 import '../views/login_page.dart';
-import '../views/payment_page.dart';
+import '../../profile/views/payment_page.dart';
 import '../views/set_new_password_page.dart';
 import '../../profile/widgets/subscription_plan_card_widget.dart';
 

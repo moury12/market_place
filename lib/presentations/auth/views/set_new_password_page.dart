@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 
+import '../../../core/components/custom_appbar.dart';
 import '../../../core/components/custom_button.dart';
 import '../../../core/components/custom_textfield.dart';
 import '../../../core/constants/app_static_strings.dart';
@@ -20,7 +21,7 @@ class SetNewPasswordPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold( appBar: CustomAuthAppbar(),
       body: Padding(
         padding: padding12.copyWith(
           top: MediaQuery.of(context).viewPadding.top + 16,

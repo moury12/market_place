@@ -15,20 +15,20 @@ import 'package:market_place/presentations/profile/controllers/account_informati
 import '../utils/variable.dart';
 
 class CustomAuthAppbar extends StatelessWidget implements PreferredSizeWidget {
-  final String title;
+  /*final String title;*/
 
-  const CustomAuthAppbar({super.key, required this.title});
+  const CustomAuthAppbar({super.key, /*required this.title*/});
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      centerTitle: true,
-      title: CustomText(
-        text: title,
-        style: poppinsMedium,
-        fontSize: getFontSizeExtraLarge(),
-        color: AppColors.kPrimaryTextDarkColor,
-      ),
+      // centerTitle: true,
+      // title: CustomText(
+      //   text: title,
+      //   style: poppinsMedium,
+      //   fontSize: getFontSizeExtraLarge(),
+      //   color: AppColors.kPrimaryTextDarkColor,
+      // ),
     );
   }
 

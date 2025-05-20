@@ -8,6 +8,7 @@ import 'package:market_place/core/utils/enum.dart';
 import 'package:market_place/presentations/auth/controller/auth_controller.dart';
 import 'package:market_place/presentations/auth/views/login_page.dart';
 
+import '../../../core/components/custom_appbar.dart';
 import '../../../core/components/custom_button.dart';
 import '../../../core/components/custom_text_button.dart';
 import '../../../core/components/custom_textfield.dart';
@@ -26,7 +27,7 @@ class SignUpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold( appBar: CustomAuthAppbar(),
       body: Padding(
         padding: padding12.copyWith(
           top: MediaQuery.of(context).viewPadding.top + 16,
