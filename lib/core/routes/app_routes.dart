@@ -73,7 +73,7 @@ class AppRoutes {
     ),GetPage(
       name: PaymentScreen.routeName,
       page: () => PaymentScreen(),
-      binding: AuthBinding(),
+      binding: AccountInformationBinding(),
     ),
     GetPage(
       name: CategoryPage.routeName,

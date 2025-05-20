@@ -3,18 +3,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/components/custom_appbar.dart';
 import 'package:market_place/core/components/custom_button.dart';
+import 'package:market_place/core/components/custom_refresh_indicator.dart';
 import 'package:market_place/core/components/custom_textfield.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/core/constants/color_constants.dart';
 import 'package:market_place/core/constants/custom_space.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
-import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
-import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
+import 'package:market_place/core/helper/helper_function.dart';
 import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
 import 'package:market_place/presentations/profile/views/subscription_page.dart';
 
 class MySubscriptionPage extends StatelessWidget {
   static const String routeName = "/my-subscription";
+
   const MySubscriptionPage({super.key});
 
   @override
@@ -23,49 +24,68 @@ class MySubscriptionPage extends StatelessWidget {
       appBar: CustomDefaultAppbar(
         title: AppStaticStrings.subscriptionStatus.tr,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: padding12,
-          child: Column(
-            spacing: 8.h,
-            children: [
-              CustomTextField(
-                textEditingController: TextEditingController(
-                  text: AccountInformationController.to.packageModel.value.type,
-                ),
-                fillColor: AppColors.kWhiteColor,
-                title: AppStaticStrings.subscriptionType.tr,
-              ),
-              CustomTextField(
-                textEditingController: TextEditingController(
-                  text: AccountInformationController.to.packageModel.value.type,
-                ),
-                fillColor: AppColors.kWhiteColor,
-                title: AppStaticStrings.lastPurchaseDate.tr,
-              ),
-              CustomTextField(
-                textEditingController: TextEditingController(
-                  text: AccountInformationController.to.packageModel.value.type,
-                ),
-                fillColor: AppColors.kWhiteColor,
-                title: AppStaticStrings.subscriptionExpiryDate.tr,
-              ),
-              space8H,
+      body: CustomRefreshIndicatorWidget(
+        onRefresh: () => AccountInformationController.to.getUserSubscriptionPackageRequest(),
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Padding(
+            padding: padding12,
+            child: Obx(() {
+              return Column(
+                spacing: 8.h,
+                children: [
+                  CustomTextField(
+                    textEditingController: TextEditingController(
+                      text: AccountInformationController.to.packageModel.value
+                          .type??'N/A',
+                    ),
+                    fillColor: AppColors.kWhiteColor,
+                    title: AppStaticStrings.subscriptionType.tr,
+                  ),
+                  CustomTextField(
+                    textEditingController: TextEditingController(
+                      text: (AccountInformationController.to.packageModel.value
+                          .price??'N/A').toString(),
+                    ),
+                    fillColor: AppColors.kWhiteColor,
+                    title: AppStaticStrings.price.tr,
+                  ),
+                  CustomTextField(
+                    textEditingController: TextEditingController(
+                      text: dateFormateChange(date: AccountInformationController
+                          .to.packageModel.value
+                          .expiresIn??'N/A'),
+                    ),
+                    fillColor: AppColors.kWhiteColor,
+                    title: AppStaticStrings.subscriptionExpiryDate.tr,
+                  ),
+                  space8H,
 
-              CustomButton(
-                onTap: () {},
-                title: AppStaticStrings.renewSubscription.tr,
-              ),
-              CustomButton(
-                fillColor: Colors.transparent,
-                textColor: AppColors.kPrimaryColor,
+                  Obx(() {
+                    return CustomButton(
+                      isLoading: AccountInformationController.to
+                          .isLoadingRenewSubscribe.value,
+                      onTap: () {
+                        AccountInformationController.to.subscribeRenewRequest(
+                            subscribeId: AccountInformationController.to
+                                .packageModel.value
+                                .subscriptionId.toString());
+                      },
+                      title: AppStaticStrings.renewSubscription.tr,
+                    );
+                  }),
+                  CustomButton(
+                    fillColor: Colors.transparent,
+                    textColor: AppColors.kPrimaryColor,
 
-                onTap: () {
-                  Get.toNamed(SubscriptionPage.routeName);
-                },
-                title: AppStaticStrings.changeSubscription.tr,
-              ),
-            ],
+                    onTap: () {
+                      Get.toNamed(SubscriptionPage.routeName);
+                    },
+                    title: AppStaticStrings.changeSubscription.tr,
+                  ),
+                ],
+              );
+            }),
           ),
         ),
       ),

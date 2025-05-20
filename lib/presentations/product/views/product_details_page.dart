@@ -19,7 +19,6 @@ import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/core/utils/enum.dart';
 import 'package:market_place/core/utils/variable.dart';
 import 'package:market_place/presentations/auth/views/login_page.dart';
-import 'package:market_place/presentations/home/views/home_page.dart';
 import 'package:market_place/presentations/home/widgets/view_all_row_widget.dart';
 import 'package:market_place/presentations/my-listings/controller/listings_controller.dart';
 import 'package:market_place/presentations/navigation/controller/navigation_controller.dart';
@@ -51,16 +50,16 @@ class ProductDetailsPage extends StatelessWidget {
               : ButtonTapWidget(
                 onTap: () async {
                   if (NavigationController.to.isLoggedIn) {
-                    bool isFav = await ProductController.to.favProductRequest(
+                    /*bool isFav =*/ await ProductController.to.favProductRequest(
                       parentId: ProductController.to.productModel.value.sId,
                     );
-                    if (isFav) {
-                      ProductController.to.productModel.update((val) {
-                        if (val != null) {
-                          val.isFavorite = !(val.isFavorite ?? false);
-                        }
-                      });
-                    }
+                    // if (isFav) {
+                    //   ProductController.to.productModel.update((val) {
+                    //     if (val != null) {
+                    //       val.isFavorite = !(val.isFavorite ?? false);
+                    //     }
+                    //   });
+                    // }
                   } else {
                     Get.toNamed(LoginPage.routeName);
                   }

@@ -23,14 +23,16 @@ class TermsPolicyHelpPage extends StatelessWidget {
         child: Obx(() {
           return AccountInformationController.to.isLoadingPolicy.value
               ? PaginationLoadingWidget()
-              : HtmlWidget(
-                arg != null && arg == AppStaticStrings.termsAndCondition.tr
-                    ? '''${AccountInformationController.to.termsModel.value.desc}
-        '''
-                    : '''${AccountInformationController.to.policyModel.value.desc}
-        ''',
-                textStyle: poppinsRegular.copyWith(
-                  fontSize: getFontSizeDefault(),
+              : SingleChildScrollView(
+                child: HtmlWidget(
+                  arg != null && arg == AppStaticStrings.termsAndCondition.tr
+                      ? '''${AccountInformationController.to.termsModel.value.desc}
+                        '''
+                      : '''${AccountInformationController.to.policyModel.value.desc}
+                        ''',
+                  textStyle: poppinsRegular.copyWith(
+                    fontSize: getFontSizeDefault(),
+                  ),
                 ),
               );
         }),

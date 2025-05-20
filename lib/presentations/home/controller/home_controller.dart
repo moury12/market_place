@@ -20,7 +20,7 @@ class HomeController extends GetxController {
   var selectedCity = Rx<CityModel?>(null);
   var selectedCondition = Rx<String?>(null);
   var selectedSortBy = Rx<String?>(null);
-  Rx<RangeValues> rangeValues = RangeValues(0, 500).obs;
+  Rx<RangeValues> rangeValues = RangeValues(0, 1000000).obs;
   RxList<CategoryModel> catList = <CategoryModel>[].obs;
   RxList<CategoryModel> catListWithPagination = <CategoryModel>[].obs;
   RxList<CategoryModel> divisionList = <CategoryModel>[].obs;
@@ -80,10 +80,10 @@ class HomeController extends GetxController {
               .toList();
       rangeValues.value = RangeValues(
         0,
-        double.parse(productWithHigherPriceList.first.price ?? "300"),
+        double.parse(productWithHigherPriceList.first.price ?? "300")+100,
       );
     }else{
-      rangeValues.value =RangeValues(0, 500);
+      rangeValues.value =RangeValues(0, 1000000);
     }
   }
 
@@ -225,6 +225,7 @@ class HomeController extends GetxController {
             (response['data'] as List)
                 .map((e) => SubCategoryModel.fromJson(e))
                 .toList();
+        logger.d(response);
       } else {
         logger.e(response);
         showCustomSnackbar(

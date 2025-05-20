@@ -33,7 +33,7 @@ class ProductController extends GetxController {
       final response = await ApiService().request(
         endpoint: '$productDetailsEndPoint$productID',
         method: 'GET',
-        useAuth: false
+        useAuth: true
       );
       if (response['success'] == true) {
         logger.d(response);
@@ -72,7 +72,7 @@ class ProductController extends GetxController {
     logger.d(response);
     if (response['success'] == true) {
       showCustomSnackbar(title: "Success", message: response['message']);
-
+getProductDetailsRequest(productID: parentId??"");
       AccountInformationController.to.getFavProductListRequest();
       return true;
     } else {

@@ -16,7 +16,6 @@ import '../model/package_model.dart';
 import '../../auth/views/payment_page.dart';
 import '../widgets/subscription_plan_card_widget.dart';
 import '../../home/model/product_model.dart';
-import '../../notification/model/notification_model.dart';
 import '../model/setting_model.dart';
 
 class AccountInformationController extends GetxController{
@@ -25,6 +24,7 @@ RxString profileImgPath ="".obs;
   Rx<SettingsModel> policyModel = SettingsModel().obs;
   Rx<SettingsModel> termsModel = SettingsModel().obs;
   RxBool isLoadingSubscribe = false.obs;
+  RxBool isLoadingRenewSubscribe = false.obs;
   RxList<PackageModel> packageList = <PackageModel>[].obs;
   var tabContent = <Widget>[].obs;
   RxBool isLoadingProfile = false.obs;
@@ -76,6 +76,7 @@ RxString profileImgPath ="".obs;
 
     super.onInit();
   }
+
   ///------------------------------ get User profile method -------------------------///
 
   Future<void> getUserProfileRequest() async {
@@ -112,7 +113,9 @@ RxString profileImgPath ="".obs;
       logger.e(e.toString());
       isLoadingProfile.value = false;
     }
-  }  ///------------------------------ get my subscription method -------------------------///
+  }
+
+  ///------------------------------ get my subscription method -------------------------///
 
   Future<void> getUserSubscriptionPackageRequest() async {
     try {
@@ -192,9 +195,8 @@ RxString profileImgPath ="".obs;
     try {
       isLoadingSubscribe.value = true;
       ApiService().setAuthToken(
-        Boxes.getUserData().get(tokenKey) != null
-            ? Boxes.getUserData().get(tokenKey).toString()
-            : Boxes.getUserData().get(verifyTokenKey).toString(),
+      Boxes.getUserData().get(tokenKey).toString()
+
       );
       final response = await ApiService().request(
         endpoint: subscribeEndPoint,
@@ -220,6 +222,43 @@ RxString profileImgPath ="".obs;
       }
     } catch (e) {
       isLoadingSubscribe.value = false;
+      logger.e(e.toString());
+    }
+  }
+
+  ///------------------------------ subscribe renew method -------------------------///
+
+  Future<void> subscribeRenewRequest({required String subscribeId}) async {
+    try {
+      isLoadingRenewSubscribe.value = true;
+      ApiService().setAuthToken(
+      Boxes.getUserData().get(tokenKey).toString()
+
+      );
+      final response = await ApiService().request(
+        endpoint: subscribeRenewEndPoint,
+        method: 'PATCH',
+        useAuth: true,
+        body: {"subscription_id": subscribeId},
+      );
+
+      isLoadingRenewSubscribe.value = false;
+
+      if (response['success'] == true) {
+        logger.d(response);
+        CommonController.to.stripeUrl.value = response["url"];
+        Get.toNamed(PaymentScreen.routeName);
+        showCustomSnackbar(title: 'Success', message: response['message']);
+      } else {
+        logger.e(response);
+        showCustomSnackbar(
+          title: 'Failed',
+          message: response['message'],
+          type: SnackBarType.failed,
+        );
+      }
+    } catch (e) {
+      isLoadingRenewSubscribe.value = false;
       logger.e(e.toString());
     }
   }

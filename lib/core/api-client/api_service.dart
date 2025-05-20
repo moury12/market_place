@@ -49,7 +49,7 @@ result=true;            break;
             result=false;             break;
         }
       });
-      logger.d(result);
+      // logger.d(result);
       return true;
     } catch (e) {
       debugPrint('Connection check error: $e');
