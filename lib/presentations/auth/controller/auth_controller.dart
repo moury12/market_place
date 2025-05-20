@@ -177,7 +177,7 @@ class AuthController extends GetxController {
         }
         showCustomSnackbar(title: 'Success', message: response['message']);
         Boxes.getUserData().put(tokenKey, response['token']);
-        NavigationController.to.isLoggedIn;
+        // NavigationController.to.isLoggedIn;
         ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
         Get.offAllNamed(NavigationPage.routeName);
       } else {
