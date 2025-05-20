@@ -50,16 +50,16 @@ class ProductDetailsPage extends StatelessWidget {
               : ButtonTapWidget(
                 onTap: () async {
                   if (NavigationController.to.isLoggedIn) {
-                    /*bool isFav =*/ await ProductController.to.favProductRequest(
+                    bool isFav = await ProductController.to.favProductRequest(
                       parentId: ProductController.to.productModel.value.sId,
                     );
-                    // if (isFav) {
-                    //   ProductController.to.productModel.update((val) {
-                    //     if (val != null) {
-                    //       val.isFavorite = !(val.isFavorite ?? false);
-                    //     }
-                    //   });
-                    // }
+                    if (isFav) {
+                      ProductController.to.productModel.update((val) {
+                        if (val != null) {
+                          val.isFavorite = !(val.isFavorite ?? false);
+                        }
+                      });
+                    }
                   } else {
                     Get.toNamed(LoginPage.routeName);
                   }
@@ -247,11 +247,11 @@ class ProductDetailsPage extends StatelessWidget {
                     ),
                     ProductDetailsCardWidget(
                       title: AppStaticStrings.subCategory.tr,
-                      value: product.subCategoryName ?? "Jewelary",
+                      value: product.subCategoryName ?? "n/a",
                     ),
                     ProductDetailsCardWidget(
                       title: AppStaticStrings.condition.tr,
-                      value: product.condition ?? "Jewelary",
+                      value: product.condition ?? "n/a",
                     ),
                     CustomText(text: AppStaticStrings.productDescription.tr),
                     space8H,

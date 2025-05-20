@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:market_place/presentations/navigation/controller/navigation_controller.dart';
 import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
 
 import '../../../core/api-client/api_endpoints.dart';
@@ -29,11 +30,12 @@ class ProductController extends GetxController {
   Future<void> getProductDetailsRequest({required String productID}) async {
     try {
       isLoadingProductDetails.value = true;
+      ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
 
       final response = await ApiService().request(
         endpoint: '$productDetailsEndPoint$productID',
         method: 'GET',
-        useAuth: true
+        useAuth:NavigationController.to.isLoggedIn
       );
       if (response['success'] == true) {
         logger.d(response);
@@ -63,16 +65,18 @@ class ProductController extends GetxController {
   ///---------------------------fav method----------------------------///
 
   Future<bool> favProductRequest({String? parentId}) async {
+    ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
+
     final response = await ApiService().request(
       method: 'POST',
-
+useAuth: true,
       endpoint: "$productFavEndPoint$parentId",
     );
 
     logger.d(response);
     if (response['success'] == true) {
       showCustomSnackbar(title: "Success", message: response['message']);
-getProductDetailsRequest(productID: parentId??"");
+// getProductDetailsRequest(productID: parentId??"");
       AccountInformationController.to.getFavProductListRequest();
       return true;
     } else {

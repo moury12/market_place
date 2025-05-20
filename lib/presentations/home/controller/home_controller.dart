@@ -80,7 +80,7 @@ class HomeController extends GetxController {
               .toList();
       rangeValues.value = RangeValues(
         0,
-        double.parse(productWithHigherPriceList.first.price ?? "300")+100,
+        double.parse(productWithHigherPriceList.first.price ?? "300"),
       );
     }else{
       rangeValues.value =RangeValues(0, 1000000);

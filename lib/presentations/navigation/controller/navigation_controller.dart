@@ -22,14 +22,16 @@ class NavigationController extends GetxController {
   RxBool isLoadingLogout = false.obs;
   @override
   void onInit() {
+    debugPrint("----------------token + login status---------------");
     logger.d(Boxes.getUserData().get(tokenKey));
     logger.d(Boxes.getUserData().get(subscribed));
+
+    logger.d(isLoggedIn.toString());
     super.onInit();
   }
-
   bool get isLoggedIn {
-    return Boxes.getUserData().get(tokenKey) != null &&
-        Boxes.getUserData().get(tokenKey).isNotEmpty;
+    final token = Boxes.getUserData().get(tokenKey);
+    return token != null && token.isNotEmpty;
   }
 
   bool get isSubscribed {
@@ -70,6 +72,7 @@ class NavigationController extends GetxController {
         logger.d(response);
         showCustomSnackbar(title: 'Success', message: response['message']);
         Boxes.getUserData().delete(tokenKey);
+        isLoggedIn;
         Get.offAllNamed(LoginPage.routeName);
       } else {
         logger.e(response);

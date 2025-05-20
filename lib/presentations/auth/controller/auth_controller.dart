@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:market_place/presentations/navigation/controller/navigation_controller.dart';
 import 'package:market_place/presentations/profile/model/package_model.dart';
 import 'package:market_place/presentations/profile/views/subscription_page.dart';
 import 'package:market_place/presentations/auth/views/verify_otp_page.dart';
@@ -129,7 +130,7 @@ class AuthController extends GetxController {
         showCustomSnackbar(title: 'Success', message: response['message']);
 
         if (isAccVerify) {
-          Get.offAllNamed(SubscriptionPage.routeName);
+          Get.offAllNamed(LoginPage.routeName);
         } else {
           Get.toNamed(SetNewPasswordPage.routeName);
         }
@@ -176,6 +177,7 @@ class AuthController extends GetxController {
         }
         showCustomSnackbar(title: 'Success', message: response['message']);
         Boxes.getUserData().put(tokenKey, response['token']);
+        NavigationController.to.isLoggedIn;
         ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
         Get.offAllNamed(NavigationPage.routeName);
       } else {

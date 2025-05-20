@@ -60,7 +60,9 @@ class ProductCardItemWidget extends StatelessWidget {
                     ),
                     Positioned(
                       bottom: 10,left: 6,
-                      child: GreenAccentContainerWidget(child: CustomText(
+                      child: GreenAccentContainerWidget(
+
+                        child: CustomText(
                         text: product.condition.toString(),
                         style: poppinsSemiBold,
                         color: AppColors.kPrimaryColor,
@@ -274,7 +276,7 @@ class GreenAccentContainerWidget extends StatelessWidget {
   final double? radius;
   final Color? color;
   const GreenAccentContainerWidget({
-    super.key, required this.child, this.radius, this.color=AppColors.kPrimaryColor,
+    super.key, required this.child, this.radius, this.color,
   });
 
   @override
@@ -283,11 +285,13 @@ class GreenAccentContainerWidget extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 6.w
       ),
       decoration: BoxDecoration(
-        color: color!.withValues(alpha: .1),
+        color:color==null?
+            AppColors.kPrimaryAccentColor: color!.withValues(alpha: .1),
         borderRadius: BorderRadius.circular(radius??radiusCommon),
         border: Border.all(
           width: .5,
-          color: color!,
+          color: color==null?
+        AppColors.kPrimaryColor:color!,
         ),
       ),
       child: child,

@@ -25,18 +25,18 @@ class CallAndChatButtons extends StatelessWidget {
     return Row(
       spacing: 8.w,
       children: [
-        Expanded(
-          child: CustomButton(
-            prefixWidget: Padding(
-              padding: EdgeInsets.only(right: 12.w),
-              child: SvgPicture.asset(callIcon),
-            ),
-            onTap: () {
-              callOnPhone(phoneNumber: number);
-            },
-            title: AppStaticStrings.callNow.tr,
-          ),
-        ),
+        // Expanded(
+        //   child: CustomButton(
+        //     prefixWidget: Padding(
+        //       padding: EdgeInsets.only(right: 12.w),
+        //       child: SvgPicture.asset(callIcon),
+        //     ),
+        //     onTap: () {
+        //       callOnPhone(phoneNumber: number);
+        //     },
+        //     title: AppStaticStrings.callNow.tr,
+        //   ),
+        // ),
         Expanded(
           child: Obx(() {
             return CustomButton(
