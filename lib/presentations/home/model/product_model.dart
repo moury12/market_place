@@ -6,6 +6,7 @@ class ProductModel {
   String? name;
   String? price;
   String? condition;
+  String? createdAt;
   bool? isFavorite;
   String? img;
   String? categoryName;
@@ -16,6 +17,7 @@ class ProductModel {
         this.price,
         this.condition,
         this.isFavorite,
+        this.createdAt,
         this.img,
         this.categoryName});
 
@@ -24,6 +26,7 @@ class ProductModel {
     name = json['name'].toString()=='null'?'n/a':json['name'].toString();
     price = json['price'].toString()=='null'?'n/a':json['price'].toString();
     condition = json['condition'].toString()=='null'?'n/a':json['condition'].toString();
+    createdAt = json['createdAt'].toString()=='null'?'n/a':json['createdAt'].toString();
     isFavorite = json['is_favorite'];
     img = json['img'].toString()=='null'?'n/a':json['img'].toString();
     categoryName = json['category_name'].toString()=='null'?'n/a':json['category_name'].toString();
@@ -35,6 +38,7 @@ class ProductModel {
     data['name'] = name;
     data['price'] = price;
     data['condition'] = condition;
+    data['createdAt'] = createdAt;
     data['is_favorite'] = isFavorite;
     data['img'] = img;
     data['category_name'] = categoryName;

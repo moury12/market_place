@@ -1,12 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:market_place/core/components/custom_refresh_indicator.dart';
+import 'package:market_place/core/constants/custom_text.dart';
+import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/presentations/message/controllers/message_controller.dart';
 import 'package:market_place/presentations/message/loading/conversation_loading.dart';
 import 'package:market_place/presentations/message/model/conversation_model.dart';
 import 'package:market_place/presentations/profile/model/profile_model.dart';
 
+import '../../../core/components/empty_widget.dart';
 import '../../../core/constants/padding_constant.dart';
 import '../../../core/constants/pagination_loading_widget.dart';
 import '../../profile/controllers/account_information_controller.dart';
@@ -50,7 +54,9 @@ class _MessageListPageState extends State<MessageListPage> {
             children: [
               Obx(() {
                 return  MessageController.to.isLoadingConversation.value?
-                    ConversationLoadingWidget():Column(
+                    ConversationLoadingWidget(): MessageController.to.conversationList.isEmpty?
+                    EmptyWidget(text: "Conversation List is Empty!!",)
+                    :Column(
                   spacing: 12.h,
                   children: List.generate(
                     MessageController.to.conversationList.length,
@@ -81,3 +87,4 @@ class _MessageListPageState extends State<MessageListPage> {
     );
   }
 }
+

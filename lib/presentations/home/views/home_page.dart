@@ -17,6 +17,7 @@ import '../widgets/view_all_row_widget.dart';
 
 class HomePage extends StatelessWidget {
   static const String routeName = "/home";
+
   const HomePage({super.key});
 
   @override
@@ -46,15 +47,21 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  ViewAllRow(
-                    title: AppStaticStrings.productCategories.tr,
-                    onPressed: () {
-                      Get.toNamed(CategoryPage.routeName);
-                    },
-                  ),
+                  Obx(() {
+                    return HomeController.to.catListWithPagination.isEmpty
+                        ? SizedBox.shrink()
+                        : ViewAllRow(
+                          title: AppStaticStrings.productCategories.tr,
+                          onPressed: () {
+                            Get.toNamed(CategoryPage.routeName);
+                          },
+                        );
+                  }),
                   Obx(() {
                     return HomeController.to.isLoadingCategory.value
                         ? CategoryCircleLoading()
+                        : HomeController.to.catListWithPagination.isEmpty
+                        ? SizedBox.shrink()
                         : Wrap(
                           alignment: WrapAlignment.spaceBetween,
                           spacing: 8.w,

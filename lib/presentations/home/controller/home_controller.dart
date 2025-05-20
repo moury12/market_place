@@ -20,7 +20,7 @@ class HomeController extends GetxController {
   var selectedCity = Rx<CityModel?>(null);
   var selectedCondition = Rx<String?>(null);
   var selectedSortBy = Rx<String?>(null);
-  Rx<RangeValues> rangeValues = RangeValues(0, 1000000).obs;
+  Rx<RangeValues> rangeValues = RangeValues(0,  1000).obs;
   RxList<CategoryModel> catList = <CategoryModel>[].obs;
   RxList<CategoryModel> catListWithPagination = <CategoryModel>[].obs;
   RxList<CategoryModel> divisionList = <CategoryModel>[].obs;
@@ -61,7 +61,9 @@ class HomeController extends GetxController {
     selectedSortBy.value = null;
     getMaximumRange();
     getProductListRequest();
-  }Future<void> refreshHome() async {
+  }
+
+  Future<void> refreshHome() async {
     getProductListForHomeRequest();
     getDivisionListRequest();
     getCategoryListRequest();
@@ -82,8 +84,8 @@ class HomeController extends GetxController {
         0,
         double.parse(productWithHigherPriceList.first.price ?? "300"),
       );
-    }else{
-      rangeValues.value =RangeValues(0, 1000000);
+    } else {
+      rangeValues.value = RangeValues(0, 1000);
     }
   }
 
@@ -164,7 +166,6 @@ class HomeController extends GetxController {
     }
   }
 
-
   Future<void> getAllCategoryListRequestWithoutPagination() async {
     try {
       isLoadingCategory.value = true;
@@ -174,18 +175,16 @@ class HomeController extends GetxController {
       final response = await ApiService().request(
         endpoint: catGetAllEndPoint,
         method: 'GET',
-        queryParams: {
-          'sort': 'updatedAt',
-          'order': 'desc',
-        },
+        queryParams: {'sort': 'updatedAt', 'order': 'desc'},
       );
 
       isLoadingCategory.value = false;
 
       if (response['success'] == true) {
-        final newCategories = (response['data'] as List)
-            .map((e) => CategoryModel.fromJson(e))
-            .toList();
+        final newCategories =
+            (response['data'] as List)
+                .map((e) => CategoryModel.fromJson(e))
+                .toList();
 
         /// Replace list
         catList.value = newCategories;
@@ -205,7 +204,6 @@ class HomeController extends GetxController {
     }
   }
 
-
   ///------------------------------ get sub category list method -------------------------///
 
   Future<void> getSubCategoryListRequest({required String catId}) async {
@@ -220,7 +218,6 @@ class HomeController extends GetxController {
       );
       isLoadingSubCategory.value = false;
       if (response['success'] == true) {
-
         subCatList.value =
             (response['data'] as List)
                 .map((e) => SubCategoryModel.fromJson(e))
@@ -315,8 +312,9 @@ class HomeController extends GetxController {
 
       final response = await ApiService().request(
         endpoint: productGetAllEndPoint,
-useAuth: false,
+        useAuth: false,
         method: 'GET',
+        queryParams: {'order': 'desc', 'sort': 'createdAt'},
       );
       isLoadingHomeProduct.value = false;
       if (response['success'] == true) {
@@ -362,7 +360,7 @@ useAuth: false,
         endpoint: productGetAllEndPoint,
         method: 'GET',
         useAuth: false,
-        queryParams:  {
+        queryParams: {
           'page': currentProductPage.value.toString(),
           'limit': itemsProductPerPage.value.toString(),
           'search': searchController.value.text,
@@ -386,9 +384,9 @@ useAuth: false,
           'price_max': rangeValues.value.end.toString(),
           'sort':
               selectedSortBy.value != null
-                  ? selectedSortBy.value!.toUpperCase().toString()
-                  : "",
-          'order': 'desc',
+                  ?selectedSortBy.value=="Price: Low to High"||selectedSortBy.value=="Price: High to Low"? "price":"createdAt"
+                  : "createdAt",
+          'order':selectedSortBy.value=="Price: Low to High"?"asc": "desc",
           'condition':
               selectedCondition.value != null
                   ? selectedCondition.value!.toUpperCase().toString()
@@ -435,6 +433,7 @@ useAuth: false,
       isProductLoadingMore.value = false;
     }
   }
+
   Future<void> filterOnCategory(CategoryModel categoryModel) async {
     isLoadingFilterCategory.value = true;
     try {
