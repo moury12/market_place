@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
       // useInheritedMediaQuery: true,
       builder:
           (context, child) => GetMaterialApp(
-            title: 'Market Place',
+            title: 'Bazarya',
             theme: AppTheme.lightTheme,
             themeMode: ThemeMode.light,
             initialRoute: SplashPage.routeName,

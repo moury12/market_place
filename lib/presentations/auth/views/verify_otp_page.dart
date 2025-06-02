@@ -26,7 +26,7 @@ class VerifyOtpPage extends StatelessWidget {
     return Scaffold( appBar: CustomAuthAppbar(),
       body: Padding(
         padding: padding12.copyWith(
-          top: MediaQuery.of(context).viewPadding.top + 16,
+          top: 0,
         ),
         child: Center(
           child: Column(
