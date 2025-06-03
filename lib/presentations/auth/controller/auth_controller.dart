@@ -88,11 +88,13 @@ class AuthController extends GetxController {
         Get.toNamed(VerifyOtpPage.routeName, arguments: verifyEmail);
       } else {
         logger.e(response);
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-        );
+
+          showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed,
+          );
+
       }
     } catch (e) {
       loadingProcess.value = AuthProcess.none;
@@ -136,11 +138,13 @@ class AuthController extends GetxController {
         }
       } else {
         logger.e(response);
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-        );
+
+          showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed,
+          );
+
       }
     } catch (e) {
       loadingProcess.value = AuthProcess.none;
@@ -182,11 +186,13 @@ class AuthController extends GetxController {
         Get.offAllNamed(NavigationPage.routeName);
       } else {
         logger.e(response);
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-        );
+
+          showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed,
+          );
+
       }
     } catch (e) {
       loadingProcess.value = AuthProcess.none;
@@ -213,11 +219,13 @@ class AuthController extends GetxController {
         Get.toNamed(VerifyOtpPage.routeName);
       } else {
         logger.e(response);
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-        );
+
+          showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed,
+          );
+
       }
     } catch (e) {
       loadingProcess.value = AuthProcess.none;
@@ -252,11 +260,13 @@ class AuthController extends GetxController {
         Get.offAllNamed(LoginPage.routeName);
       } else {
         logger.e(response);
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-        );
+
+          showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed,
+          );
+
       }
     } catch (e) {
       loadingProcess.value = AuthProcess.none;

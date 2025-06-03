@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:market_place/presentations/profile/model/profile_model.dart';
 
@@ -40,11 +41,13 @@ class NotificationController extends GetxController {
                 .toList();
       } else {
         logger.e(response);
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-        );
+        if(kDebugMode){
+          showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed,
+          );
+        }
       }
     } catch (e) {
       logger.e(e.toString());

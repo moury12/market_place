@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:market_place/presentations/profile/model/profile_model.dart';
 
@@ -18,9 +19,9 @@ import '../widgets/subscription_plan_card_widget.dart';
 import '../../home/model/product_model.dart';
 import '../model/setting_model.dart';
 
-class AccountInformationController extends GetxController{
+class AccountInformationController extends GetxController {
   static AccountInformationController get to => Get.find();
-RxString profileImgPath ="".obs;
+  RxString profileImgPath = "".obs;
   Rx<SettingsModel> policyModel = SettingsModel().obs;
   Rx<SettingsModel> termsModel = SettingsModel().obs;
   RxBool isLoadingSubscribe = false.obs;
@@ -41,13 +42,10 @@ RxString profileImgPath ="".obs;
   bool isLoading(AuthProcess process) => loadingProcess.value == process;
 
   ///=====================add dynmic name ====================///
-  Rx<TextEditingController> nameController =
-      TextEditingController().obs;
+  Rx<TextEditingController> nameController = TextEditingController().obs;
 
   ///=====================add dynmic email ====================///
-  Rx<TextEditingController> emailController =
-      TextEditingController()
-          .obs;
+  Rx<TextEditingController> emailController = TextEditingController().obs;
 
   ///=====================add dynmic contactNumber ====================///
   Rx<TextEditingController> contactNumberController =
@@ -84,12 +82,18 @@ RxString profileImgPath ="".obs;
       isLoadingProfile.value = true;
       ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
 
-      final response = await ApiService()
-          .request(endpoint: getProfileEndPoint, method: 'GET');
+      final response = await ApiService().request(
+        endpoint: getProfileEndPoint,
+        method: 'GET',
+      );
       isLoadingProfile.value = false;
       if (response['success'] == true) {
         logger.d(response);
         userModel.value = ProfileModel.fromJson(response['data']);
+
+        if (userModel.value.img != null && userModel.value.img!.isNotEmpty) {
+          await preloadImagesFromUrls([userModel.value.img.toString()]);
+        }
         Boxes.getUserData().put(subscribed, userModel.value.isSubscribed);
         reinitializeProfileControllers();
       } else if (response['message'] == AppStaticStrings.noInternet) {
@@ -104,10 +108,13 @@ RxString profileImgPath ="".obs;
         );
       } else {
         logger.e(response);
-        showCustomSnackbar(
+        if(kDebugMode){
+          showCustomSnackbar(
             title: 'Failed',
             message: response['message'],
-            type: SnackBarType.failed);
+            type: SnackBarType.failed,
+          );
+        }
       }
     } catch (e) {
       logger.e(e.toString());
@@ -122,8 +129,10 @@ RxString profileImgPath ="".obs;
       isLoadingMyPackage.value = true;
       ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
 
-      final response = await ApiService()
-          .request(endpoint: mySubscriptionEndPoint, method: 'GET');
+      final response = await ApiService().request(
+        endpoint: mySubscriptionEndPoint,
+        method: 'GET',
+      );
       isLoadingMyPackage.value = false;
       if (response['success'] == true) {
         logger.d(response);
@@ -142,10 +151,13 @@ RxString profileImgPath ="".obs;
         );
       } else {
         logger.e(response);
-        showCustomSnackbar(
+        if(kDebugMode){
+          showCustomSnackbar(
             title: 'Failed',
             message: response['message'],
-            type: SnackBarType.failed);
+            type: SnackBarType.failed,
+          );
+        }
       }
     } catch (e) {
       logger.e(e.toString());
@@ -162,26 +174,32 @@ RxString profileImgPath ="".obs;
       Map<String, String> fields = {
         'name': nameController.value.text,
         'phone': contactNumberController.value.text,
-
       };
       Map<String, dynamic> files = {};
       if (profileImgPath.value.isNotEmpty) {
         files['img'] = File(profileImgPath.value);
       }
 
-      final response = await ApiService()
-          .multipartRequest(endpoint: updateProfileEndPoint, method: 'PATCH', fields: fields, files: files);
+      final response = await ApiService().multipartRequest(
+        endpoint: updateProfileEndPoint,
+        method: 'PATCH',
+        fields: fields,
+        files: files,
+      );
       isLoadingUpdateProfile.value = false;
       if (response['success'] == true) {
         logger.d(response);
-        profileImgPath.value="";
+        profileImgPath.value = "";
         getUserProfileRequest();
       } else {
         logger.e(response);
-        showCustomSnackbar(
+
+          showCustomSnackbar(
             title: 'Failed',
             message: response['message'],
-            type: SnackBarType.failed);
+            type: SnackBarType.failed,
+          );
+
       }
     } catch (e) {
       logger.e(e.toString());
@@ -194,10 +212,7 @@ RxString profileImgPath ="".obs;
   Future<void> subscribeNowRequest({required String subscribeId}) async {
     try {
       isLoadingSubscribe.value = true;
-      ApiService().setAuthToken(
-      Boxes.getUserData().get(tokenKey).toString()
-
-      );
+      ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
       final response = await ApiService().request(
         endpoint: subscribeEndPoint,
         method: 'POST',
@@ -214,11 +229,13 @@ RxString profileImgPath ="".obs;
         showCustomSnackbar(title: 'Success', message: response['message']);
       } else {
         logger.e(response);
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-        );
+
+          showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed,
+          );
+
       }
     } catch (e) {
       isLoadingSubscribe.value = false;
@@ -231,10 +248,7 @@ RxString profileImgPath ="".obs;
   Future<void> subscribeRenewRequest({required String subscribeId}) async {
     try {
       isLoadingRenewSubscribe.value = true;
-      ApiService().setAuthToken(
-      Boxes.getUserData().get(tokenKey).toString()
-
-      );
+      ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
       final response = await ApiService().request(
         endpoint: subscribeRenewEndPoint,
         method: 'PATCH',
@@ -251,11 +265,13 @@ RxString profileImgPath ="".obs;
         showCustomSnackbar(title: 'Success', message: response['message']);
       } else {
         logger.e(response);
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-        );
+
+          showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed,
+          );
+
       }
     } catch (e) {
       isLoadingRenewSubscribe.value = false;
@@ -268,7 +284,8 @@ RxString profileImgPath ="".obs;
   Future<void> getFavProductListRequest({bool loadMore = false}) async {
     try {
       // Don't load more if we've reached the last page
-      if (loadMore && currentFavProductPage.value >= totalFavProductPages.value) {
+      if (loadMore &&
+          currentFavProductPage.value >= totalFavProductPages.value) {
         return;
       }
 
@@ -286,11 +303,9 @@ RxString profileImgPath ="".obs;
         endpoint: favoriteProductEndPoint,
         method: 'GET',
 
-        queryParams:  {
+        queryParams: {
           'page': currentFavProductPage.value.toString(),
           'limit': itemsFavProductPerPage.value.toString(),
-
-
         },
       );
 
@@ -299,7 +314,8 @@ RxString profileImgPath ="".obs;
 
       if (response['success'] == true) {
         if (response['pagination'] != null) {
-          currentFavProductPage.value = response['pagination']['currentPage'] ?? 1;
+          currentFavProductPage.value =
+              response['pagination']['currentPage'] ?? 1;
           totalFavProductPages.value =
               response['pagination']['totalPages'] ?? 1; // Add this line
           itemsFavProductPerPage.value =
@@ -307,10 +323,15 @@ RxString profileImgPath ="".obs;
         }
 
         final newProducts =
-        (response['data'] as List)
-            .map((e) => ProductModel.fromJson(e))
+            (response['data'] as List)
+                .map((e) => ProductModel.fromJson(e))
+                .toList();
+        final imageUrls = newProducts
+            .map((cat) => "${ApiService().baseUrl}/${cat.img}")
+            .where((url) => url.isNotEmpty)
             .toList();
 
+        preloadImagesFromUrls(imageUrls);
         if (loadMore) {
           // Only increment page after successful load
 
@@ -321,11 +342,13 @@ RxString profileImgPath ="".obs;
         logger.d(response);
       } else {
         logger.e(response);
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-        );
+        if(kDebugMode){
+          showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed,
+          );
+        }
       }
     } catch (e) {
       logger.e(e.toString());
@@ -339,24 +362,31 @@ RxString profileImgPath ="".obs;
   Future<void> changePassRequest() async {
     try {
       isLoadingChangePass.value = true;
-      final response = await ApiService().request(endpoint: changePassEndPoint, method: 'POST', body: {
-        "confirm_password": confirmPasswordController.text,
-        "password": newPasswordController.text,
-        "old_password": currentPasswordController.text
-      });
+      final response = await ApiService().request(
+        endpoint: changePassEndPoint,
+        method: 'POST',
+        body: {
+          "confirm_password": confirmPasswordController.text,
+          "password": newPasswordController.text,
+          "old_password": currentPasswordController.text,
+        },
+      );
       isLoadingChangePass.value = false;
       if (response['success'] == true) {
-        showCustomSnackbar(
-          title: 'Success',
-          message: response['message'],
-        );
+        showCustomSnackbar(title: 'Success', message: response['message']);
         clearControllers();
 
         logger.d(response);
         // Get.back();
       } else {
         logger.e(response);
-        showCustomSnackbar(title: 'Failed', message: response['message'], type: SnackBarType.failed);
+        if(kDebugMode){
+          showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed,
+          );
+        }
       }
     } catch (e) {
       isLoadingChangePass.value = false;
@@ -365,13 +395,15 @@ RxString profileImgPath ="".obs;
     }
   }
 
-
   Future<void> getPrivacyPolicyRequest() async {
     try {
       isLoadingPolicy.value = true;
       ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
 
-      final response = await ApiService().request(endpoint: settingPrivacyEndPoint, method: 'GET');
+      final response = await ApiService().request(
+        endpoint: settingPrivacyEndPoint,
+        method: 'GET',
+      );
       isLoadingPolicy.value = false;
       if (response['success'] == true) {
         logger.d(response);
@@ -385,13 +417,20 @@ RxString profileImgPath ="".obs;
         );
       } else {
         logger.e(response);
-        showCustomSnackbar(title: 'Failed', message: response['message'], type: SnackBarType.failed);
+        if(kDebugMode){
+          showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed,
+          );
+        }
       }
     } catch (e) {
       logger.e(e.toString());
       isLoadingPolicy.value = false;
     }
   }
+
   ///-----------------------------get package list method------------------------------///
 
   Future<void> getPackagesRequest() async {
@@ -422,17 +461,20 @@ RxString profileImgPath ="".obs;
         }
       } else {
         logger.e(response);
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-        );
+        if(kDebugMode){
+          showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed,
+          );
+        }
       }
     } catch (e) {
       loadingProcess.value = AuthProcess.none;
       logger.e(e.toString());
     }
   }
+
   void updateTabContent() {
     tabContent.clear();
     for (var package in packageList) {
@@ -449,6 +491,7 @@ RxString profileImgPath ="".obs;
       tabLabels.value = packageList.map((p) => p.type ?? 'Unknown').toList();
     }
   }
+
   reinitializeProfileControllers() {
     nameController.value.text = userModel.value.name ?? 'n/a';
 
@@ -457,8 +500,6 @@ RxString profileImgPath ="".obs;
 
     ///=====================add dynmic contactNumber ====================///
     contactNumberController.value.text = userModel.value.phone ?? 'n/a';
-
-
   }
 
   clearControllers() {

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:market_place/presentations/message/model/conversation_model.dart';
 import 'package:market_place/presentations/navigation/controller/navigation_controller.dart';
@@ -45,8 +46,6 @@ class MessageController extends GetxController {
   RxInt totalMessagePages = 1.obs;
   RxInt messageItemsPerPage = 10.obs;
   RxBool isLoadingMoreMessages = false.obs;
-
-
 
   @override
   void onInit() {
@@ -126,7 +125,19 @@ class MessageController extends GetxController {
             (response['data'] as List)
                 .map((e) => ConversationModel.fromJson(e))
                 .toList();
+        final imageUrls =
+            newCategories
+                .map((cat) => "${ApiService().baseUrl}/${cat.users!.first.img}")
+                .where((url) => url.isNotEmpty)
+                .toList();
+        final imageUrls1 =
+            newCategories
+                .map((cat) => "${ApiService().baseUrl}/${cat.users!.last.img}")
+                .where((url) => url.isNotEmpty)
+                .toList();
 
+        preloadImagesFromUrls(imageUrls);
+        await preloadImagesFromUrls(imageUrls1);
         if (loadMore) {
           conversationList.addAll(newCategories); // Append for load more
         } else {
@@ -135,11 +146,13 @@ class MessageController extends GetxController {
         logger.d(response);
       } else {
         logger.e(response);
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-        );
+        if(kDebugMode){
+          showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed,
+          );
+        }
       }
     } catch (e) {
       logger.e(e.toString());
@@ -189,12 +202,14 @@ class MessageController extends GetxController {
         if (response['pagination'] != null) {
           messageCurrentPage.value = response['pagination']['currentPage'] ?? 1;
           totalMessagePages.value = response['pagination']['totalPages'] ?? 1;
-          messageItemsPerPage.value = response['pagination']['itemsPerPage'] ?? 20;
+          messageItemsPerPage.value =
+              response['pagination']['itemsPerPage'] ?? 20;
         }
 
-        final newMessages = (response['data'] as List)
-            .map((e) => MessageModel.fromJson(e))
-            .toList();
+        final newMessages =
+            (response['data'] as List)
+                .map((e) => MessageModel.fromJson(e))
+                .toList();
 
         if (loadMore) {
           messageList.addAll(newMessages); // append
@@ -203,11 +218,13 @@ class MessageController extends GetxController {
         }
       } else {
         logger.e(response);
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-        );
+        if(kDebugMode){
+          showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed,
+          );
+        }
       }
     } catch (e) {
       logger.e(e.toString());
@@ -215,7 +232,6 @@ class MessageController extends GetxController {
       isLoadingMoreMessages.value = false;
     }
   }
-
 
   ///------------------------------  create conversation method -------------------------///
 
@@ -287,16 +303,17 @@ class MessageController extends GetxController {
         // showCustomSnackbar(title: 'Success', message: response['message']);
       } else {
         logger.e(response);
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-        );
+        if(kDebugMode){
+          showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed,
+          );
+        }
       }
     } catch (e) {
       logger.e(e.toString());
       isLoadingCreateMessage.value = false;
     }
   }
-
 }

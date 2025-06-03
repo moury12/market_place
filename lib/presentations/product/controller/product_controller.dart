@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:market_place/presentations/navigation/controller/navigation_controller.dart';
 import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
@@ -25,6 +26,7 @@ class ProductController extends GetxController {
   final RxBool isProductLoadingMore = false.obs;
 
   RxList<ProductModel> productList = <ProductModel>[].obs;
+
   ///------------------------------ get Product Details method -------------------------///
 
   Future<void> getProductDetailsRequest({required String productID}) async {
@@ -35,25 +37,46 @@ class ProductController extends GetxController {
       final response = await ApiService().request(
         endpoint: '$productDetailsEndPoint$productID',
         method: 'GET',
-        useAuth:NavigationController.to.isLoggedIn
+        useAuth: NavigationController.to.isLoggedIn,
       );
       if (response['success'] == true) {
         logger.d(response);
-        productModel.value = ProductDetailsModel.fromJson(response['data']);
+        final product = ProductDetailsModel.fromJson(response['data']);
+        productModel.value = product;
+
+        // ✅ Preload product images
+        if (product.img != null && product.img!.isNotEmpty) {
+          // If your image URLs need base URL, add it here
+          final fullImageUrls =
+              product.img!.map((img) {
+                return img.startsWith("http")
+                    ? img
+                    : "${ApiService().baseUrl}/$img";
+              }).toList();
+
+          await preloadImagesFromUrls(fullImageUrls);
+        }
         relatedProductList.value =
             (response['related_product'] as List)
                 .map((e) => ProductModel.fromJson(e))
                 .toList();
-        // initializeBannerImages();
+        final imageUrls = relatedProductList
+            .map((cat) => "${ApiService().baseUrl}/${cat.img}")
+            .where((url) => url.isNotEmpty)
+            .toList();
+
+        preloadImagesFromUrls(imageUrls);
 
         isLoadingProductDetails.value = false;
       } else {
         logger.e(response);
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-        );
+        if(kDebugMode){
+          showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed,
+          );
+        }
         isLoadingProductDetails.value = false;
       }
     } catch (e) {
@@ -69,14 +92,14 @@ class ProductController extends GetxController {
 
     final response = await ApiService().request(
       method: 'POST',
-useAuth: true,
+      useAuth: true,
       endpoint: "$productFavEndPoint$parentId",
     );
 
     logger.d(response);
     if (response['success'] == true) {
       showCustomSnackbar(title: "Success", message: response['message']);
-// getProductDetailsRequest(productID: parentId??"");
+      // getProductDetailsRequest(productID: parentId??"");
       AccountInformationController.to.getFavProductListRequest();
       return true;
     } else {
@@ -89,11 +112,12 @@ useAuth: true,
     }
   }
 
-
-
   ///------------------------------ get user product list method -------------------------///
 
-  Future<void> getProductListRequest({bool loadMore = false,required String userId}) async {
+  Future<void> getProductListRequest({
+    bool loadMore = false,
+    required String userId,
+  }) async {
     try {
       // Don't load more if we've reached the last page
       if (loadMore && currentProductPage.value >= totalProductPages.value) {
@@ -120,8 +144,7 @@ useAuth: true,
 
           'order': 'desc',
           'status': "ACTIVE",
-          'user':userId
-
+          'user': userId,
         },
       );
 
@@ -138,10 +161,15 @@ useAuth: true,
         }
 
         final newProducts =
-        (response['data'] as List)
-            .map((e) => ProductModel.fromJson(e))
+            (response['data'] as List)
+                .map((e) => ProductModel.fromJson(e))
+                .toList();
+        final imageUrls = newProducts
+            .map((cat) => "${ApiService().baseUrl}/${cat.img}")
+            .where((url) => url.isNotEmpty)
             .toList();
 
+        preloadImagesFromUrls(imageUrls);
         if (loadMore) {
           // Only increment page after successful load
 
@@ -152,11 +180,13 @@ useAuth: true,
         logger.d(response);
       } else {
         logger.e(response);
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-        );
+        if(kDebugMode){
+          showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed,
+          );
+        }
       }
     } catch (e) {
       logger.e(e.toString());
@@ -164,5 +194,4 @@ useAuth: true,
       isProductLoadingMore.value = false;
     }
   }
-
 }

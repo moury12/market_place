@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/constants/image_constants.dart';
@@ -76,11 +77,13 @@ class NavigationController extends GetxController {
         Get.offAllNamed(LoginPage.routeName);
       } else {
         logger.e(response);
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-        );
+        if(kDebugMode){
+          showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed,
+          );
+        }
       }
     } catch (e) {
       logger.e(e.toString());

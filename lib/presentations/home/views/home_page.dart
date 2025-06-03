@@ -50,41 +50,42 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                     Obx(() {
-                      return HomeController.to.catListWithPagination.isEmpty
-                          ? SizedBox.shrink()
-                          : ViewAllRow(
-                        title: AppStaticStrings.productCategories.tr,
-                        onPressed: () {
-                          Get.toNamed(CategoryPage.routeName);
-                        },
-                      );
-                    }),
-                    Obx(() {
-                      return HomeController.to.isLoadingCategory.value
-                          ? CategoryCircleLoading()
-                          : HomeController.to.catListWithPagination.isEmpty
-                          ? SizedBox.shrink()
-                          : Wrap(
-                        alignment: WrapAlignment.spaceBetween,
-                        spacing: 8.w,
-                        runSpacing: 8.w,
+                      final isLoading = HomeController.to.isLoadingCategory.value;
+                      final categoryList = HomeController.to.catListWithPagination;
 
-                        children: List.generate(
-                          HomeController.to.catListWithPagination.length > 8
-                              ? 8
-                              : HomeController
-                              .to
-                              .catListWithPagination
-                              .length,
-                              (index) => CategoryCardItemWidget(
-                            categoryModel:
-                            HomeController
-                                .to
-                                .catListWithPagination[index],
+                      if (isLoading) {
+                        return CategoryCircleLoading();
+                      }
+
+                      else if (categoryList.isEmpty) {
+                        return SizedBox.shrink();
+                      }
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ViewAllRow(
+                            title: AppStaticStrings.productCategories.tr,
+                            onPressed: () {
+                              Get.toNamed(CategoryPage.routeName);
+                            },
                           ),
-                        ),
+                          SizedBox(height: 12.h),
+                          Wrap(
+                            alignment: WrapAlignment.spaceBetween,
+                            spacing: 8.w,
+                            runSpacing: 8.w,
+                            children: List.generate(
+                              categoryList.length > 8 ? 8 : categoryList.length,
+                                  (index) => CategoryCardItemWidget(
+                                categoryModel: categoryList[index],
+                              ),
+                            ),
+                          ),
+                        ],
                       );
                     }),
+
                     ViewAllRow(
                       title: AppStaticStrings.recentlyAdded.tr,
                       onPressed: () {

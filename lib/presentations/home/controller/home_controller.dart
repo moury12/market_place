@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:market_place/presentations/home/model/category_subcategory_model.dart';
@@ -131,7 +132,7 @@ class HomeController extends GetxController {
         },
       );
 
-      isLoadingCategory.value = false;
+     
       isLoadingMore.value = false;
       if (response['success'] == true) {
         if (response['pagination'] != null) {
@@ -145,20 +146,33 @@ class HomeController extends GetxController {
             (response['data'] as List)
                 .map((e) => CategoryModel.fromJson(e))
                 .toList();
+        final imageUrls = newCategories
+            .map((cat) => "${ApiService().baseUrl}/${cat.img}")
+            .where((url) => url.isNotEmpty)
+            .toList();
 
+         preloadImagesFromUrls(imageUrls);
         if (loadMore) {
           catListWithPagination.addAll(newCategories); // Append for load more
         } else {
           catListWithPagination.value = newCategories; // Replace for refresh
         }
+        if(newCategories.isNotEmpty && catListWithPagination.isNotEmpty){
+          isLoadingCategory.value = false;
+        }else if(newCategories.isEmpty){
+          isLoadingCategory.value = false;
+        }
         logger.d(response);
       } else {
+        isLoadingCategory.value = false;
         logger.e(response);
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-        );
+        if(kDebugMode){
+          showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed,
+          );
+        }
       }
     } catch (e) {
       logger.e(e.toString());
@@ -188,15 +202,21 @@ class HomeController extends GetxController {
 
         /// Replace list
         catList.value = newCategories;
-
+        final imageUrls = newCategories
+            .map((cat) => "${ApiService().baseUrl}/${cat.img}")
+            .where((url) => url.isNotEmpty)
+            .toList();
+        preloadImagesFromUrls(imageUrls);
         logger.d(response);
       } else {
         logger.e(response);
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-        );
+       if(kDebugMode) {
+          showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed,
+          );
+        }
       }
     } catch (e) {
       logger.e(e.toString());
@@ -225,11 +245,13 @@ class HomeController extends GetxController {
         logger.d(response);
       } else {
         logger.e(response);
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-        );
+        if(kDebugMode){
+          showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed,
+          );
+        }
       }
     } catch (e) {
       logger.e(e.toString());
@@ -258,11 +280,13 @@ class HomeController extends GetxController {
                 .toList();
       } else {
         logger.e(response);
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-        );
+        if(kDebugMode){
+          showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed,
+          );
+        }
       }
     } catch (e) {
       logger.e(e.toString());
@@ -291,11 +315,13 @@ class HomeController extends GetxController {
                 .toList();
       } else {
         logger.e(response);
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-        );
+        if(kDebugMode){
+          showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed,
+          );
+        }
       }
     } catch (e) {
       logger.e(e.toString());
@@ -323,13 +349,21 @@ class HomeController extends GetxController {
             (response['data'] as List)
                 .map((e) => ProductModel.fromJson(e))
                 .toList();
+        final imageUrls =  productListForHome
+            .map((cat) => "${ApiService().baseUrl}/${cat.img}")
+            .where((url) => url.isNotEmpty)
+            .toList();
+
+        preloadImagesFromUrls(imageUrls);
       } else {
         logger.e(response);
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-        );
+       if(kDebugMode) {
+          showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed,
+          );
+        }
       }
     } catch (e) {
       logger.e(e.toString());
@@ -410,7 +444,12 @@ class HomeController extends GetxController {
             (response['data'] as List)
                 .map((e) => ProductModel.fromJson(e))
                 .toList();
+        final imageUrls = newProducts
+            .map((cat) => "${ApiService().baseUrl}/${cat.img}")
+            .where((url) => url.isNotEmpty)
+            .toList();
 
+        preloadImagesFromUrls(imageUrls);
         if (loadMore) {
           // Only increment page after successful load
 
@@ -421,11 +460,13 @@ class HomeController extends GetxController {
         logger.d(response);
       } else {
         logger.e(response);
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-        );
+        if(kDebugMode){
+          showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed,
+          );
+        }
       }
     } catch (e) {
       logger.e(e.toString());

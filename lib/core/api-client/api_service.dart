@@ -176,7 +176,15 @@ if(body!=null){
     fields.forEach((key, value) {
       request.fields[key] = value;
     });
-
+    logger.d('Sending Multipart Request:');
+    logger.d('➡️ URL: $uri');
+    logger.d('➡️ Method: $method');
+    logger.d('➡️ Headers: ${request.headers}');
+    logger.d('➡️ Fields: ${request.fields}');
+    logger.d('➡️ Files:');
+    for (var f in request.files) {
+      print('  - Field: ${f.field}, Filename: ${f.filename}, Length: ${f.length}');
+    }
     // Function to determine MediaType based on file extension
     MediaType getMediaType(String path) {
       final extension = path.split('.').last.toLowerCase();

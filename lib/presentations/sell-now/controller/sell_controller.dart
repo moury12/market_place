@@ -93,11 +93,13 @@ class SellController extends GetxController {
         );
       } else {
         logger.e(response);
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-        );
+
+          showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed,
+          );
+
       }
     } catch (e) {
       logger.e(e.toString());
@@ -156,11 +158,13 @@ class SellController extends GetxController {
         showCustomSnackbar(title: 'Success', message: response['message']);
       } else {
         logger.e(response);
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-        );
+
+          showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed,
+          );
+
       }
     } catch (e) {
       logger.e(e.toString());

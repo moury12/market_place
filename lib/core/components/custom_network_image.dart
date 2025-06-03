@@ -104,6 +104,9 @@ class _CustomNetworkImageState extends State<CustomNetworkImage> {
             ),
           )
         : CachedNetworkImage(
+      fadeInDuration: Duration.zero, // <— disables transition animation
+      fadeOutDuration: Duration.zero,
+      placeholderFadeInDuration: Duration.zero,
       fit:widget.fit?? BoxFit.cover,
             imageUrl: widget.imageUrl,
             imageBuilder: (context, imageProvider) {
