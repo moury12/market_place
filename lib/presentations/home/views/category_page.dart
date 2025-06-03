@@ -44,39 +44,46 @@ class _CategoryPageState extends State<CategoryPage> {
         },
         child: Stack(
           children: [
-            SingleChildScrollView(
+            CustomScrollView(
               controller: scrollController,
               physics: AlwaysScrollableScrollPhysics(),
-              child: Padding(
-                padding: padding12.copyWith(top: 0),
-                child: Column(
-                  children: [
-                    Obx(() {
-                      return HomeController.to.isLoadingCategory.value
-                          ? CategoryGridLoading()
-                          : Wrap(
-                            spacing: 8.w,
-                            runSpacing: 8.w,
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: padding12.copyWith(top: 0),
+                    child: Column(
+                      children: [
+                        Obx(() {
+                          return HomeController.to.isLoadingCategory.value
+                              ? CategoryGridLoading()
+                              : Wrap(
+                                spacing: 8.w,
+                                runSpacing: 8.w,
 
-                            children: List.generate(
-                              HomeController.to.catListWithPagination.length,
-                              (index) => CategoryDetailsCardItemWidget(
-                                categoryModel:
-                                    HomeController
-                                        .to
-                                        .catListWithPagination[index],
-                              ),
-                            ),
-                          );
-                    }),
-                    Obx(() {
-                      return HomeController.to.isLoadingMore.value
-                          ? PaginationLoadingWidget()
-                          : SizedBox.shrink();
-                    }),
-                  ],
+                                children: List.generate(
+                                  HomeController
+                                      .to
+                                      .catListWithPagination
+                                      .length,
+                                  (index) => CategoryDetailsCardItemWidget(
+                                    categoryModel:
+                                        HomeController
+                                            .to
+                                            .catListWithPagination[index],
+                                  ),
+                                ),
+                              );
+                        }),
+                        Obx(() {
+                          return HomeController.to.isLoadingMore.value
+                              ? PaginationLoadingWidget()
+                              : SizedBox.shrink();
+                        }),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
             Obx(
               () =>

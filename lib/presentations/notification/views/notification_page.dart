@@ -7,6 +7,7 @@ import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/presentations/notification/controller/notification_controller.dart';
 import 'package:market_place/presentations/notification/loading/notification_card_loading.dart';
 
+import '../../../core/components/empty_widget.dart';
 import '../../../core/constants/padding_constant.dart';
 import '../widget/notification_card_item_widget.dart';
 
@@ -24,25 +25,25 @@ class NotificationPage extends StatelessWidget {
           await NotificationController.to.getNotificationRequest();
 
         },
-        child: SingleChildScrollView(
+        child: CustomScrollView(
           physics: AlwaysScrollableScrollPhysics(),
-          child: Padding(
+          slivers: [SliverToBoxAdapter(child:  Padding(
             padding: padding12,
             child: Obx(() {
               return NotificationController.to.isLoadingNotificationList.value
-                  ? NotificationCardLoading()
+                  ? NotificationCardLoading(): NotificationController.to.notificationList.isEmpty?EmptyWidget( text:"Notification List is Empty!!" ,)
                   : Column(
-                    spacing: 8.h,
-                    children: List.generate(
-                      NotificationController.to.notificationList.length,
+                spacing: 8.h,
+                children: List.generate(
+                  NotificationController.to.notificationList.length,
                       (index) => NotificationCardItem(
-                        notificationModel:
-                            NotificationController.to.notificationList[index],
-                      ),
-                    ),
-                  );
+                    notificationModel:
+                    NotificationController.to.notificationList[index],
+                  ),
+                ),
+              );
             }),
-          ),
+          ),)],
         ),
       ),
     );

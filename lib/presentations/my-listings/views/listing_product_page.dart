@@ -63,27 +63,32 @@ class _ListingProductPageState extends State<ListingProductPage> {
             ListingsController.to.getProductListRequest();
           }
         },
-        child: SingleChildScrollView(
+        child: CustomScrollView(
           controller: scrollController,
           physics: AlwaysScrollableScrollPhysics(),
-          child: Padding(
-            padding: padding12,
-            child: Column(
-              children: [
-                Obx(() {
-                  return ProductGridWidget(
-                    fromSeller:
-                        title != AppStaticStrings.favoriteItems.tr
-                            ? true
-                            : false,
-                    productList: products ?? [],
-                    isLoading: loading!.value,
-                  );
-                }),
+         slivers: [
+           SliverToBoxAdapter(
+             child:
+             Padding(
+               padding: padding12,
+               child: Column(
+                 children: [
+                   Obx(() {
+                     return ProductGridWidget(
+                       fromSeller:
+                       title != AppStaticStrings.favoriteItems.tr
+                           ? true
+                           : false,
+                       productList: products ?? [],
+                       isLoading: loading!.value,
+                     );
+                   }),
 
-              ],
-            ),
-          ),
+                 ],
+               ),
+             ),
+           )
+         ],
         ),
       ),
     );

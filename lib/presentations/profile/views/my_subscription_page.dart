@@ -26,9 +26,11 @@ class MySubscriptionPage extends StatelessWidget {
       ),
       body: CustomRefreshIndicatorWidget(
         onRefresh: () => AccountInformationController.to.getUserSubscriptionPackageRequest(),
-        child: SingleChildScrollView(
+        child: CustomScrollView(
           physics: AlwaysScrollableScrollPhysics(),
-          child: Padding(
+       slivers: [
+        SliverToBoxAdapter(
+          child:  Padding(
             padding: padding12,
             child: Obx(() {
               return Column(
@@ -87,6 +89,8 @@ class MySubscriptionPage extends StatelessWidget {
               );
             }),
           ),
+        )
+       ],
         ),
       ),
     );

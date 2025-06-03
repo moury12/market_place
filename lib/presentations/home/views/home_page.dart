@@ -28,80 +28,84 @@ class HomePage extends StatelessWidget {
       },
       child: Stack(
         children: [
-          SingleChildScrollView(
+          CustomScrollView(
             physics: AlwaysScrollableScrollPhysics(),
-            child: Padding(
-              padding: padding12,
-              child: Column(
-                spacing: 8.h,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Get.toNamed(SearchPage.routeName);
-                    },
-                    child: CustomTextField(
-                      isEnable: false,
-                      prefixIcon: Icon(
-                        CupertinoIcons.search,
-                        color: Colors.black,
+           slivers: [
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: padding12,
+                child: Column(
+                  spacing: 8.h,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed(SearchPage.routeName);
+                      },
+                      child: CustomTextField(
+                        isEnable: false,
+                        prefixIcon: Icon(
+                          CupertinoIcons.search,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
-                  ),
-                  Obx(() {
-                    return HomeController.to.catListWithPagination.isEmpty
-                        ? SizedBox.shrink()
-                        : ViewAllRow(
-                          title: AppStaticStrings.productCategories.tr,
-                          onPressed: () {
-                            Get.toNamed(CategoryPage.routeName);
-                          },
-                        );
-                  }),
-                  Obx(() {
-                    return HomeController.to.isLoadingCategory.value
-                        ? CategoryCircleLoading()
-                        : HomeController.to.catListWithPagination.isEmpty
-                        ? SizedBox.shrink()
-                        : Wrap(
-                          alignment: WrapAlignment.spaceBetween,
-                          spacing: 8.w,
-                          runSpacing: 8.w,
+                    Obx(() {
+                      return HomeController.to.catListWithPagination.isEmpty
+                          ? SizedBox.shrink()
+                          : ViewAllRow(
+                        title: AppStaticStrings.productCategories.tr,
+                        onPressed: () {
+                          Get.toNamed(CategoryPage.routeName);
+                        },
+                      );
+                    }),
+                    Obx(() {
+                      return HomeController.to.isLoadingCategory.value
+                          ? CategoryCircleLoading()
+                          : HomeController.to.catListWithPagination.isEmpty
+                          ? SizedBox.shrink()
+                          : Wrap(
+                        alignment: WrapAlignment.spaceBetween,
+                        spacing: 8.w,
+                        runSpacing: 8.w,
 
-                          children: List.generate(
-                            HomeController.to.catListWithPagination.length > 8
-                                ? 8
-                                : HomeController
-                                    .to
-                                    .catListWithPagination
-                                    .length,
-                            (index) => CategoryCardItemWidget(
-                              categoryModel:
-                                  HomeController
-                                      .to
-                                      .catListWithPagination[index],
-                            ),
+                        children: List.generate(
+                          HomeController.to.catListWithPagination.length > 8
+                              ? 8
+                              : HomeController
+                              .to
+                              .catListWithPagination
+                              .length,
+                              (index) => CategoryCardItemWidget(
+                            categoryModel:
+                            HomeController
+                                .to
+                                .catListWithPagination[index],
                           ),
-                        );
-                  }),
-                  ViewAllRow(
-                    title: AppStaticStrings.recentlyAdded.tr,
-                    onPressed: () {
-                      Get.toNamed(SearchPage.routeName);
-                    },
-                  ),
-                  Obx(() {
-                    return ProductGridWidget(
-                      length:
-                          HomeController.to.productListForHome.length > 4
-                              ? 4
-                              : HomeController.to.productListForHome.length,
-                      productList: HomeController.to.productListForHome,
-                      isLoading: HomeController.to.isLoadingHomeProduct.value,
-                    );
-                  }),
-                ],
+                        ),
+                      );
+                    }),
+                    ViewAllRow(
+                      title: AppStaticStrings.recentlyAdded.tr,
+                      onPressed: () {
+                        Get.toNamed(SearchPage.routeName);
+                      },
+                    ),
+                    Obx(() {
+                      return ProductGridWidget(
+                        length:
+                        HomeController.to.productListForHome.length > 4
+                            ? 4
+                            : HomeController.to.productListForHome.length,
+                        productList: HomeController.to.productListForHome,
+                        isLoading: HomeController.to.isLoadingHomeProduct.value,
+                      );
+                    }),
+                  ],
+                ),
               ),
-            ),
+            )
+           ] ,
           ),
           Obx(
             () =>

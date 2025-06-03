@@ -45,44 +45,46 @@ class _MessageListPageState extends State<MessageListPage> {
       onRefresh: () async{
       await  MessageController.to.getConversationListRequest();
       },
-      child: SingleChildScrollView(
+      child: CustomScrollView(
         physics: AlwaysScrollableScrollPhysics(),
         controller: scrollController,
-        child: Padding(
-          padding: padding12,
-          child: Column(
-            children: [
-              Obx(() {
-                return  MessageController.to.isLoadingConversation.value?
-                    ConversationLoadingWidget(): MessageController.to.conversationList.isEmpty?
-                    EmptyWidget(text: "Conversation List is Empty!!",)
-                    :Column(
-                  spacing: 12.h,
-                  children: List.generate(
-                    MessageController.to.conversationList.length,
-                    (index) {
-                      final conversation = MessageController.to.conversationList[index];
-                      final receiver = conversation.users?.firstWhere(
-                            (u) => u.sId != AccountInformationController.to.userModel.value.sId,
-                        orElse: () => Users(), // fallback
-                      );
+        slivers: [
+          SliverToBoxAdapter(child: Padding(
+            padding: padding12,
+            child: Column(
+              children: [
+                Obx(() {
+                  return  MessageController.to.isLoadingConversation.value?
+                  ConversationLoadingWidget(): MessageController.to.conversationList.isEmpty?
+                  EmptyWidget(text: "Conversation List is Empty!!",)
+                      :Column(
+                    spacing: 12.h,
+                    children: List.generate(
+                        MessageController.to.conversationList.length,
+                            (index) {
+                          final conversation = MessageController.to.conversationList[index];
+                          final receiver = conversation.users?.firstWhere(
+                                (u) => u.sId != AccountInformationController.to.userModel.value.sId,
+                            orElse: () => Users(), // fallback
+                          );
 
-                      return MessageCardItemWidget(
-                        conversation: conversation,
-                        receiverUser: receiver!,
-                      );
-                    }
-                  ),
-                );
-              }),
-              Obx(() {
-                return MessageController.to.isLoadingMore.value
-                    ? PaginationLoadingWidget()
-                    : SizedBox.shrink();
-              }),
-            ],
-          ),
-        ),
+                          return MessageCardItemWidget(
+                            conversation: conversation,
+                            receiverUser: receiver!,
+                          );
+                        }
+                    ),
+                  );
+                }),
+                Obx(() {
+                  return MessageController.to.isLoadingMore.value
+                      ? PaginationLoadingWidget()
+                      : SizedBox.shrink();
+                }),
+              ],
+            ),
+          ),)
+        ],
       ),
     );
   }

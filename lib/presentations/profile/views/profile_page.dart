@@ -36,157 +36,161 @@ class ProfilePage extends StatelessWidget {
       onRefresh: () {
         return AccountInformationController.to.getUserProfileRequest();
       },
-      child: SingleChildScrollView(
+      child: CustomScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
-        child: Padding(
-          padding: padding12.copyWith(top: 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: 12.h,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16.r),
-                  color: AppColors.kWhiteColor,
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.kExtraLightGreyTextColor.withValues(
-                        alpha: .3,
-                      ),
-                      blurRadius: 6.r,
+        slivers: [
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: padding12.copyWith(top: 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 12.h,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16.r),
+                      color: AppColors.kWhiteColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.kExtraLightGreyTextColor.withValues(
+                            alpha: .3,
+                          ),
+                          blurRadius: 6.r,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                child: Padding(
-                  padding: padding6,
-                  child: Obx(() {
-                    return AccountInformationController
+                    child: Padding(
+                      padding: padding6,
+                      child: Obx(() {
+                        return AccountInformationController
                             .to
                             .isLoadingProfile
                             .value
-                        ? ProfileCardShimmer()
-                        : ProfileInfoDetailsWidget(
+                            ? ProfileCardShimmer()
+                            : ProfileInfoDetailsWidget(
                           email:
-                              AccountInformationController
-                                  .to
-                                  .userModel
-                                  .value
-                                  .email,
+                          AccountInformationController
+                              .to
+                              .userModel
+                              .value
+                              .email,
                           img:
-                              "${ApiService().baseUrl}/${AccountInformationController.to.userModel.value.img}",
+                          AccountInformationController.to.userModel.value.img!=null?"${ApiService().baseUrl}/${AccountInformationController.to.userModel.value.img??""}":"",
                           name:
-                              AccountInformationController
-                                  .to
-                                  .userModel
-                                  .value
-                                  .name,
+                          AccountInformationController
+                              .to
+                              .userModel
+                              .value
+                              .name,
                           phone:
-                              AccountInformationController
-                                  .to
-                                  .userModel
-                                  .value
-                                  .phone,
+                          AccountInformationController
+                              .to
+                              .userModel
+                              .value
+                              .phone,
                         );
-                  }),
-                ),
-              ),
-              ProfileActionItemWidget(
-                img: settingIcon,
-                title: AppStaticStrings.accountSetting.tr,
-                onTap: () {
-                  Get.toNamed(AccountSettingsPage.routeName);
-                },
-              ),
-              ProfileActionItemWidget(
-                img: favItemIcon,
-                title: AppStaticStrings.favoriteItems.tr,
-                onTap: () {
+                      }),
+                    ),
+                  ),
+                  ProfileActionItemWidget(
+                    img: settingIcon,
+                    title: AppStaticStrings.accountSetting.tr,
+                    onTap: () {
+                      Get.toNamed(AccountSettingsPage.routeName);
+                    },
+                  ),
+                  ProfileActionItemWidget(
+                    img: favItemIcon,
+                    title: AppStaticStrings.favoriteItems.tr,
+                    onTap: () {
 
-                  Get.toNamed(
-                    ListingProductPage.routeName,
-                    arguments: {'title':AppStaticStrings.favoriteItems.tr,
-                    'products':AccountInformationController.to.favProductList,
-                    'load':AccountInformationController.to.isLoadingFavProduct},
-                  );
-                },
-              ),
-              ProfileActionItemWidget(
-                img: languageIcon,
-                title: AppStaticStrings.language.tr,
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => LanguageChangeDialog(),
-                  );
-                },
-              ),
-              ProfileActionItemWidget(
-                img: notificationOutlineIcon,
-                title: AppStaticStrings.notification.tr,
-                onTap: () {
-                  Get.toNamed(NotificationPage.routeName);
-                },
-              ),ProfileActionItemWidget(
-                img: subscriptionIcon,
-                title: AppStaticStrings.subscriptionStatus.tr,
-                onTap: () {
-                  Get.toNamed(MySubscriptionPage.routeName);
-                },
-              ),
+                      Get.toNamed(
+                        ListingProductPage.routeName,
+                        arguments: {'title':AppStaticStrings.favoriteItems.tr,
+                          'products':AccountInformationController.to.favProductList,
+                          'load':AccountInformationController.to.isLoadingFavProduct},
+                      );
+                    },
+                  ),
+                  ProfileActionItemWidget(
+                    img: languageIcon,
+                    title: AppStaticStrings.language.tr,
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => LanguageChangeDialog(),
+                      );
+                    },
+                  ),
+                  ProfileActionItemWidget(
+                    img: notificationOutlineIcon,
+                    title: AppStaticStrings.notification.tr,
+                    onTap: () {
+                      Get.toNamed(NotificationPage.routeName);
+                    },
+                  ),ProfileActionItemWidget(
+                    img: subscriptionIcon,
+                    title: AppStaticStrings.subscriptionStatus.tr,
+                    onTap: () {
+                      Get.toNamed(MySubscriptionPage.routeName);
+                    },
+                  ),
 
-              CustomText(
-                text: AppStaticStrings.more.tr,
-                fontSize: getFontSizeDefault(),
-                style: poppinsSemiBold,
-              ),
-              ProfileActionItemWidget(
-                img: termsIcon,
-                title: AppStaticStrings.termsAndCondition.tr,
-                onTap: () {
-                  Get.toNamed(
-                    TermsPolicyHelpPage.routeName,
-                    arguments: AppStaticStrings.termsAndCondition.tr,
-                  );
-                },
-              ),
-              ProfileActionItemWidget(
-                img: privacyPolicyIcon,
-                title: AppStaticStrings.privacyPolicy.tr,
-                onTap: () {
-                  Get.toNamed(
-                    TermsPolicyHelpPage.routeName,
-                    arguments: AppStaticStrings.privacyPolicy.tr,
-                  );
-                },
-              ),
-              // ProfileActionItemWidget(
-              //   img: helpIcon,
-              //   title: AppStaticStrings.helpSupport.tr,
-              //   onTap: () {
-              //     Get.toNamed(
-              //       TermsPolicyHelpPage.routeName,
-              //       arguments: AppStaticStrings.helpSupport.tr,
-              //     );
-              //   },
-              // ),
-              ProfileActionItemWidget(
-                      img: logoutIcon,
-                      title: AppStaticStrings.logOut.tr,
-                      onTap: () {
-                        warningCustomDialog(
+                  CustomText(
+                    text: AppStaticStrings.more.tr,
+                    fontSize: getFontSizeDefault(),
+                    style: poppinsSemiBold,
+                  ),
+                  ProfileActionItemWidget(
+                    img: termsIcon,
+                    title: AppStaticStrings.termsAndCondition.tr,
+                    onTap: () {
+                      Get.toNamed(
+                        TermsPolicyHelpPage.routeName,
+                        arguments: AppStaticStrings.termsAndCondition.tr,
+                      );
+                    },
+                  ),
+                  ProfileActionItemWidget(
+                    img: privacyPolicyIcon,
+                    title: AppStaticStrings.privacyPolicy.tr,
+                    onTap: () {
+                      Get.toNamed(
+                        TermsPolicyHelpPage.routeName,
+                        arguments: AppStaticStrings.privacyPolicy.tr,
+                      );
+                    },
+                  ),
+                  // ProfileActionItemWidget(
+                  //   img: helpIcon,
+                  //   title: AppStaticStrings.helpSupport.tr,
+                  //   onTap: () {
+                  //     Get.toNamed(
+                  //       TermsPolicyHelpPage.routeName,
+                  //       arguments: AppStaticStrings.helpSupport.tr,
+                  //     );
+                  //   },
+                  // ),
+                  ProfileActionItemWidget(
+                    img: logoutIcon,
+                    title: AppStaticStrings.logOut.tr,
+                    onTap: () {
+                      warningCustomDialog(
 
-                          title: AppStaticStrings.logoutConfirmation.tr,
-                          onTap: () {
-                            NavigationController.to.logoutRequest();
-                          },
-                          loading: NavigationController.to.isLoadingLogout,
-                        );
-                        // NavigationController.to.logoutRequest();
-                      },
-                    )
-            ],
-          ),
-        ),
+                        title: AppStaticStrings.logoutConfirmation.tr,
+                        onTap: () {
+                          NavigationController.to.logoutRequest();
+                        },
+                        loading: NavigationController.to.isLoadingLogout,
+                      );
+                      // NavigationController.to.logoutRequest();
+                    },
+                  )
+                ],
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

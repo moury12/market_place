@@ -50,7 +50,7 @@ class _SearchPageState extends State<SearchPage> {
               Padding(
                 padding: padding12.copyWith(
                   top: MediaQuery.of(context).viewPadding.top,
-                  bottom: 0,
+                  bottom: 6,
                 ),
                 child: Row(
                   spacing: 8.w,

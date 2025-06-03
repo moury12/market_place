@@ -33,31 +33,33 @@ class EditProfilePage extends StatelessWidget {
         onRefresh: () {
           return AccountInformationController.to.getUserProfileRequest();
         },
-        child: SingleChildScrollView(
+        child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          child: Center(
-            child: Padding(
-              padding: padding12,
-              child: Obx(() {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 12.h,
-                  children: [
-                    Stack(
+          slivers: [
+            SliverToBoxAdapter(
+              child:Center(
+                child: Padding(
+                  padding: padding12,
+                  child: Obx(() {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      spacing: 12.h,
                       children: [
-                        AccountInformationController
+                        Stack(
+                          children: [
+                            AccountInformationController
                                 .to
                                 .profileImgPath
                                 .value
                                 .isEmpty
-                            ? CustomNetworkImage(
+                                ? CustomNetworkImage(
                               imageUrl:
-                                  "${ApiService().baseUrl}/${AccountInformationController.to.userModel.value.img}",
+                              "${ApiService().baseUrl}/${AccountInformationController.to.userModel.value.img}",
                               boxShape: BoxShape.circle,
                               height: 150.w,
                               width: 150.w,
                             )
-                            : ClipOval(
+                                : ClipOval(
                               child: Image.file(
                                 File(
                                   AccountInformationController
@@ -71,77 +73,79 @@ class EditProfilePage extends StatelessWidget {
                               ),
                             ),
 
-                        Positioned(
-                          bottom: 10,
-                          right: 10,
-                          child: ButtonTapWidget(
-                            onTap: () {
-                              pickImages(
-                                singleImagePath:
+                            Positioned(
+                              bottom: 10,
+                              right: 10,
+                              child: ButtonTapWidget(
+                                onTap: () {
+                                  pickImages(
+                                    singleImagePath:
                                     AccountInformationController
                                         .to
                                         .profileImgPath,
-                              );
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppColors.kPrimaryAccentColor,
-                              ),
-                              padding: padding4,
-                              child: SvgPicture.asset(
-                                cameraIcon,
-                                height: 20.w,
-                                colorFilter: ColorFilter.mode(
-                                  AppColors.kPrimaryColor,
-                                  BlendMode.srcIn,
+                                  );
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColors.kPrimaryAccentColor,
+                                  ),
+                                  padding: padding4,
+                                  child: SvgPicture.asset(
+                                    cameraIcon,
+                                    height: 20.w,
+                                    colorFilter: ColorFilter.mode(
+                                      AppColors.kPrimaryColor,
+                                      BlendMode.srcIn,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
-                    CustomTextField(
-                      fillColor: AppColors.kWhiteColor,
-                      title: AppStaticStrings.name.tr,
-                      textEditingController:
+                        CustomTextField(
+                          fillColor: AppColors.kWhiteColor,
+                          title: AppStaticStrings.name.tr,
+                          textEditingController:
                           AccountInformationController.to.nameController.value,
-                    ),
-                    CustomTextField(
-                      fillColor: AppColors.kWhiteColor,
-                      title: AppStaticStrings.email.tr,
-                      isEnable: false,
-                      textEditingController:
+                        ),
+                        CustomTextField(
+                          fillColor: AppColors.kWhiteColor,
+                          title: AppStaticStrings.email.tr,
+                          isEnable: false,
+                          textEditingController:
                           AccountInformationController.to.emailController.value,
-                    ),
-                    CustomTextField(
-                      fillColor: AppColors.kWhiteColor,
-                      title: AppStaticStrings.contactNumber.tr,
-                      textEditingController:
+                        ),
+                        CustomTextField(
+                          fillColor: AppColors.kWhiteColor,
+                          title: AppStaticStrings.contactNumber.tr,
+                          textEditingController:
                           AccountInformationController
                               .to
                               .contactNumberController
                               .value,
-                    ),
-                    space8H,
-                    CustomButton(
-                      isLoading:
+                        ),
+                        space8H,
+                        CustomButton(
+                          isLoading:
                           AccountInformationController
                               .to
                               .isLoadingUpdateProfile
                               .value,
-                      onTap: () async {
-                        await AccountInformationController.to
-                            .updateProfileRequest();
-                      },
-                      title: AppStaticStrings.update.tr,
-                    ),
-                  ],
-                );
-              }),
-            ),
-          ),
+                          onTap: () async {
+                            await AccountInformationController.to
+                                .updateProfileRequest();
+                          },
+                          title: AppStaticStrings.update.tr,
+                        ),
+                      ],
+                    );
+                  }),
+                ),
+              ),
+            )
+          ],
         ),
       ),
     );
