@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA"/>
     <application
-        android:label="market_place"
+        android:label="Bazarya"
         android:name="${applicationName}"
         android:networkSecurityConfig="@xml/network_security_config"
 
