@@ -77,7 +77,8 @@ Future<void> saveCredentials(
   String email,
   String password,
   bool rememberMe,
-) async {
+)
+async {
   if (rememberMe) {
     await Boxes.getAuthData().put('email', email);
     await Boxes.getAuthData().put('password', password);
@@ -475,7 +476,8 @@ void showCustomSnackbar({
   Function()? retryTap,
   SnackBarType type = SnackBarType.success,
   SnackPosition position = SnackPosition.BOTTOM, // Default position
-}) {
+})
+{
   Color backgroundColor = AppColors.kWhiteColor.withValues(alpha: .5);
   Color textColor = Colors.black;
 
