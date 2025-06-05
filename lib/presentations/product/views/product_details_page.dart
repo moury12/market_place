@@ -24,6 +24,7 @@ import 'package:market_place/presentations/my-listings/controller/listings_contr
 import 'package:market_place/presentations/navigation/controller/navigation_controller.dart';
 import 'package:market_place/presentations/product/controller/product_controller.dart';
 import 'package:market_place/presentations/product/views/seller_profile_page.dart';
+import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
 import 'package:market_place/presentations/sell-now/controller/sell_controller.dart';
 
 import '../../../core/components/custom_loading_widget.dart';
@@ -97,7 +98,12 @@ class ProductDetailsPage extends StatelessWidget {
             final product = ProductController.to.productModel.value;
             return ProductController.to.isLoadingProductDetails.value
                 ? CustomLoadingWidget(
-                  height: ScreenUtil().screenHeight,
+                  height:
+                      ScreenUtil().screenHeight -
+                      (kToolbarHeight +
+                          MediaQuery.of(context).viewPadding.top +
+                          MediaQuery.of(context).viewPadding.bottom +
+                          50),
                   size: 30.sp,
                   width: ScreenUtil().screenWidth,
                 )
@@ -126,7 +132,9 @@ class ProductDetailsPage extends StatelessWidget {
                                       .to
                                       .selectedImageIndex
                                       .value = index;
-                                  logger.d( "${ApiService().baseUrl}/${product.img?[index]}");
+                                  logger.d(
+                                    "${ApiService().baseUrl}/${product.img?[index]}",
+                                  );
                                 },
                                 child: CustomNetworkImage(
                                   radius: 2.r,
@@ -173,7 +181,13 @@ class ProductDetailsPage extends StatelessWidget {
                           child: Column(
                             spacing: 8.h,
                             children: [
-                              if (NavigationController.to.isLoggedIn)
+                              if (NavigationController.to.isLoggedIn &&
+                                  AccountInformationController
+                                          .to
+                                          .userModel
+                                          .value
+                                          .sId !=
+                                      product.userId.toString())
                                 CallAndChatButtons(
                                   number: product.userPhone ?? "013230443",
                                   userID: product.userId.toString(),
@@ -217,7 +231,11 @@ class ProductDetailsPage extends StatelessWidget {
                                         if (NavigationController
                                             .to
                                             .isLoggedIn) {
-                                          ProductController.to.getProductListRequest(userId: product.userId.toString());
+                                          ProductController.to
+                                              .getProductListRequest(
+                                                userId:
+                                                    product.userId.toString(),
+                                              );
                                           Get.toNamed(
                                             SellerProfilePage.routeName,
                                           );
@@ -266,7 +284,8 @@ class ProductDetailsPage extends StatelessWidget {
                             ManageOptionWidget(
                               title: AppStaticStrings.editListingInfo.tr,
                               color: AppColors.kPrimaryColor,
-                              isLoading: SellController.to.isLoadingEditProduct.value,
+                              isLoading:
+                                  SellController.to.isLoadingEditProduct.value,
                               icon: editIcon,
                               action: () {
                                 SellController.to.editProduct(

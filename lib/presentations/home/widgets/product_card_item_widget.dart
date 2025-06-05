@@ -21,13 +21,14 @@ class ProductCardItemWidget extends StatelessWidget {
   final ProductModel product;
 
   const ProductCardItemWidget({
-    super.key,  this.fromSeller =false, required this.product,
+    super.key,
+    this.fromSeller = false,
+    required this.product,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-
       decoration: BoxDecoration(
         color: AppColors.kWhiteColor,
         borderRadius: BorderRadius.circular(4.r),
@@ -42,64 +43,66 @@ class ProductCardItemWidget extends StatelessWidget {
         radius: 4.r,
         onTap: () {
           Get.put(ProductController());
-          ProductController.to.getProductDetailsRequest(productID: product.sId.toString());
+          ProductController.to.getProductDetailsRequest(
+            productID: product.sId.toString(),
+          );
           Get.toNamed(ProductDetailsPage.routeName, arguments: fromSeller);
         },
         child: Padding(
           padding: padding4,
-          child: Column(                    crossAxisAlignment: CrossAxisAlignment.start,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
 
             children: [
-              Expanded(
-                flex: 3,
-                child: Stack(
-                  children: [
-                    CustomNetworkImage(
+              Stack(
+                children: [
+                  AspectRatio(
+                    aspectRatio: 1,
+                    child: CustomNetworkImage(
                       imageUrl: "${ApiService().baseUrl}/${product.img}",
                       // height: 150.w,
                       radius: 4.r,
                     ),
-                    Positioned(
-                      bottom: 10,left: 6,
-                      child: GreenAccentContainerWidget(
-
-                        child: CustomText(
+                  ),
+                  Positioned(
+                    bottom: 10,
+                    left: 6,
+                    child: GreenAccentContainerWidget(
+                      child: CustomText(
                         text: product.condition.toString(),
                         style: poppinsSemiBold,
                         color: AppColors.kPrimaryColor,
                         fontSize: getFontSizeSmall(),
-                      ),),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: padding4,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      text: product.name.toString(),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: poppinsSemiBold,
+                    ),
+                    CustomText(
+                      text: product.categoryName.toString(),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: poppinsRegular,
+                      color: AppColors.kExtraLightTextColor,
+                    ),
+                    CustomText(
+                      text: "UM ${product.price.toString()}",
+                      maxLines: 2,
+                      style: poppinsMedium,
                     ),
                   ],
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: padding4,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      CustomText(
-                        text: product.name.toString(),
-                        maxLines: 2,
-                        style: poppinsSemiBold,
-                      ),
-                      CustomText(
-                        text: product.categoryName.toString(),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: poppinsRegular,
-                        color: AppColors.kExtraLightTextColor,
-                      ),
-                      CustomText(
-                        text: "UM ${product.price.toString()}",
-                        maxLines: 2,
-                        style: poppinsMedium,
-                      ),
-                    ],
-                  ),
                 ),
               ),
             ],
@@ -109,6 +112,7 @@ class ProductCardItemWidget extends StatelessWidget {
     );
   }
 }
+
 class ProductGridWidget extends StatelessWidget {
   final bool fromSeller;
   final int? length;
@@ -119,37 +123,38 @@ class ProductGridWidget extends StatelessWidget {
     super.key,
     this.fromSeller = false,
     required this.productList,
-    this.isLoading = false, this.length,
+    this.isLoading = false,
+    this.length,
   });
 
   @override
   Widget build(BuildContext context) {
+    // Show shimmer when loading or empty list
+    if (isLoading) {
+      return _buildShimmerGrid();
+    } else if (productList.isEmpty) {
+      return EmptyWidget(text: "Product List is Empty!!");
+    }
 
-      // Show shimmer when loading or empty list
-      if (isLoading ) {
-        return _buildShimmerGrid();
-      }else if(productList.isEmpty){
-        return  EmptyWidget( text:"Product List is Empty!!" ,);
-      }
-
-      return GridView.builder(
-        padding: EdgeInsets.zero,
-        shrinkWrap: true,
-        primary: false,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount:length?? productList.length,
-        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-          crossAxisSpacing: 8.w,
-          mainAxisSpacing: 12.w,
-          mainAxisExtent: 265.w,
-          maxCrossAxisExtent: 210.w,
+    return Wrap(
+       crossAxisAlignment: WrapCrossAlignment.start,
+      spacing: 8.w,
+      runSpacing: 12.w,
+      children: List.generate(
+        length ?? productList.length,
+        (index) => SizedBox(
+          width:
+              MediaQuery.of(context).size.width /
+                  (MediaQuery.of(context).size.width > 600 ? 3 : 2) -
+              20.w,
+          // height: 265.w, // Equivalent to mainAxisExtent
+          child: ProductCardItemWidget(
+            fromSeller: fromSeller,
+            product: productList[index],
+          ),
         ),
-        itemBuilder: (context, index) => ProductCardItemWidget(
-          fromSeller: fromSeller,
-          product: productList[index], // Pass product data
-        ),
-      );
-
+      ),
+    );
   }
 
   Widget _buildShimmerGrid() {
@@ -272,27 +277,31 @@ class ProductCardShimmer extends StatelessWidget {
     );
   }
 }
+
 class GreenAccentContainerWidget extends StatelessWidget {
   final Widget child;
   final double? radius;
   final Color? color;
   const GreenAccentContainerWidget({
-    super.key, required this.child, this.radius, this.color,
+    super.key,
+    required this.child,
+    this.radius,
+    this.color,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 6.w
-      ),
+      padding: EdgeInsets.symmetric(horizontal: 6.w),
       decoration: BoxDecoration(
-        color:color==null?
-            AppColors.kPrimaryAccentColor: color!.withValues(alpha: .1),
-        borderRadius: BorderRadius.circular(radius??radiusCommon),
+        color:
+            color == null
+                ? AppColors.kPrimaryAccentColor
+                : color!.withValues(alpha: .1),
+        borderRadius: BorderRadius.circular(radius ?? radiusCommon),
         border: Border.all(
           width: .5,
-          color: color==null?
-        AppColors.kPrimaryColor:color!,
+          color: color == null ? AppColors.kPrimaryColor : color!,
         ),
       ),
       child: child,

@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:market_place/presentations/home/model/category_subcategory_model.dart';
-import 'package:market_place/presentations/sell-now/controller/sell_controller.dart';
 
 import '../../../core/api-client/api_endpoints.dart';
 import '../../../core/api-client/api_service.dart';
@@ -21,7 +20,8 @@ class HomeController extends GetxController {
   var selectedCity = Rx<CityModel?>(null);
   var selectedCondition = Rx<String?>(null);
   var selectedSortBy = Rx<String?>(null);
-  Rx<RangeValues> rangeValues = RangeValues(0,  1000).obs;
+  Rx<RangeValues> rangeValues = RangeValues(0, 1000).obs;
+  RxDouble maximumPrice = 1000.00.obs;
   RxList<CategoryModel> catList = <CategoryModel>[].obs;
   RxList<CategoryModel> catListWithPagination = <CategoryModel>[].obs;
   RxList<CategoryModel> divisionList = <CategoryModel>[].obs;
@@ -83,8 +83,9 @@ class HomeController extends GetxController {
               .toList();
       rangeValues.value = RangeValues(
         0,
-        double.parse(productWithHigherPriceList.first.price ?? "300"),
+        double.parse(productWithHigherPriceList.first.price ?? "1000"),
       );
+      maximumPrice.value =double.parse(productWithHigherPriceList.first.price ?? "1000");
     } else {
       rangeValues.value = RangeValues(0, 1000);
     }
@@ -132,7 +133,6 @@ class HomeController extends GetxController {
         },
       );
 
-     
       isLoadingMore.value = false;
       if (response['success'] == true) {
         if (response['pagination'] != null) {
@@ -146,27 +146,28 @@ class HomeController extends GetxController {
             (response['data'] as List)
                 .map((e) => CategoryModel.fromJson(e))
                 .toList();
-        final imageUrls = newCategories
-            .map((cat) => "${ApiService().baseUrl}/${cat.img}")
-            .where((url) => url.isNotEmpty)
-            .toList();
+        final imageUrls =
+            newCategories
+                .map((cat) => "${ApiService().baseUrl}/${cat.img}")
+                .where((url) => url.isNotEmpty)
+                .toList();
 
-         preloadImagesFromUrls(imageUrls);
+        preloadImagesFromUrls(imageUrls);
         if (loadMore) {
           catListWithPagination.addAll(newCategories); // Append for load more
         } else {
           catListWithPagination.value = newCategories; // Replace for refresh
         }
-        if(newCategories.isNotEmpty && catListWithPagination.isNotEmpty){
+        if (newCategories.isNotEmpty && catListWithPagination.isNotEmpty) {
           isLoadingCategory.value = false;
-        }else if(newCategories.isEmpty){
+        } else if (newCategories.isEmpty) {
           isLoadingCategory.value = false;
         }
         logger.d(response);
       } else {
         isLoadingCategory.value = false;
         logger.e(response);
-        if(kDebugMode){
+        if (kDebugMode) {
           showCustomSnackbar(
             title: 'Failed',
             message: response['message'],
@@ -202,15 +203,16 @@ class HomeController extends GetxController {
 
         /// Replace list
         catList.value = newCategories;
-        final imageUrls = newCategories
-            .map((cat) => "${ApiService().baseUrl}/${cat.img}")
-            .where((url) => url.isNotEmpty)
-            .toList();
+        final imageUrls =
+            newCategories
+                .map((cat) => "${ApiService().baseUrl}/${cat.img}")
+                .where((url) => url.isNotEmpty)
+                .toList();
         preloadImagesFromUrls(imageUrls);
         logger.d(response);
       } else {
         logger.e(response);
-       if(kDebugMode) {
+        if (kDebugMode) {
           showCustomSnackbar(
             title: 'Failed',
             message: response['message'],
@@ -245,7 +247,7 @@ class HomeController extends GetxController {
         logger.d(response);
       } else {
         logger.e(response);
-        if(kDebugMode){
+        if (kDebugMode) {
           showCustomSnackbar(
             title: 'Failed',
             message: response['message'],
@@ -280,7 +282,7 @@ class HomeController extends GetxController {
                 .toList();
       } else {
         logger.e(response);
-        if(kDebugMode){
+        if (kDebugMode) {
           showCustomSnackbar(
             title: 'Failed',
             message: response['message'],
@@ -315,7 +317,7 @@ class HomeController extends GetxController {
                 .toList();
       } else {
         logger.e(response);
-        if(kDebugMode){
+        if (kDebugMode) {
           showCustomSnackbar(
             title: 'Failed',
             message: response['message'],
@@ -349,15 +351,16 @@ class HomeController extends GetxController {
             (response['data'] as List)
                 .map((e) => ProductModel.fromJson(e))
                 .toList();
-        final imageUrls =  productListForHome
-            .map((cat) => "${ApiService().baseUrl}/${cat.img}")
-            .where((url) => url.isNotEmpty)
-            .toList();
+        final imageUrls =
+            productListForHome
+                .map((cat) => "${ApiService().baseUrl}/${cat.img}")
+                .where((url) => url.isNotEmpty)
+                .toList();
 
         preloadImagesFromUrls(imageUrls);
       } else {
         logger.e(response);
-       if(kDebugMode) {
+        if (kDebugMode) {
           showCustomSnackbar(
             title: 'Failed',
             message: response['message'],
@@ -388,7 +391,7 @@ class HomeController extends GetxController {
         isLoadingProduct.value = true;
         currentProductPage.value = 1;
       }
-
+      await getMaximumRange();
       ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
       final response = await ApiService().request(
         endpoint: productGetAllEndPoint,
@@ -418,9 +421,13 @@ class HomeController extends GetxController {
           'price_max': rangeValues.value.end.toString(),
           'sort':
               selectedSortBy.value != null
-                  ?selectedSortBy.value=="Price: Low to High"||selectedSortBy.value=="Price: High to Low"? "price":"createdAt"
+                  ? selectedSortBy.value == "Price: Low to High" ||
+                          selectedSortBy.value == "Price: High to Low"
+                      ? "price"
+                      : "createdAt"
                   : "createdAt",
-          'order':selectedSortBy.value=="Price: Low to High"?"asc": "desc",
+          'order':
+              selectedSortBy.value == "Price: Low to High" ? "asc" : "desc",
           'condition':
               selectedCondition.value != null
                   ? selectedCondition.value!.toUpperCase().toString()
@@ -444,10 +451,11 @@ class HomeController extends GetxController {
             (response['data'] as List)
                 .map((e) => ProductModel.fromJson(e))
                 .toList();
-        final imageUrls = newProducts
-            .map((cat) => "${ApiService().baseUrl}/${cat.img}")
-            .where((url) => url.isNotEmpty)
-            .toList();
+        final imageUrls =
+            newProducts
+                .map((cat) => "${ApiService().baseUrl}/${cat.img}")
+                .where((url) => url.isNotEmpty)
+                .toList();
 
         preloadImagesFromUrls(imageUrls);
         if (loadMore) {
@@ -460,7 +468,7 @@ class HomeController extends GetxController {
         logger.d(response);
       } else {
         logger.e(response);
-        if(kDebugMode){
+        if (kDebugMode) {
           showCustomSnackbar(
             title: 'Failed',
             message: response['message'],

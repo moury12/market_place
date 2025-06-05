@@ -36,7 +36,8 @@ class CategoryCardItemWidget extends StatelessWidget {
             CustomText(
               textAlign: TextAlign.center,
               text: categoryModel.name??"Dummy Category",
-              maxLines: 2,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),

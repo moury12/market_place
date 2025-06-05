@@ -138,7 +138,7 @@ class _FilterDrawerWidgetState extends State<FilterDrawerWidget> {
                     return RangeSlider(
                       values: HomeController.to.rangeValues.value,
                       min: 0,
-                      max: 1000,
+                      max: HomeController.to.maximumPrice.value,
 
                       activeColor: AppColors.kPrimaryColor, // Green track
                       inactiveColor: const Color(
