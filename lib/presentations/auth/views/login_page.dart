@@ -55,9 +55,9 @@ class LoginPage extends StatelessWidget {
                     textEditingController: AuthController.to.emailLoginController,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return AppStaticStrings.emailRequired;
+                        return AppStaticStrings.emailRequired.tr;
                       } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                        return AppStaticStrings.enterValidEmail;
+                        return AppStaticStrings.enterValidEmail.tr;
                       }
                       return null;
                     },
@@ -69,7 +69,7 @@ class LoginPage extends StatelessWidget {
                         AuthController.to.passLoginController,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return AppStaticStrings.emailRequired;
+                        return AppStaticStrings.passRequired.tr;
                       }
                       return null;
                     },
