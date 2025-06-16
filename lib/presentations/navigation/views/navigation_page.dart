@@ -11,6 +11,7 @@ import 'package:market_place/core/constants/fontsize_constant.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/core/helper/helper_function.dart';
+import 'package:market_place/core/utils/common_controller.dart';
 import 'package:market_place/presentations/auth/views/login_page.dart';
 import 'package:market_place/presentations/profile/views/subscription_page.dart';
 import 'package:market_place/presentations/notification/views/notification_page.dart';
@@ -117,7 +118,11 @@ class NavigationPage extends StatelessWidget {
                               .isLoggedIn /*&&NavigationController.to.selectedNavIndex.value!=0*/ ) {
                             Get.toNamed(LoginPage.routeName);
                           } else if ((index == 1 || index == 2) &&
-                              NavigationController.to.isSubscribed == false) {
+                              NavigationController.to.isSubscribed == false &&
+                              CommonController
+                                  .to
+                                  .showSubscriptionStatus
+                                  .value) {
                             Get.toNamed(SubscriptionPage.routeName);
                           } else {
                             NavigationController.to.selectedNavIndex.value =

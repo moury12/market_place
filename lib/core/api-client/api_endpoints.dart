@@ -30,5 +30,6 @@ String conversationListEndPoint ='conversation/get-all';
 String messageListEndPoint ='message/get-all';
 String getNotificationEndPoint ='notification/get-all';
 String settingTermsEndPoint ='setting/terms';
+String subscriptionShowEndPoint ='subscription/show';
 String settingPrivacyEndPoint ='setting/privacy';
 

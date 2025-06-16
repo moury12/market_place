@@ -1,12 +1,14 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:market_place/core/api-client/api_endpoints.dart';
+import 'package:market_place/core/api-client/api_service.dart';
+import 'package:market_place/core/helper/helper_function.dart';
 import 'package:market_place/core/utils/variable.dart';
-import 'package:market_place/presentations/auth/views/login_page.dart';
 import 'package:market_place/presentations/navigation/controller/navigation_controller.dart';
 import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../../presentations/navigation/views/navigation_page.dart';
-import '../api-client/api_service.dart';
 import 'hive_boxes.dart';
 
 class CommonController extends GetxController {
@@ -15,7 +17,11 @@ class CommonController extends GetxController {
  var isLoading = true.obs;
  RxString stripeUrl =''.obs;
  final RxString selectedLanguageCode = 'en'.obs;
+ var showSubscriptionStatus = false.obs;
 
+ Future<void> checkSubscriptionStatus() async {
+  showSubscriptionStatus.value = await getSubscriptionStatus();
+ }
  @override
  void onInit() {
   super.onInit();
@@ -70,7 +76,36 @@ class CommonController extends GetxController {
    )
    ..loadRequest(Uri.parse(stripeUrl.value));
  }
+ Future<bool> getSubscriptionStatus() async {
+  try {
+   ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
 
+   final response = await ApiService().request(
+    endpoint: subscriptionShowEndPoint,
+    method: 'GET',
+   );
+
+   // More explicit checking
+   if (response['success'] == true) {
+    return response['show'];
+   }
+
+   // Handle failure case
+   logger.e(response);
+   if (kDebugMode) {
+    showCustomSnackbar(
+     title: 'Failed',
+     message: response['message'],
+     type: SnackBarType.failed,
+    );
+   }
+   return false;
+
+  } catch (e) {
+   logger.e(e.toString());
+   return false;
+  }
+ }
  Future<void> changeLanguage(Locale locale) async {
   selectedLanguageCode.value = locale.languageCode;
   await Boxes.getSettingsData().put(languageKey, locale.languageCode);

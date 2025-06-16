@@ -6,6 +6,7 @@ import 'package:market_place/core/constants/image_constants.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/core/helper/helper_function.dart';
+import 'package:market_place/core/utils/common_controller.dart';
 import 'package:market_place/presentations/my-listings/views/listing_product_page.dart';
 
 import 'package:market_place/presentations/notification/views/notification_page.dart';
@@ -13,7 +14,6 @@ import 'package:market_place/presentations/profile/controllers/account_informati
 import 'package:market_place/presentations/profile/loading/profile_card_loading.dart';
 import 'package:market_place/presentations/profile/views/account_settings_page.dart';
 import 'package:market_place/presentations/profile/views/my_subscription_page.dart';
-import 'package:market_place/presentations/profile/views/subscription_page.dart';
 import 'package:market_place/presentations/profile/views/term_policy_help_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -128,12 +128,16 @@ class ProfilePage extends StatelessWidget {
                     onTap: () {
                       Get.toNamed(NotificationPage.routeName);
                     },
-                  ),ProfileActionItemWidget(
+                  ),
+                  Obx(() => CommonController.to.showSubscriptionStatus.value
+                      ? ProfileActionItemWidget(
                     img: subscriptionIcon,
                     title: AppStaticStrings.subscriptionStatus.tr,
                     onTap: () {
                       Get.toNamed(MySubscriptionPage.routeName);
                     },
+                  )
+                      : SizedBox.shrink(),
                   ),
 
                   CustomText(
@@ -161,16 +165,7 @@ class ProfilePage extends StatelessWidget {
                       );
                     },
                   ),
-                  // ProfileActionItemWidget(
-                  //   img: helpIcon,
-                  //   title: AppStaticStrings.helpSupport.tr,
-                  //   onTap: () {
-                  //     Get.toNamed(
-                  //       TermsPolicyHelpPage.routeName,
-                  //       arguments: AppStaticStrings.helpSupport.tr,
-                  //     );
-                  //   },
-                  // ),
+
                   ProfileActionItemWidget(
                     img: logoutIcon,
                     title: AppStaticStrings.logOut.tr,

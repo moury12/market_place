@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:market_place/core/utils/common_controller.dart';
 import 'package:market_place/presentations/home/model/category_subcategory_model.dart';
 
 import '../../../core/api-client/api_endpoints.dart';
@@ -62,6 +63,7 @@ class HomeController extends GetxController {
     selectedSortBy.value = null;
     getMaximumRange();
     getProductListRequest();
+    CommonController.to.getSubscriptionStatus();
   }
 
   Future<void> refreshHome() async {
