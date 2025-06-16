@@ -69,7 +69,7 @@ class _CustomNetworkImageState extends State<CustomNetworkImage> {
             ),
             child: SvgPicture.network(
               widget.imageUrl,
-              fit: BoxFit.cover,
+              fit:widget.fit?? BoxFit.cover,
               placeholderBuilder: (context) => CustomLoadingWidget(
                 height: widget.height,
                 size: 30.sp,
@@ -90,12 +90,14 @@ class _CustomNetworkImageState extends State<CustomNetworkImage> {
                     color: Colors.grey.withValues(alpha:0.6),
                     // image: DecorationImage(
                     //   image: Svg(imageErrorUrl ?? ''),
-                    //   fit: BoxFit.cover,
+                    //        fit:widget.fit?? BoxFit.cover,
+
                     // ),
                   ),
                   child: SvgPicture.asset(
                     widget.imageErrorUrl ?? placeholderImage,
-                    fit: BoxFit.cover,
+                         fit:widget.fit?? BoxFit.cover,
+
                     height: widget.height,
                     width: widget.width,
                   ),
@@ -123,7 +125,8 @@ class _CustomNetworkImageState extends State<CustomNetworkImage> {
                   color: widget.backgroundColor,
                   image: DecorationImage(
                     image: imageProvider,
-                    fit: BoxFit.cover,
+                         fit:widget.fit?? BoxFit.cover,
+
                     colorFilter: widget.colorFilter,
                   ),
                 ),
@@ -151,12 +154,14 @@ class _CustomNetworkImageState extends State<CustomNetworkImage> {
                   color: Colors.grey.withValues(alpha: 0.6),
                   // image: DecorationImage(
                   //   image: Svg(imageErrorUrl ?? ''),
-                  //   fit: BoxFit.cover,
+                  //        fit:widget.fit?? BoxFit.cover,
+
                   // ),
                 ),
                 child: SvgPicture.asset(
                   widget.imageErrorUrl ?? placeholderImage,
-                  fit: BoxFit.cover,
+                       fit:widget.fit?? BoxFit.cover,
+
                   height: widget.height,
                   width: widget.width,
                 ),

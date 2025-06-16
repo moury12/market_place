@@ -51,32 +51,32 @@ class MessageController extends GetxController {
     super.onInit();
     // if (AccountInformationController.to.userModel.value.sId != null &&
     //     AccountInformationController.to.userModel.value.sId!.isNotEmpty) {
-    socket = IO.io(
-      '${ApiService().baseUrl}?user_id=${AccountInformationController.to.userModel.value.sId}',
-      IO.OptionBuilder()
-          .setTransports(['websocket'])
-          .disableAutoConnect()
-          .build(),
-    );
-
-    socket.connect();
-
-    socket.onConnect((_) {
-      logger.d('✅ Socket connected');
-      socket.emit('msg', 'test');
-    });
-
-    socket.onConnectError((data) {
-      logger.e('❌ Socket connect error: $data');
-    });
-
-    socket.onError((data) {
-      logger.e('❌ Socket error: $data');
-    });
-
-    socket.onDisconnect((_) {
-      logger.e('🔌 Socket disconnected');
-    });
+    // socket = IO.io(
+    //   '${ApiService().baseUrl}?user_id=${AccountInformationController.to.userModel.value.sId}',
+    //   IO.OptionBuilder()
+    //       .setTransports(['websocket'])
+    //       .disableAutoConnect()
+    //       .build(),
+    // );
+    //
+    // socket.connect();
+    //
+    // socket.onConnect((_) {
+    //   logger.d('✅ Socket connected');
+    //   socket.emit('msg', 'test');
+    // });
+    //
+    // socket.onConnectError((data) {
+    //   logger.e('❌ Socket connect error: $data');
+    // });
+    //
+    // socket.onError((data) {
+    //   logger.e('❌ Socket error: $data');
+    // });
+    //
+    // socket.onDisconnect((_) {
+    //   logger.e('🔌 Socket disconnected');
+    // });
 
     // }
     getConversationListRequest();
@@ -136,7 +136,7 @@ class MessageController extends GetxController {
                 .toList();
 
         preloadImagesFromUrls(imageUrls);
-        await preloadImagesFromUrls(imageUrls1);
+         preloadImagesFromUrls(imageUrls1);
         if (loadMore) {
           conversationList.addAll(newCategories); // Append for load more
         } else {
@@ -215,7 +215,7 @@ class MessageController extends GetxController {
             .map((cat) => "${ApiService().baseUrl}/${cat.img}")
             .where((url) => url.isNotEmpty)
             .toList();
-        await preloadImagesFromUrls(imageUrls);
+         preloadImagesFromUrls(imageUrls);
         if (loadMore) {
           messageList.addAll(newMessages); // append
         } else {

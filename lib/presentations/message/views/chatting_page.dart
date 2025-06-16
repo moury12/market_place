@@ -94,8 +94,11 @@ class _ChattingPageState extends State<ChattingPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // User profile info at the top
-          MessageController.to.messageList.isNotEmpty?SizedBox.shrink(): _buildReceiverProfile(),
+          Obx(() {
+            return MessageController.to.messageList.isNotEmpty
+                ? SizedBox.shrink()
+                : _buildReceiverProfile();
+          }),
           Obx(() {
             return MessageController.to.isLoadingMoreMessages.value
                 ? PaginationLoadingWidget()
@@ -131,35 +134,35 @@ class _ChattingPageState extends State<ChattingPage> {
           ),
 
           // Image preview section
-         Obx(() {
-            return  MessageController.to.img.value.isNotEmpty
-                ?  Stack(
-              children: [
-                Padding(
-                  padding: padding8.copyWith(bottom: 0),
-                  child: Image.file(
-                    height: 100.w,
-                    width: 100.w,
-                    fit: BoxFit.cover,
-                    File(MessageController.to.img.toString()),
-                  ),
-                ),
-                Positioned(
-                  right: 0,
-                  child: IconButton(
-                    onPressed: () {
-                      MessageController.to.img.value = "";
-                    },
-                    icon: Icon(
-                      CupertinoIcons.multiply_circle_fill,
-                      color: AppColors.kRedColor,
+          Obx(() {
+            return MessageController.to.img.value.isNotEmpty
+                ? Stack(
+                  children: [
+                    Padding(
+                      padding: padding8.copyWith(bottom: 0),
+                      child: Image.file(
+                        height: 100.w,
+                        width: 100.w,
+                        fit: BoxFit.cover,
+                        File(MessageController.to.img.toString()),
+                      ),
                     ),
-                  ),
-                ),
-              ],
-            ) : SizedBox.shrink();
+                    Positioned(
+                      right: 0,
+                      child: IconButton(
+                        onPressed: () {
+                          MessageController.to.img.value = "";
+                        },
+                        icon: Icon(
+                          CupertinoIcons.multiply_circle_fill,
+                          color: AppColors.kRedColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+                : SizedBox.shrink();
           }),
-
 
           // Message input section
           _buildMessageInput(),
@@ -219,23 +222,23 @@ class _ChattingPageState extends State<ChattingPage> {
             return MessageController.to.isLoadingCreateMessage.value
                 ? PaginationLoadingWidget()
                 : IconButton(
-              onPressed: () {
-                if (MessageController
-                    .to
-                    .messageController
-                    .text
-                    .isNotEmpty ||
-                    MessageController.to.img.isNotEmpty) {
-                  MessageController.to
-                      .createMessageRequest(conversationId: conversationId)
-                      .then((_) {
-                    // After sending message, scroll to bottom
-                    _scrollToBottom();
-                  });
-                }
-              },
-              icon: SvgPicture.asset(sendMessageIcon),
-            );
+                  onPressed: () {
+                    if (MessageController
+                            .to
+                            .messageController
+                            .text
+                            .isNotEmpty ||
+                        MessageController.to.img.isNotEmpty) {
+                      MessageController.to
+                          .createMessageRequest(conversationId: conversationId)
+                          .then((_) {
+                            // After sending message, scroll to bottom
+                            _scrollToBottom();
+                          });
+                    }
+                  },
+                  icon: SvgPicture.asset(sendMessageIcon),
+                );
           }),
         ],
       ),

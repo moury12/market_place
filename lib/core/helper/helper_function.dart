@@ -353,7 +353,7 @@ async {
       type: fileType, // Restrict to image files
       allowMultiple: allowMultiple,
       allowCompression: true,
-      compressionQuality: 50, // Allow multiple selection
+      compressionQuality: 40, // Allow multiple selection
     );
 
     if (result != null) {
