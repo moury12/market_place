@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -74,13 +77,14 @@ class _ChattingPageState extends State<ChattingPage> {
   void _scrollToBottom() {
     if (messageScrollController.hasClients) {
       messageScrollController.animateTo(
-        messageScrollController.position.minScrollExtent, // ⬅️ bottom in reverse:true
+        messageScrollController
+            .position
+            .minScrollExtent, // ⬅️ bottom in reverse:true
         duration: Duration(milliseconds: 300),
         curve: Curves.easeOut,
       );
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -88,9 +92,10 @@ class _ChattingPageState extends State<ChattingPage> {
       resizeToAvoidBottomInset: true,
       appBar: CustomDefaultAppbar(title: receiverUser?.name ?? 'Chat'),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // User profile info at the top
-          _buildReceiverProfile(),
+          MessageController.to.messageList.isNotEmpty?SizedBox.shrink(): _buildReceiverProfile(),
           Obx(() {
             return MessageController.to.isLoadingMoreMessages.value
                 ? PaginationLoadingWidget()
@@ -100,8 +105,7 @@ class _ChattingPageState extends State<ChattingPage> {
           Expanded(
             child: Obx(() {
               // Check if messages are loaded
-              if (MessageController.to.messageList.isNotEmpty &&
-                  isFirstLoad) {
+              if (MessageController.to.messageList.isNotEmpty && isFirstLoad) {
                 // Scroll to bottom on first load
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   _scrollToBottom();
@@ -127,14 +131,35 @@ class _ChattingPageState extends State<ChattingPage> {
           ),
 
           // Image preview section
-          Padding(
-            padding: padding8.copyWith(bottom: 0),
-            child: ListOfImages(
-              images: MessageController.to.imgList,
-              size: 50.w,
-              isNetworkImage: false,
-            ),
-          ),
+         Obx(() {
+            return  MessageController.to.img.value.isNotEmpty
+                ?  Stack(
+              children: [
+                Padding(
+                  padding: padding8.copyWith(bottom: 0),
+                  child: Image.file(
+                    height: 100.w,
+                    width: 100.w,
+                    fit: BoxFit.cover,
+                    File(MessageController.to.img.toString()),
+                  ),
+                ),
+                Positioned(
+                  right: 0,
+                  child: IconButton(
+                    onPressed: () {
+                      MessageController.to.img.value = "";
+                    },
+                    icon: Icon(
+                      CupertinoIcons.multiply_circle_fill,
+                      color: AppColors.kRedColor,
+                    ),
+                  ),
+                ),
+              ],
+            ) : SizedBox.shrink();
+          }),
+
 
           // Message input section
           _buildMessageInput(),
@@ -144,21 +169,25 @@ class _ChattingPageState extends State<ChattingPage> {
   }
 
   Widget _buildReceiverProfile() {
-    return Column(
-      children: [
-        CustomNetworkImage(
-          imageUrl: "${ApiService().baseUrl}/${receiverUser!.img}",
-          height: 75.w,
-          width: 75.w,
-          boxShape: BoxShape.circle,
-        ),
-        space4H,
-        CustomText(
-          text: receiverUser!.name ?? "Jane Cooper",
-          style: poppinsSemiBold,
-          fontSize: getFontSizeDefault(),
-        ),
-      ],
+    return Center(
+      child: Column(
+        // mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          CustomNetworkImage(
+            imageUrl: "${ApiService().baseUrl}/${receiverUser!.img}",
+            height: 75.w,
+            width: 75.w,
+            boxShape: BoxShape.circle,
+          ),
+          space4H,
+          CustomText(
+            text: receiverUser!.name ?? "Jane Cooper",
+            style: poppinsSemiBold,
+            fontSize: getFontSizeDefault(),
+          ),
+        ],
+      ),
     );
   }
 
@@ -190,23 +219,23 @@ class _ChattingPageState extends State<ChattingPage> {
             return MessageController.to.isLoadingCreateMessage.value
                 ? PaginationLoadingWidget()
                 : IconButton(
-                  onPressed: () {
-                    if (MessageController
-                            .to
-                            .messageController
-                            .text
-                            .isNotEmpty ||
-                        MessageController.to.imgList.isNotEmpty) {
-                      MessageController.to
-                          .createMessageRequest(conversationId: conversationId)
-                          .then((_) {
-                            // After sending message, scroll to bottom
-                            _scrollToBottom();
-                          });
-                    }
-                  },
-                  icon: SvgPicture.asset(sendMessageIcon),
-                );
+              onPressed: () {
+                if (MessageController
+                    .to
+                    .messageController
+                    .text
+                    .isNotEmpty ||
+                    MessageController.to.img.isNotEmpty) {
+                  MessageController.to
+                      .createMessageRequest(conversationId: conversationId)
+                      .then((_) {
+                    // After sending message, scroll to bottom
+                    _scrollToBottom();
+                  });
+                }
+              },
+              icon: SvgPicture.asset(sendMessageIcon),
+            );
           }),
         ],
       ),

@@ -51,9 +51,9 @@ class MessageCardItemWidget extends StatelessWidget {
               );
             },
           );
-           MessageController.to.getMessageListRequest(
-            conversationId: conversation.sId.toString(),
-          );
+          //  MessageController.to.getMessageListRequest(
+          //   conversationId: conversation.sId.toString(),
+          // );
           Get.toNamed(
             ChattingPage.routeName,
             arguments: {"conversation_id":conversation.sId.toString(),

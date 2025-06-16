@@ -25,13 +25,13 @@ class ChatMessageCardItemWidget extends StatelessWidget {
       child:
          Row(
           mainAxisAlignment:
-              message.sender != receiverUser.sId
+              message.sender == receiverUser.sId
                   ? MainAxisAlignment.start
                   : MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Driver avatar (only for driver messages)
-            if (message.sender != receiverUser.sId)
+            if (message.sender == receiverUser.sId)
               CustomNetworkImage(
                 imageUrl:
                     "${ApiService().baseUrl}/${AccountInformationController.to.userModel.value.img}",
@@ -43,7 +43,7 @@ class ChatMessageCardItemWidget extends StatelessWidget {
             Expanded(
               child: Column(
                 crossAxisAlignment:
-                    message.sender !=
+                    message.sender ==
                             receiverUser.sId
                         ? CrossAxisAlignment.start
                         : CrossAxisAlignment.end,
@@ -52,12 +52,12 @@ class ChatMessageCardItemWidget extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.only(
                       left:
-                          message.sender !=
+                          message.sender ==
                                   receiverUser.sId
                               ? 8
                               : 0,
                       right:
-                          message.sender !=
+                          message.sender ==
                                   receiverUser.sId
                               ? 0
                               : 8,
@@ -96,12 +96,12 @@ class ChatMessageCardItemWidget extends StatelessWidget {
                     padding: EdgeInsets.only(
                       top: 4,
                       left:
-                          message.sender !=
+                          message.sender ==
                                   receiverUser.sId
                               ? 8
                               : 0,
                       right:
-                          message.sender !=
+                          message.sender ==
                                   receiverUser.sId
                               ? 0
                               : 8,
@@ -116,7 +116,7 @@ class ChatMessageCardItemWidget extends StatelessWidget {
             ),
 
             // User avatar (only for user messages)
-            if (message.sender == receiverUser.sId)
+            if (message.sender != receiverUser.sId)
               CustomNetworkImage(
                 imageUrl:
                     "${ApiService().baseUrl}/${receiverUser.img}",

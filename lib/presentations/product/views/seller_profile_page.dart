@@ -51,6 +51,7 @@ class _SellerProfilePageState extends State<SellerProfilePage> {
             final product = ProductController.to.productModel.value;
 
             return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               spacing: 8.h,
               children: [
                 ProfileInfoDetailsWidget(
@@ -69,6 +70,7 @@ class _SellerProfilePageState extends State<SellerProfilePage> {
                   onPressed: () {},
                 ),
                 ProductGridWidget(
+
                   productList: ProductController.to.productList,
                   isLoading: ProductController.to.isLoadingProduct.value,
                 ),

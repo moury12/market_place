@@ -19,7 +19,6 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class MessageController extends GetxController {
   final messages = <ChatMessage>[].obs;
-  RxList<String> imgList = <String>[].obs;
   RxString img = "".obs;
 
   static MessageController get to => Get.find();
@@ -165,7 +164,8 @@ class MessageController extends GetxController {
   Future<void> getMessageListRequest({
     required String conversationId,
     bool loadMore = false,
-  }) async {
+  })
+  async {
     try {
       if (loadMore && messageCurrentPage.value >= totalMessagePages.value) {
         return;
@@ -210,7 +210,12 @@ class MessageController extends GetxController {
             (response['data'] as List)
                 .map((e) => MessageModel.fromJson(e))
                 .toList();
-
+        final imageUrls =
+        newMessages
+            .map((cat) => "${ApiService().baseUrl}/${cat.img}")
+            .where((url) => url.isNotEmpty)
+            .toList();
+        await preloadImagesFromUrls(imageUrls);
         if (loadMore) {
           messageList.addAll(newMessages); // append
         } else {
@@ -235,7 +240,8 @@ class MessageController extends GetxController {
 
   ///------------------------------  create conversation method -------------------------///
 
-  Future<void> createConversationRequest({required String userId}) async {
+  Future<void> createConversationRequest({required String userId})
+  async {
     try {
       isLoadingCreateConversation.value = true;
       ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
@@ -268,7 +274,8 @@ class MessageController extends GetxController {
 
   ///------------------------------  create Message method -------------------------///
 
-  Future<void> createMessageRequest({required String conversationId}) async {
+  Future<void> createMessageRequest({required String conversationId})
+  async {
     try {
       isLoadingCreateMessage.value = true;
 

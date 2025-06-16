@@ -138,6 +138,7 @@ class ProductGridWidget extends StatelessWidget {
 
     return Wrap(
        crossAxisAlignment: WrapCrossAlignment.start,
+      runAlignment: WrapAlignment.start,
       spacing: 8.w,
       runSpacing: 12.w,
       children: List.generate(
