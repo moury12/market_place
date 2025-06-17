@@ -47,7 +47,7 @@ class VerifyOtpPage extends StatelessWidget {
                         : AuthController.to.emailForgetController.value.text);
 
                   },
-                  title: AppStaticStrings.resendOtp,
+                  title: AppStaticStrings.resendOtp.tr,
                   fontSize: getFontSizeSmall(),
                 ),
               ),

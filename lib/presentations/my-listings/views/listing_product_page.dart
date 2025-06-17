@@ -72,6 +72,7 @@ class _ListingProductPageState extends State<ListingProductPage> {
              Padding(
                padding: padding12,
                child: Column(
+                 crossAxisAlignment: CrossAxisAlignment.start,
                  children: [
                    Obx(() {
                      return ProductGridWidget(
