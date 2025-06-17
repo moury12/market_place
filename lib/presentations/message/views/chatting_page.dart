@@ -17,6 +17,7 @@ import 'package:market_place/core/constants/pagination_loading_widget.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/core/helper/helper_function.dart';
 import 'package:market_place/presentations/product/widgets/image_list_widget.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../core/api-client/api_service.dart';
 import '../../../core/components/custom_textfield.dart';
@@ -107,29 +108,54 @@ class _ChattingPageState extends State<ChattingPage> {
           // Messages list (expanded to take available space)
           Expanded(
             child: Obx(() {
-              // Check if messages are loaded
-              if (MessageController.to.messageList.isNotEmpty && isFirstLoad) {
-                // Scroll to bottom on first load
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  _scrollToBottom();
-                  isFirstLoad = false;
-                });
+              if (MessageController.to.isLoadingMessage.value &&
+                  MessageController.to.messageList.isEmpty) {
+                // Show shimmer or placeholder during first load
+                return ListView.builder(
+                  reverse: true,
+                  itemCount: 6,
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  itemBuilder: (context, index) => ChatMessageSkeleton(isSender: index%2==0?true:false), // ⬅️ create this shimmer
+                );
+              } else {
+                return ListView.builder(
+                  controller: messageScrollController,
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  reverse: true,
+                  itemCount: MessageController.to.messageList.length,
+                  itemBuilder: (context, index) {
+                    final message = MessageController.to.messageList[index];
+                    return ChatMessageCardItemWidget(
+                      message: message,
+                      receiverUser: receiverUser!,
+                    );
+                  },
+                );
               }
 
-              return ListView.builder(
-                controller: messageScrollController,
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                // Reverse the list to show newest at bottom
-                reverse: true,
-                itemCount: MessageController.to.messageList.length,
-                itemBuilder: (context, index) {
-                  final message = MessageController.to.messageList[index];
-                  return ChatMessageCardItemWidget(
-                    message: message,
-                    receiverUser: receiverUser!,
-                  );
-                },
-              );
+              // // Check if messages are loaded
+              // if (MessageController.to.messageList.isNotEmpty && isFirstLoad) {
+              //   // Scroll to bottom on first load
+              //   WidgetsBinding.instance.addPostFrameCallback((_) {
+              //     _scrollToBottom();
+              //     isFirstLoad = false;
+              //   });
+              // }
+              //
+              // return ListView.builder(
+              //   controller: messageScrollController,
+              //   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              //   // Reverse the list to show newest at bottom
+              //   reverse: true,
+              //   itemCount: MessageController.to.messageList.length,
+              //   itemBuilder: (context, index) {
+              //     final message = MessageController.to.messageList[index];
+              //     return ChatMessageCardItemWidget(
+              //       message: message,
+              //       receiverUser: receiverUser!,
+              //     );
+              //   },
+              // );
             }),
           ),
 
@@ -189,6 +215,99 @@ class _ChattingPageState extends State<ChattingPage> {
             style: poppinsSemiBold,
             fontSize: getFontSizeDefault(),
           ),
+        ],
+      ),
+    );
+  }
+
+
+  Widget ChatMessageSkeleton({bool isSender = false}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 24),
+      child: Row(
+        mainAxisAlignment:
+        isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (!isSender)
+            Shimmer.fromColors(
+              baseColor: AppColors.shimmerBase,
+              highlightColor: AppColors.shimmerHighlight,
+              child: CircleAvatar(radius: 24),
+            ),
+          if (!isSender) SizedBox(width: 8),
+
+          Expanded(
+            child: Column(
+              crossAxisAlignment:
+              isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+              children: [
+                Shimmer.fromColors(
+                  baseColor: AppColors.shimmerBase,
+                  highlightColor: AppColors.shimmerHighlight,
+                  child: Container(
+                    margin: EdgeInsets.only(
+                      left: isSender ? 0 : 8,
+                      right: isSender ? 8 : 0,
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    decoration: BoxDecoration(
+                      color: AppColors.shimmerBase,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    constraints: BoxConstraints(maxWidth: Get.width * 0.7),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(height: 12, width: 100, color: AppColors.shimmerBase),
+                        SizedBox(height: 8),
+                        Container(height: 12, width: 60, color: AppColors.shimmerBase),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 8),
+                Shimmer.fromColors(
+                  baseColor: AppColors.shimmerBase,
+                  highlightColor: AppColors.shimmerHighlight,
+                  child: Container(
+                    margin: EdgeInsets.only(
+                      left: isSender ? 0 : 8,
+                      right: isSender ? 8 : 0,
+                    ),
+                    height: 120,
+                    width: 120,
+                    decoration: BoxDecoration(
+                      color: AppColors.shimmerBase,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 4),
+                Shimmer.fromColors(
+                  baseColor: AppColors.shimmerBase,
+                  highlightColor: AppColors.shimmerHighlight,
+                  child: Container(
+                    margin: EdgeInsets.only(
+                      left: isSender ? 0 : 8,
+                      right: isSender ? 8 : 0,
+                    ),
+                    height: 10,
+                    width: 50,
+                    color: AppColors.shimmerBase,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          if (isSender) SizedBox(width: 8),
+          if (isSender)
+            Shimmer.fromColors(
+              baseColor: AppColors.shimmerBase,
+              highlightColor: AppColors.shimmerHighlight,
+              child: CircleAvatar(radius: 24),
+            ),
         ],
       ),
     );

@@ -38,28 +38,57 @@ class MessageCardItemWidget extends StatelessWidget {
       ),
       child: ButtonTapWidget(
         radius: 16.r,
-        onTap: () async {
-          logger.d(
-            'new-message::${conversation.sId}-${AccountInformationController.to.userModel.value.sId}',
-          );
-          MessageController.to.messageList.clear();
-          MessageController.to.socket.on(
-            'new-message::${conversation.sId}-${AccountInformationController.to.userModel.value.sId}',
-            (data) {
-              MessageController.to.getMessageListRequest(
-                conversationId: conversation.sId.toString(),
-              );
-            },
-          );
-          //  MessageController.to.getMessageListRequest(
-          //   conversationId: conversation.sId.toString(),
-          // );
-          Get.toNamed(
-            ChattingPage.routeName,
-            arguments: {"conversation_id":conversation.sId.toString(),
-            "receive_user":receiverUser},
-          );
-        },
+          onTap: () {
+            final conversationId = conversation.sId.toString();
+            final userId = AccountInformationController.to.userModel.value.sId;
+
+            // ✅ Clear messages
+            MessageController.to.messageList.clear();
+
+            // ✅ Set current conversationId in controller (optional)
+            MessageController.to.currentConversationId.value = conversationId;
+
+            // ✅ Start listening to socket (for real-time)
+            MessageController.to.socket?.off('new-message::$conversationId-$userId');
+            MessageController.to.socket?.on('new-message::$conversationId-$userId', (data) {
+              MessageController.to.getMessageListRequest(conversationId: conversationId);
+            });
+
+            // ✅ Go instantly to Chat page
+            Get.toNamed(
+              ChattingPage.routeName,
+              arguments: {
+                "conversation_id": conversationId,
+                "receive_user": receiverUser,
+              },
+            );
+
+            // ✅ Start loading messages in background
+            MessageController.to.getMessageListRequest(conversationId: conversationId);
+          },
+
+          // onTap: () async {
+        //   logger.d(
+        //     'new-message::${conversation.sId}-${AccountInformationController.to.userModel.value.sId}',
+        //   );
+        //   MessageController.to.messageList.clear();
+        //   MessageController.to.socket?.on(
+        //     'new-message::${conversation.sId}-${AccountInformationController.to.userModel.value.sId}',
+        //     (data) {
+        //       MessageController.to.getMessageListRequest(
+        //         conversationId: conversation.sId.toString(),
+        //       );
+        //     },
+        //   );
+        //   //  MessageController.to.getMessageListRequest(
+        //   //   conversationId: conversation.sId.toString(),
+        //   // );
+        //   Get.toNamed(
+        //     ChattingPage.routeName,
+        //     arguments: {"conversation_id":conversation.sId.toString(),
+        //     "receive_user":receiverUser},
+        //   );
+        // },
         child: Padding(
           padding: padding12,
           child:  Row(

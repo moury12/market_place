@@ -22,6 +22,8 @@ class MessageController extends GetxController {
   RxString img = "".obs;
 
   static MessageController get to => Get.find();
+  final RxString currentConversationId = ''.obs;
+
   RxBool isLoadingCreateConversation = false.obs;
   RxBool isLoadingCreateMessage = false.obs;
   RxBool isLoadingConversation = false.obs;
@@ -31,7 +33,7 @@ class MessageController extends GetxController {
   RxList<MessageModel> messageList = <MessageModel>[].obs;
   Rx<Users> receiverUser = Users().obs;
   TextEditingController messageController = TextEditingController();
-  late IO.Socket socket;
+  IO.Socket? socket;
 
   ///====================conversation pagination variable========================///
 
@@ -49,36 +51,36 @@ class MessageController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // if (AccountInformationController.to.userModel.value.sId != null &&
-    //     AccountInformationController.to.userModel.value.sId!.isNotEmpty) {
-    // socket = IO.io(
-    //   '${ApiService().baseUrl}?user_id=${AccountInformationController.to.userModel.value.sId}',
-    //   IO.OptionBuilder()
-    //       .setTransports(['websocket'])
-    //       .disableAutoConnect()
-    //       .build(),
-    // );
-    //
-    // socket.connect();
-    //
-    // socket.onConnect((_) {
-    //   logger.d('✅ Socket connected');
-    //   socket.emit('msg', 'test');
-    // });
-    //
-    // socket.onConnectError((data) {
-    //   logger.e('❌ Socket connect error: $data');
-    // });
-    //
-    // socket.onError((data) {
-    //   logger.e('❌ Socket error: $data');
-    // });
-    //
-    // socket.onDisconnect((_) {
-    //   logger.e('🔌 Socket disconnected');
-    // });
+    if (AccountInformationController.to.userModel.value.sId != null &&
+        AccountInformationController.to.userModel.value.sId!.isNotEmpty) {
+    socket = IO.io(
+      '${ApiService().baseUrl}?user_id=${AccountInformationController.to.userModel.value.sId}',
+      IO.OptionBuilder()
+          .setTransports(['websocket'])
+          .disableAutoConnect()
+          .build(),
+    );
 
-    // }
+    socket?.connect();
+
+    socket?.onConnect((_) {
+      logger.d('✅ Socket connected');
+      socket?.emit('msg', 'test');
+    });
+
+    socket?.onConnectError((data) {
+      logger.e('❌ Socket connect error: $data');
+    });
+
+    socket?.onError((data) {
+      logger.e('❌ Socket error: $data');
+    });
+
+    socket?.onDisconnect((_) {
+      logger.e('🔌 Socket disconnected');
+    });
+
+    }
     getConversationListRequest();
   }
 
