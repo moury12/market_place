@@ -78,7 +78,7 @@ class EditProfilePage extends StatelessWidget {
                               right: 10,
                               child: ButtonTapWidget(
                                 onTap: () {
-                                  pickImages(
+                                  pickImages(context: context,
                                     singleImagePath:
                                     AccountInformationController
                                         .to

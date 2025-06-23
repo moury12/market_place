@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/components/custom_text_button.dart';
+import 'package:market_place/presentations/navigation/views/navigation_page.dart';
 
 
 import '../../../core/utils/hive_boxes.dart';
@@ -33,8 +34,8 @@ if(OnboardingController.to.currentIndex.value>0){
 
           actions: [CustomTextButton(title: 'Skip',onPressed: () {
             Boxes.getUserData().put(initialKey, true);
+ Get.offAllNamed( NavigationPage.routeName);
 
-            Get.offAllNamed( LoginPage.routeName);
           },)],
         ),
         body: PageView.builder(

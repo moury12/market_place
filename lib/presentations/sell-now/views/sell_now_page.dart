@@ -59,8 +59,7 @@ class SellNowPage extends StatelessWidget {
                       child: ButtonTapWidget(
                         radius: 8.r,
                         onTap: () {
-                          pickImages(
-                            allowMultiple: true,
+                          pickImages(context: context,                            allowMultiple: true,
                             uploadImages: SellController.to.imgList,
                           );
                         },

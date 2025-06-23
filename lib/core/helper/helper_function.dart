@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +20,7 @@ import 'package:market_place/core/constants/image_constants.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/presentations/auth/controller/auth_controller.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../components/custom_button.dart';
 import '../components/custom_button_tap.dart';
@@ -341,19 +344,63 @@ Future<dynamic> warningCustomDialog({
   );
 }
 
+
+Future<bool> requestStoragePermission(BuildContext context) async { // <--- Added BuildContext context
+  PermissionStatus status;
+
+  // Use the passed 'context' here
+  if (Theme.of(context).platform == TargetPlatform.android) { // <--- Used 'context'
+    final AndroidDeviceInfo androidInfo = await DeviceInfoPlugin().androidInfo;
+    if (androidInfo.version.sdkInt >= 33) {
+      status = await Permission.photos.request();
+    } else {
+      status = await Permission.storage.request();
+    }
+  } else if (Theme.of(context).platform == TargetPlatform.iOS) { // <--- Used 'context'
+    status = await Permission.photos.request();
+  } else {
+    debugPrint("Permission handling for this platform is not explicitly defined.");
+    return true;
+  }
+
+  if (status.isGranted) {
+    debugPrint("Permission granted.");
+    return true;
+  } else if (status.isDenied) {
+    debugPrint("Permission denied.");
+    return false;
+  } else if (status.isPermanentlyDenied) {
+    debugPrint("Permission permanently denied. Opening settings.");
+    openAppSettings();
+    return false;
+  } else if (status.isRestricted) {
+    debugPrint("Permission restricted (e.g., parental controls).");
+    return false;
+  }
+  return false;
+}
+
 Future<void> pickImages({
+  required BuildContext context, // <--- Add required BuildContext context here
   bool allowMultiple = false,
   RxList<String>? uploadImages,
   RxString? singleImagePath,
   FileType fileType = FileType.image,
-})
-async {
+}) async {
   try {
+    // Pass the context to the permission request function
+    bool hasPermission = await requestStoragePermission(
+        context); // <--- Pass context
+    if (!hasPermission) {
+      debugPrint("Storage permission not granted, cannot pick images.");
+      return;
+    }
+
     final result = await FilePicker.platform.pickFiles(
-      type: fileType, // Restrict to image files
+      type: fileType,
       allowMultiple: allowMultiple,
       allowCompression: true,
-      compressionQuality: 40, // Allow multiple selection
+      compressionQuality: 40,
     );
 
     if (result != null) {
@@ -361,7 +408,7 @@ async {
 
       if (allowMultiple && uploadImages != null) {
         if (uploadImages.length + selectedPaths.length <= 5) {
-          uploadImages.addAll(selectedPaths); // Add selected images to the list
+          uploadImages.addAll(selectedPaths);
         } else {
           // showCustomSnackbar(
           //   title: "Limit Reached",

@@ -194,7 +194,13 @@ class ProductDetailsPage extends StatelessWidget {
                                 ),
 
                               ///----------------------- seller info ------------------------///
-                              Row(
+                              if (NavigationController.to.isLoggedIn &&
+                                  AccountInformationController
+                                      .to
+                                      .userModel
+                                      .value
+                                      .sId !=
+                                      product.userId.toString())   Row(
                                 spacing: 8.h,
                                 children: [
                                   CustomNetworkImage(

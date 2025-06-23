@@ -320,7 +320,7 @@ class _ChattingPageState extends State<ChattingPage> {
         children: [
           IconButton(
             onPressed: () {
-              pickImages(
+              pickImages(context: context,
                 allowMultiple: false,
                 singleImagePath: MessageController.to.img,
               );
