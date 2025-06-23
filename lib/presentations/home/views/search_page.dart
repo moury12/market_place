@@ -46,6 +46,7 @@ class _SearchPageState extends State<SearchPage> {
         body:  CustomRefreshIndicatorWidget(
             onRefresh:() async => await HomeController.to.refreshSearchHome(),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding: padding12.copyWith(
