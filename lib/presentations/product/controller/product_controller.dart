@@ -124,8 +124,8 @@ isLoadingReport.value=true;
       useAuth: true,
       endpoint: productReportEndPoint,
       body: {
-        "reason":parentId,
-        "product_id":reason
+        "reason":reason,
+        "product":parentId
       }
     );
 

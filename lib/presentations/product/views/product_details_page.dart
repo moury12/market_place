@@ -7,6 +7,7 @@ import 'package:market_place/core/components/custom_appbar.dart';
 import 'package:market_place/core/components/custom_button.dart';
 import 'package:market_place/core/components/custom_button_tap.dart';
 import 'package:market_place/core/components/custom_network_image.dart';
+import 'package:market_place/core/components/custom_textfield.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/core/constants/color_constants.dart';
 import 'package:market_place/core/constants/custom_space.dart';
@@ -34,16 +35,22 @@ import '../widgets/manage_option_widget.dart';
 import '../widgets/product_details_card_widget.dart';
 import '../widgets/seller_profile_widgets.dart';
 
-class ProductDetailsPage extends StatelessWidget {
+class ProductDetailsPage extends StatefulWidget {
   static const String routeName = "/product-details";
 
   ProductDetailsPage({super.key});
 
-  final fromSeller = Get.arguments;
+  @override
+  State<ProductDetailsPage> createState() => _ProductDetailsPageState();
+}
 
+class _ProductDetailsPageState extends State<ProductDetailsPage> {
+  final fromSeller = Get.arguments;
+  TextEditingController reasonController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: CustomDefaultAppbar(
         title: fromSeller ? AppStaticStrings.manageProduct.tr : "",
         action: [
@@ -54,9 +61,11 @@ class ProductDetailsPage extends StatelessWidget {
                   ButtonTapWidget(
                     onTap: () async {
                       if (NavigationController.to.isLoggedIn) {
-                        bool isFav = await ProductController.to.favProductRequest(
-                          parentId: ProductController.to.productModel.value.sId,
-                        );
+                        bool isFav = await ProductController.to
+                            .favProductRequest(
+                              parentId:
+                                  ProductController.to.productModel.value.sId,
+                            );
                         if (isFav) {
                           ProductController.to.productModel.update((val) {
                             if (val != null) {
@@ -94,23 +103,44 @@ class ProductDetailsPage extends StatelessWidget {
                   ),
                   ButtonTapWidget(
                     onTap: () {
-warningCustomDialog(title: "Are you sure to report this product?", onTap: () {
-  ProductController.to.reportProductRequest(parentId: ProductController.to.productModel.value.sId.toString(),
+                      warningCustomDialog(
+                        title: "Are you sure to report this product?",
+                        onTap: () async{
+                        await  ProductController.to.reportProductRequest(
+                            parentId:
+                                ProductController.to.productModel.value.sId
+                                    .toString(),
 
-      reason: "reason");
-}, loading: ProductController.to.isLoadingReport);
+                            reason: reasonController.text,
+                          );
+                        Navigator.pop(context);
+                        reasonController.clear();
+
+                        },
+                        loading: ProductController.to.isLoadingReport,
+                        widget: Padding(
+                          padding: padding8V,
+                          child: CustomTextField(
+                            title: "Reason",
+                            textEditingController: reasonController,
+                          ),
+                        ),
+                      );
                     },
                     child: Padding(
-                      padding:padding8.copyWith(left: 0),
+                      padding: padding8.copyWith(left: 0),
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
                           SvgPicture.asset(backgroundCircleIcon),
-                          Icon(Icons.report_outlined,color: AppColors.kPrimaryColor,)
+                          Icon(
+                            Icons.report_outlined,
+                            color: AppColors.kPrimaryColor,
+                          ),
                         ],
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
         ],
@@ -220,64 +250,66 @@ warningCustomDialog(title: "Are you sure to report this product?", onTap: () {
                               ///----------------------- seller info ------------------------///
                               if (NavigationController.to.isLoggedIn &&
                                   AccountInformationController
-                                      .to
-                                      .userModel
-                                      .value
-                                      .sId !=
-                                      product.userId.toString())   Row(
-                                spacing: 8.h,
-                                children: [
-                                  CustomNetworkImage(
-                                    imageUrl:
-                                        "${ApiService().baseUrl}/${product.userImg}",
-                                    height: 40.w,
-                                    width: 40.w,
-                                    boxShape: BoxShape.circle,
-                                  ),
-                                  Expanded(
-                                    flex: 3,
-                                    child: Column(
-                                      spacing: 4.h,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        CustomText(
-                                          text:
-                                              product.userName ?? "Seller Name",
-                                        ),
-                                        CustomText(
-                                          text:
-                                              product.userEmail ??
-                                              "Marvin@gmail.com",
-                                          fontSize: getFontSizeSmall(),
-                                        ),
-                                      ],
+                                          .to
+                                          .userModel
+                                          .value
+                                          .sId !=
+                                      product.userId.toString())
+                                Row(
+                                  spacing: 8.h,
+                                  children: [
+                                    CustomNetworkImage(
+                                      imageUrl:
+                                          "${ApiService().baseUrl}/${product.userImg}",
+                                      height: 40.w,
+                                      width: 40.w,
+                                      boxShape: BoxShape.circle,
                                     ),
-                                  ),
-                                  Expanded(
-                                    flex: 2,
-                                    child: CustomButton(
-                                      onTap: () {
-                                        if (NavigationController
-                                            .to
-                                            .isLoggedIn) {
-                                          ProductController.to
-                                              .getProductListRequest(
-                                                userId:
-                                                    product.userId.toString(),
-                                              );
-                                          Get.toNamed(
-                                            SellerProfilePage.routeName,
-                                          );
-                                        } else {
-                                          Get.toNamed(LoginPage.routeName);
-                                        }
-                                      },
-                                      title: AppStaticStrings.viewProfile.tr,
+                                    Expanded(
+                                      flex: 3,
+                                      child: Column(
+                                        spacing: 4.h,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          CustomText(
+                                            text:
+                                                product.userName ??
+                                                "Seller Name",
+                                          ),
+                                          CustomText(
+                                            text:
+                                                product.userEmail ??
+                                                "Marvin@gmail.com",
+                                            fontSize: getFontSizeSmall(),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: CustomButton(
+                                        onTap: () {
+                                          if (NavigationController
+                                              .to
+                                              .isLoggedIn) {
+                                            ProductController.to
+                                                .getProductListRequest(
+                                                  userId:
+                                                      product.userId.toString(),
+                                                );
+                                            Get.toNamed(
+                                              SellerProfilePage.routeName,
+                                            );
+                                          } else {
+                                            Get.toNamed(LoginPage.routeName);
+                                          }
+                                        },
+                                        title: AppStaticStrings.viewProfile.tr,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                             ],
                           ),
                         ),
