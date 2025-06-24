@@ -20,7 +20,6 @@ import '../../home/views/home_page.dart';
 class NavigationController extends GetxController {
   static NavigationController get to => Get.find();
   RxInt selectedNavIndex = 0.obs;
-  RxBool isLoadingLogout = false.obs;
   @override
   void onInit() {
     debugPrint("----------------token + login status---------------");
@@ -59,36 +58,7 @@ class NavigationController extends GetxController {
     navProfileIcon,
   ];
 
-  ///------------------------------ log out method -------------------------///
 
-  Future<void> logoutRequest() async {
-    try {
-      isLoadingLogout.value = true;
-      final response = await ApiService().request(
-        endpoint: logoutEndPoint,
-        method: 'POST',
-      );
-      isLoadingLogout.value = false;
-      if (response['success'] == true) {
-        logger.d(response);
-        showCustomSnackbar(title: 'Success', message: response['message']);
-        Boxes.getUserData().delete(tokenKey);
-        isLoggedIn;
-        Get.offAllNamed(LoginPage.routeName);
-      } else {
-        logger.e(response);
-        if(kDebugMode){
-          showCustomSnackbar(
-            title: 'Failed',
-            message: response['message'],
-            type: SnackBarType.failed,
-          );
-        }
-      }
-    } catch (e) {
-      logger.e(e.toString());
-    }
-  }
 
   void existApp() {
     if (selectedNavIndex.value != 0) {

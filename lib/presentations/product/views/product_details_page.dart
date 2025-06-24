@@ -16,6 +16,7 @@ import 'package:market_place/core/constants/image_constants.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/constants/pagination_loading_widget.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
+import 'package:market_place/core/helper/helper_function.dart';
 import 'package:market_place/core/utils/enum.dart';
 import 'package:market_place/core/utils/variable.dart';
 import 'package:market_place/presentations/auth/views/login_page.dart';
@@ -48,46 +49,69 @@ class ProductDetailsPage extends StatelessWidget {
         action: [
           fromSeller
               ? SizedBox.shrink()
-              : ButtonTapWidget(
-                onTap: () async {
-                  if (NavigationController.to.isLoggedIn) {
-                    bool isFav = await ProductController.to.favProductRequest(
-                      parentId: ProductController.to.productModel.value.sId,
-                    );
-                    if (isFav) {
-                      ProductController.to.productModel.update((val) {
-                        if (val != null) {
-                          val.isFavorite = !(val.isFavorite ?? false);
+              : Row(
+                children: [
+                  ButtonTapWidget(
+                    onTap: () async {
+                      if (NavigationController.to.isLoggedIn) {
+                        bool isFav = await ProductController.to.favProductRequest(
+                          parentId: ProductController.to.productModel.value.sId,
+                        );
+                        if (isFav) {
+                          ProductController.to.productModel.update((val) {
+                            if (val != null) {
+                              val.isFavorite = !(val.isFavorite ?? false);
+                            }
+                          });
                         }
-                      });
-                    }
-                  } else {
-                    Get.toNamed(LoginPage.routeName);
-                  }
-                },
-                child: Padding(
-                  padding: padding8,
-                  child: Obx(() {
-                    return Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        SvgPicture.asset(backgroundCircleIcon),
-                        ProductController.to.isLoadingProductDetails.value
-                            ? PaginationLoadingWidget()
-                            : SvgPicture.asset(
-                              ProductController
-                                          .to
-                                          .productModel
-                                          .value
-                                          .isFavorite ==
-                                      true
-                                  ? favFillIcon
-                                  : favOutlineIcon,
-                            ),
-                      ],
-                    );
-                  }),
-                ),
+                      } else {
+                        Get.toNamed(LoginPage.routeName);
+                      }
+                    },
+                    child: Padding(
+                      padding: padding8,
+                      child: Obx(() {
+                        return Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            SvgPicture.asset(backgroundCircleIcon),
+                            ProductController.to.isLoadingProductDetails.value
+                                ? PaginationLoadingWidget()
+                                : SvgPicture.asset(
+                                  ProductController
+                                              .to
+                                              .productModel
+                                              .value
+                                              .isFavorite ==
+                                          true
+                                      ? favFillIcon
+                                      : favOutlineIcon,
+                                ),
+                          ],
+                        );
+                      }),
+                    ),
+                  ),
+                  ButtonTapWidget(
+                    onTap: () {
+warningCustomDialog(title: "Are you sure to report this product?", onTap: () {
+  ProductController.to.reportProductRequest(parentId: ProductController.to.productModel.value.sId.toString(),
+
+      reason: "reason");
+}, loading: ProductController.to.isLoadingReport);
+                    },
+                    child: Padding(
+                      padding:padding8.copyWith(left: 0),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          SvgPicture.asset(backgroundCircleIcon),
+                          Icon(Icons.report_outlined,color: AppColors.kPrimaryColor,)
+                        ],
+                      ),
+                    ),
+                  )
+                ],
               ),
         ],
       ),

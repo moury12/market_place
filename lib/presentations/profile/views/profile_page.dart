@@ -174,9 +174,9 @@ class ProfilePage extends StatelessWidget {
 
                         title: AppStaticStrings.logoutConfirmation.tr,
                         onTap: () {
-                          NavigationController.to.logoutRequest();
+                          AccountInformationController.to.logoutRequest();
                         },
-                        loading: NavigationController.to.isLoadingLogout,
+                        loading: AccountInformationController.to.isLoadingLogout,
                       );
                       // NavigationController.to.logoutRequest();
                     },

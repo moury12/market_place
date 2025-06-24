@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:market_place/presentations/auth/views/login_page.dart';
+import 'package:market_place/presentations/navigation/controller/navigation_controller.dart';
 import 'package:market_place/presentations/profile/model/profile_model.dart';
 
 import '../../../core/api-client/api_endpoints.dart';
@@ -25,10 +27,13 @@ class AccountInformationController extends GetxController {
   Rx<SettingsModel> policyModel = SettingsModel().obs;
   Rx<SettingsModel> termsModel = SettingsModel().obs;
   RxBool isLoadingSubscribe = false.obs;
+  RxBool isLoadingDeleteAcc = false.obs;
   RxBool isLoadingRenewSubscribe = false.obs;
   RxList<PackageModel> packageList = <PackageModel>[].obs;
   var tabContent = <Widget>[].obs;
   RxBool isLoadingProfile = false.obs;
+  RxBool isLoadingLogout = false.obs;
+
   RxBool isLoadingMyPackage = false.obs;
   RxBool isLoadingUpdateProfile = false.obs;
   TextEditingController confirmPasswordController = TextEditingController();
@@ -430,6 +435,37 @@ class AccountInformationController extends GetxController {
       isLoadingPolicy.value = false;
     }
   }
+  ///------------------------------ log out method -------------------------///
+
+  Future<void> logoutRequest() async {
+    try {
+      isLoadingLogout.value = true;
+      final response = await ApiService().request(
+        endpoint: logoutEndPoint,
+        method: 'POST',
+      );
+      isLoadingLogout.value = false;
+      if (response['success'] == true) {
+        logger.d(response);
+        showCustomSnackbar(title: 'Success', message: response['message']);
+        Boxes.getUserData().delete(tokenKey);
+        NavigationController.to.isLoggedIn;
+        Get.offAllNamed(LoginPage.routeName);
+      } else {
+        logger.e(response);
+        if(kDebugMode){
+          showCustomSnackbar(
+            title: 'Failed',
+            message: response['message'],
+            type: SnackBarType.failed,
+          );
+        }
+      }
+    } catch (e) {
+      logger.e(e.toString());
+    }
+  }
+
 
   ///-----------------------------get package list method------------------------------///
 
@@ -507,4 +543,40 @@ class AccountInformationController extends GetxController {
     newPasswordController.clear();
     currentPasswordController.clear();
   }
+  ///------------------------------ subscribe now method -------------------------///
+
+  Future<void> deleteAccRequest({required String password}) async {
+    try {
+      isLoadingDeleteAcc.value = true;
+      ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
+      final response = await ApiService().request(
+        endpoint: deleteEndPoint,
+        method: 'DELETE',
+        useAuth: true,
+        body: {"password": password},
+      );
+
+      isLoadingDeleteAcc.value = false;
+
+      if (response['success'] == true) {
+        logger.d(response);
+logoutRequest();
+        // Get.toNamed(LoginPage.routeName);
+        showCustomSnackbar(title: 'Success', message: response['message']);
+      } else {
+        logger.e(response);
+
+        showCustomSnackbar(
+          title: 'Failed',
+          message: response['message'],
+          type: SnackBarType.failed,
+        );
+
+      }
+    } catch (e) {
+      isLoadingDeleteAcc.value = false;
+      logger.e(e.toString());
+    }
+  }
+
 }

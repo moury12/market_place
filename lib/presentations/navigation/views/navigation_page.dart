@@ -113,21 +113,32 @@ class NavigationPage extends StatelessWidget {
                       // Add Expanded to distribute space evenly
                       child: ButtonTapWidget(
                         onTap: () {
-                          if (!NavigationController
-                              .to
-                              .isLoggedIn /*&&NavigationController.to.selectedNavIndex.value!=0*/ ) {
-                            Get.toNamed(LoginPage.routeName);
-                          } else if ((index == 1 || index == 2) &&
-                              NavigationController.to.isSubscribed == false &&
-                              CommonController
-                                  .to
-                                  .showSubscriptionStatus
-                                  .value) {
-                            Get.toNamed(SubscriptionPage.routeName);
+                          final isLoggedIn = NavigationController.to.isLoggedIn;
+                          final isSubscribed =
+                              NavigationController.to.isSubscribed;
+                          final showSubscriptionStatus =
+                              CommonController.to.showSubscriptionStatus.value;
+
+                          logger.d("isLoggedIn------$isLoggedIn");
+                          logger.d("isSubscribed------$isSubscribed");
+                          logger.d(
+                            "showSubscriptionStatus------$showSubscriptionStatus",
+                          );
+                          if (!isLoggedIn) {
+                            if (index != 0) {
+                              Get.toNamed(LoginPage.routeName);
+                              return;
+                            }
                           } else {
-                            NavigationController.to.selectedNavIndex.value =
-                                index;
+                            if (showSubscriptionStatus &&
+                                !isSubscribed &&
+                                (index == 1 || index == 2)) {
+                              Get.toNamed(SubscriptionPage.routeName);
+                              return;
+                            }
                           }
+                          NavigationController.to.selectedNavIndex.value =
+                              index;
                         },
                         child: Padding(
                           padding: padding6V,

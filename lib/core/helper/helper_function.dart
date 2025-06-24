@@ -294,6 +294,7 @@ Future<dynamic> warningCustomDialog({
   required String title,
   required Function() onTap,
   required RxBool loading,
+  Widget? widget
 }) {
   return Get.dialog(
     AlertDialog(
@@ -314,6 +315,7 @@ Future<dynamic> warningCustomDialog({
             color: AppColors.kExtraLightTextColor,
             fontSize: getFontSizeSemiSmall(),
           ),
+          widget??SizedBox.shrink(),
           space8H,
           Row(
             spacing: 8.w,

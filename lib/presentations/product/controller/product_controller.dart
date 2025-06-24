@@ -17,6 +17,7 @@ class ProductController extends GetxController {
   RxList<ProductModel> relatedProductList = <ProductModel>[].obs;
   RxInt selectedImageIndex = 0.obs;
   RxBool isLoadingProduct = false.obs;
+  RxBool isLoadingReport = false.obs;
 
   ///====================product pagination variable========================///
 
@@ -109,6 +110,37 @@ class ProductController extends GetxController {
         type: SnackBarType.failed,
       );
       return false;
+    }
+  }
+
+
+  ///---------------------------report method----------------------------///
+
+  Future<void> reportProductRequest({required String parentId,required String reason,}) async {
+    ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
+isLoadingReport.value=true;
+    final response = await ApiService().request(
+      method: 'POST',
+      useAuth: true,
+      endpoint: productReportEndPoint,
+      body: {
+        "reason":parentId,
+        "product_id":reason
+      }
+    );
+
+    logger.d(response);
+    if (response['success'] == true) {
+      showCustomSnackbar(title: "Success", message: response['message']);
+      isLoadingReport.value=false;
+
+    } else {
+      showCustomSnackbar(
+        title: 'Failed',
+        message: response['message'],
+        type: SnackBarType.failed,
+      );
+      isLoadingReport.value=false;
     }
   }
 
