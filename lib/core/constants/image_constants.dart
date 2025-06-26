@@ -29,6 +29,7 @@ String markSoldIcon = 'assets/icons/mark_sold_icon.svg';
 String deleteIcon = 'assets/icons/delete_icon.svg';
 String languageIcon = 'assets/icons/language_icon.svg';
 String warningIcon = 'assets/icons/warning_icon.svg';
+String blockUserIcon = 'assets/icons/block_user.png';
 String favFillIcon = 'assets/icons/fav_icon_fill.svg';
 String backgroundCircleIcon = 'assets/images/background_circle.svg';
 String favOutlineIcon = 'assets/icons/fav_icon_outline.svg';

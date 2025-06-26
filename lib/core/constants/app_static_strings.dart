@@ -80,6 +80,10 @@ class AppStaticStrings {
   static  String privacyPolicy = 'privacyPolicy';
   static  String helpSupport = 'helpSupport';
   static  String logOut = 'logOut';
+  static const String block = 'block';
+  static const String blockedByUser = 'blocked_by_user';
+  static const String youBlockedUser = 'you_blocked_user';
+  static const String unblock = 'unblock';
 
   // OTP Verification
   static  String currentPass = 'currentPass';

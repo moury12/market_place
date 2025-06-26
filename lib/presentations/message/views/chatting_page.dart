@@ -6,8 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/components/custom_appbar.dart';
+import 'package:market_place/core/components/custom_button_tap.dart';
 import 'package:market_place/core/components/custom_network_image.dart';
 import 'package:market_place/core/components/custom_refresh_indicator.dart';
+import 'package:market_place/core/components/custom_text_button.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/core/constants/custom_space.dart';
 import 'package:market_place/core/constants/custom_text.dart';
@@ -39,14 +41,14 @@ class ChattingPage extends StatefulWidget {
 class _ChattingPageState extends State<ChattingPage> {
   ScrollController messageScrollController = ScrollController();
   final args = Get.arguments as Map<String, dynamic>;
-  String conversationId = "";
+  Rx<ConversationModel> conversation = ConversationModel().obs;
   Users? receiverUser;
   bool isFirstLoad = true;
 
   @override
   void initState() {
     super.initState();
-    conversationId = args["conversation_id"];
+    conversation.value = args["conversation_model"];
     receiverUser = args["receive_user"];
 
     // Setup scroll controller to detect when we reach the top
@@ -54,7 +56,7 @@ class _ChattingPageState extends State<ChattingPage> {
       if (messageScrollController.position.pixels ==
           messageScrollController.position.maxScrollExtent) {
         MessageController.to.getMessageListRequest(
-          conversationId: conversationId,
+          conversationId: conversation.value.sId.toString(),
           loadMore: true,
         );
       }
@@ -68,7 +70,7 @@ class _ChattingPageState extends State<ChattingPage> {
 
   void _loadInitialMessages() async {
     await MessageController.to.getMessageListRequest(
-      conversationId: conversationId.toString(),
+      conversationId: conversation.value.sId.toString(),
     );
 
     // Scroll to bottom after initial load
@@ -91,7 +93,48 @@ class _ChattingPageState extends State<ChattingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: CustomDefaultAppbar(title: receiverUser?.name ?? 'Chat'),
+      appBar: CustomDefaultAppbar(
+        title: receiverUser?.name ?? 'Chat',
+        action: [
+          Obx(() {
+            return conversation.value.isBlocked == true &&
+                    conversation.value.blockedBy == receiverUser?.sId
+                ?SizedBox.shrink(): CustomTextButton(
+                  onPressed: () async {
+                    bool isBlocked = await MessageController.to
+                        .blockConversationRequest(
+                          conversationId: conversation.value.sId.toString(),
+                        );
+                    if (isBlocked) {
+                      conversation.update(
+                        (val) => val?.isBlocked = !(val.isBlocked ?? false),
+                      );
+                    }
+                  },
+                  title: 
+                      conversation.value.isBlocked == true
+                          ? AppStaticStrings.unblock.tr
+                          : AppStaticStrings.block.tr,
+                );
+          }),
+          // ButtonTapWidget(
+          //   child: Padding(
+          //     padding: padding8.copyWith(left: 0),
+          //     child: Stack(
+          //       alignment: Alignment.center,
+          //       children: [
+          //         SvgPicture.asset(backgroundCircleIcon),
+          //         Image.asset(
+          //           height: 20.sp,
+          //           blockUserIcon,
+          //           color: AppColors.kPrimaryColor,
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
+        ],
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -115,7 +158,10 @@ class _ChattingPageState extends State<ChattingPage> {
                   reverse: true,
                   itemCount: 6,
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  itemBuilder: (context, index) => ChatMessageSkeleton(isSender: index%2==0?true:false), // ⬅️ create this shimmer
+                  itemBuilder:
+                      (context, index) => ChatMessageSkeleton(
+                        isSender: index % 2 == 0 ? true : false,
+                      ), // ⬅️ create this shimmer
                 );
               } else {
                 return ListView.builder(
@@ -191,7 +237,15 @@ class _ChattingPageState extends State<ChattingPage> {
           }),
 
           // Message input section
-          _buildMessageInput(),
+        Obx(() {
+        return  conversation.value.isBlocked == true
+
+              ? Padding(
+            padding: padding12,
+            child: CustomText(text: "Conversation Blocked!!",style: poppinsSemiBold,),
+          )
+              : _buildMessageInput();
+        },)
         ],
       ),
     );
@@ -220,13 +274,12 @@ class _ChattingPageState extends State<ChattingPage> {
     );
   }
 
-
   Widget ChatMessageSkeleton({bool isSender = false}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 24),
       child: Row(
         mainAxisAlignment:
-        isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
+            isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!isSender)
@@ -240,7 +293,7 @@ class _ChattingPageState extends State<ChattingPage> {
           Expanded(
             child: Column(
               crossAxisAlignment:
-              isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                  isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
               children: [
                 Shimmer.fromColors(
                   baseColor: AppColors.shimmerBase,
@@ -259,9 +312,17 @@ class _ChattingPageState extends State<ChattingPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(height: 12, width: 100, color: AppColors.shimmerBase),
+                        Container(
+                          height: 12,
+                          width: 100,
+                          color: AppColors.shimmerBase,
+                        ),
                         SizedBox(height: 8),
-                        Container(height: 12, width: 60, color: AppColors.shimmerBase),
+                        Container(
+                          height: 12,
+                          width: 60,
+                          color: AppColors.shimmerBase,
+                        ),
                       ],
                     ),
                   ),
@@ -320,7 +381,8 @@ class _ChattingPageState extends State<ChattingPage> {
         children: [
           IconButton(
             onPressed: () {
-              pickImages(context: context,
+              pickImages(
+                context: context,
                 allowMultiple: false,
                 singleImagePath: MessageController.to.img,
               );
@@ -349,7 +411,9 @@ class _ChattingPageState extends State<ChattingPage> {
                             .isNotEmpty ||
                         MessageController.to.img.isNotEmpty) {
                       MessageController.to
-                          .createMessageRequest(conversationId: conversationId)
+                          .createMessageRequest(
+                            conversationId: conversation.value.sId.toString(),
+                          )
                           .then((_) {
                             // After sending message, scroll to bottom
                             _scrollToBottom();

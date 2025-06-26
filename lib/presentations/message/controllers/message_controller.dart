@@ -274,6 +274,39 @@ class MessageController extends GetxController {
     }
   }
 
+  ///------------------------------  create conversation method -------------------------///
+
+  Future<bool> blockConversationRequest({required String conversationId})
+  async {
+    try {
+      // isLoadingCreateConversation.value = true;
+      ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
+
+      final response = await ApiService().request(
+        endpoint: "$conversationBlockEndPoint$conversationId",
+        method: 'PATCH',
+      );
+
+      if (response['success'] == true) {
+        logger.d(response);
+
+        showCustomSnackbar(title: 'Success', message: response['message']);
+        await getConversationListRequest();
+        // isLoadingCreateConversation.value = false;
+        return true;
+      } else {
+        logger.e(response);
+
+        return false;
+      }
+    } catch (e) {
+      // isLoadingCreateConversation.value = false;
+      logger.e(e.toString());
+      return false;
+
+    }
+  }
+
   ///------------------------------  create Message method -------------------------///
 
   Future<void> createMessageRequest({required String conversationId})

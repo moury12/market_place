@@ -15,6 +15,11 @@
   "relistingForSale": "Reliste pour la vente",
   "repostListing": "Republiée annonce",
   "ok": "OK",
+  "block": "Bloquer",
+  "unblock": "Débloquer",
+
+  "blocked_by_user": "Cet utilisateur vous a bloqué",
+  "you_blocked_user": "Vous avez bloqué cet utilisateur",
   "renewSubscription": "Renouveler l'abonnement",
   "changeSubscription": "Changer d'abonnement",
   "subscriptionStatus": "Statut de l'abonnement",

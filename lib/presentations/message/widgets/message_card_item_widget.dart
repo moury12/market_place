@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/api-client/api_service.dart';
+import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/presentations/message/controllers/message_controller.dart';
 import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
 
@@ -46,25 +47,25 @@ class MessageCardItemWidget extends StatelessWidget {
             MessageController.to.messageList.clear();
 
             // ✅ Set current conversationId in controller (optional)
-            MessageController.to.currentConversationId.value = conversationId;
 
             // ✅ Start listening to socket (for real-time)
             MessageController.to.socket?.off('new-message::$conversationId-$userId');
             MessageController.to.socket?.on('new-message::$conversationId-$userId', (data) {
               MessageController.to.getMessageListRequest(conversationId: conversationId);
             });
-
             // ✅ Go instantly to Chat page
             Get.toNamed(
               ChattingPage.routeName,
               arguments: {
-                "conversation_id": conversationId,
+                "conversation_model": conversation,
                 "receive_user": receiverUser,
               },
             );
 
             // ✅ Start loading messages in background
             MessageController.to.getMessageListRequest(conversationId: conversationId);
+            logger.d(conversationId);
+
           },
 
           // onTap: () async {
@@ -102,7 +103,9 @@ class MessageCardItemWidget extends StatelessWidget {
                   width: 50.w,
                 ),
                 Expanded(
-                  child: Column(
+                  child:conversation.isBlocked==true?
+                  CustomText(text:conversation.blockedBy==receiverUser.sId? AppStaticStrings.blockedByUser.tr :AppStaticStrings.youBlockedUser.tr,
+                 style: poppinsSemiBold,):Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ///=============================dynamic user name =============================///

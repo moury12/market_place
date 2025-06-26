@@ -22,6 +22,11 @@
   "language": "Language",
   "addToCard": "Add to cart",
   "checkout": "Check Out",
+  "unblock": "Unblock",
+
+  "block": "Block",
+  "blocked_by_user": "This user blocked you",
+  "you_blocked_user": "You blocked this user",
   "welcomeBack": "Welcome Back!!!",
   "createAccount": "Create a new account",
   "signInToYourAccount": "Sign in to Your \nAccount",
