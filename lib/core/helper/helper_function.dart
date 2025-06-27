@@ -3,15 +3,14 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
-import 'package:market_place/core/components/custom_text_button.dart';
 import 'package:market_place/core/constants/color_constants.dart';
 import 'package:market_place/core/constants/custom_space.dart';
 import 'package:market_place/core/constants/custom_text.dart';
@@ -180,7 +179,8 @@ Future<dynamic> defaultAlertDialog(
   required Widget child,
   String? title,
   Color? backgroundColor,
-}) {
+})
+{
   return showDialog(
     barrierDismissible: false,
     context: context,
@@ -382,35 +382,31 @@ Future<bool> requestStoragePermission(BuildContext context) async { // <--- Adde
   return false;
 }
 
+
+
 Future<void> pickImages({
-  required BuildContext context, // <--- Add required BuildContext context here
+  required BuildContext context,
   bool allowMultiple = false,
   RxList<String>? uploadImages,
   RxString? singleImagePath,
-  FileType fileType = FileType.image,
 }) async {
+  final ImagePicker picker = ImagePicker();
+
   try {
-    // Pass the context to the permission request function
-    bool hasPermission = await requestStoragePermission(
-        context); // <--- Pass context
-    if (!hasPermission) {
-      debugPrint("Storage permission not granted, cannot pick images.");
-      return;
-    }
+    // Request storage permission
+    // final permissionStatus = await Permission.photos.request();
+    //
+    // if (!permissionStatus.isGranted) {
+    //   debugPrint("Storage permission not granted, cannot pick images.");
+    //   return;
+    // }
 
-    final result = await FilePicker.platform.pickFiles(
-      type: fileType,
-      allowMultiple: allowMultiple,
-      allowCompression: true,
-      compressionQuality: 40,
-    );
+    if (allowMultiple) {
+      final List<XFile>? images = await picker.pickMultiImage(imageQuality: 40);
 
-    if (result != null) {
-      final selectedPaths = result.paths.whereType<String>().toList();
-
-      if (allowMultiple && uploadImages != null) {
-        if (uploadImages.length + selectedPaths.length <= 5) {
-          uploadImages.addAll(selectedPaths);
+      if (images != null && uploadImages != null) {
+        if (uploadImages.length + images.length <= 5) {
+          uploadImages.addAll(images.map((file) => file.path));
         } else {
           // showCustomSnackbar(
           //   title: "Limit Reached",
@@ -418,18 +414,19 @@ Future<void> pickImages({
           //   type: SnackBarType.alert,
           // );
         }
-      } else if (!allowMultiple && singleImagePath != null) {
-        singleImagePath.value = result.files.single.path ?? '';
-      } else {
-        debugPrint("No files selected or improper usage of the method.");
       }
     } else {
-      debugPrint("No files selected.");
+      final XFile? image = await picker.pickImage(source: ImageSource.gallery, imageQuality: 40);
+
+      if (image != null && singleImagePath != null) {
+        singleImagePath.value = image.path;
+      }
     }
   } catch (e) {
-    debugPrint("File picker error: $e");
+    debugPrint("Image picker error: $e");
   }
 }
+
 
 Future<String?> selectAndFormatTime({
   required BuildContext context,
