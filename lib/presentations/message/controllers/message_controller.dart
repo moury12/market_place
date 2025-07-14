@@ -32,6 +32,7 @@ class MessageController extends GetxController {
   RxList<ConversationModel> conversationList = <ConversationModel>[].obs;
   RxList<MessageModel> messageList = <MessageModel>[].obs;
   Rx<Users> receiverUser = Users().obs;
+  Rx<ChattingUserModel> chattingUser = ChattingUserModel().obs;
   TextEditingController messageController = TextEditingController();
   IO.Socket? socket;
 
@@ -53,33 +54,32 @@ class MessageController extends GetxController {
     super.onInit();
     if (AccountInformationController.to.userModel.value.sId != null &&
         AccountInformationController.to.userModel.value.sId!.isNotEmpty) {
-    socket = IO.io(
-      '${ApiService().baseUrl}?user_id=${AccountInformationController.to.userModel.value.sId}',
-      IO.OptionBuilder()
-          .setTransports(['websocket'])
-          .disableAutoConnect()
-          .build(),
-    );
+      socket = IO.io(
+        '${ApiService().baseUrl}?user_id=${AccountInformationController.to.userModel.value.sId}',
+        IO.OptionBuilder()
+            .setTransports(['websocket'])
+            .disableAutoConnect()
+            .build(),
+      );
 
-    socket?.connect();
+      socket?.connect();
 
-    socket?.onConnect((_) {
-      logger.d('✅ Socket connected');
-      socket?.emit('msg', 'test');
-    });
+      socket?.onConnect((_) {
+        logger.d('✅ Socket connected');
+        socket?.emit('msg', 'test');
+      });
 
-    socket?.onConnectError((data) {
-      logger.e('❌ Socket connect error: $data');
-    });
+      socket?.onConnectError((data) {
+        logger.e('❌ Socket connect error: $data');
+      });
 
-    socket?.onError((data) {
-      logger.e('❌ Socket error: $data');
-    });
+      socket?.onError((data) {
+        logger.e('❌ Socket error: $data');
+      });
 
-    socket?.onDisconnect((_) {
-      logger.e('🔌 Socket disconnected');
-    });
-
+      socket?.onDisconnect((_) {
+        logger.e('🔌 Socket disconnected');
+      });
     }
     getConversationListRequest();
   }
@@ -138,7 +138,7 @@ class MessageController extends GetxController {
                 .toList();
 
         preloadImagesFromUrls(imageUrls);
-         preloadImagesFromUrls(imageUrls1);
+        preloadImagesFromUrls(imageUrls1);
         if (loadMore) {
           conversationList.addAll(newCategories); // Append for load more
         } else {
@@ -147,7 +147,7 @@ class MessageController extends GetxController {
         logger.d(response);
       } else {
         logger.e(response);
-        if(kDebugMode){
+        if (kDebugMode) {
           showCustomSnackbar(
             title: 'Failed',
             message: response['message'],
@@ -166,8 +166,7 @@ class MessageController extends GetxController {
   Future<void> getMessageListRequest({
     required String conversationId,
     bool loadMore = false,
-  })
-  async {
+  }) async {
     try {
       if (loadMore && messageCurrentPage.value >= totalMessagePages.value) {
         return;
@@ -207,17 +206,25 @@ class MessageController extends GetxController {
           messageItemsPerPage.value =
               response['pagination']['itemsPerPage'] ?? 20;
         }
-
+        chattingUser.value = ChattingUserModel.fromJson(
+          response['conversation'],
+        );
+        final imageUrls2 =
+            chattingUser.value.users!
+                .map((cat) => "${ApiService().baseUrl}/${cat.img}")
+                .where((url) => url.isNotEmpty)
+                .toList();
         final newMessages =
             (response['data'] as List)
                 .map((e) => MessageModel.fromJson(e))
                 .toList();
         final imageUrls =
-        newMessages
-            .map((cat) => "${ApiService().baseUrl}/${cat.img}")
-            .where((url) => url.isNotEmpty)
-            .toList();
-         preloadImagesFromUrls(imageUrls);
+            newMessages
+                .map((cat) => "${ApiService().baseUrl}/${cat.img}")
+                .where((url) => url.isNotEmpty)
+                .toList();
+        preloadImagesFromUrls(imageUrls);
+        preloadImagesFromUrls(imageUrls2);
         if (loadMore) {
           messageList.addAll(newMessages); // append
         } else {
@@ -225,7 +232,7 @@ class MessageController extends GetxController {
         }
       } else {
         logger.e(response);
-        if(kDebugMode){
+        if (kDebugMode) {
           showCustomSnackbar(
             title: 'Failed',
             message: response['message'],
@@ -242,8 +249,7 @@ class MessageController extends GetxController {
 
   ///------------------------------  create conversation method -------------------------///
 
-  Future<void> createConversationRequest({required String userId})
-  async {
+  Future<void> createConversationRequest({required String userId}) async {
     try {
       isLoadingCreateConversation.value = true;
       ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
@@ -276,8 +282,9 @@ class MessageController extends GetxController {
 
   ///------------------------------  create conversation method -------------------------///
 
-  Future<bool> blockConversationRequest({required String conversationId})
-  async {
+  Future<bool> blockConversationRequest({
+    required String conversationId,
+  }) async {
     try {
       // isLoadingCreateConversation.value = true;
       ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
@@ -303,14 +310,12 @@ class MessageController extends GetxController {
       // isLoadingCreateConversation.value = false;
       logger.e(e.toString());
       return false;
-
     }
   }
 
   ///------------------------------  create Message method -------------------------///
 
-  Future<void> createMessageRequest({required String conversationId})
-  async {
+  Future<void> createMessageRequest({required String conversationId}) async {
     try {
       isLoadingCreateMessage.value = true;
 
@@ -345,7 +350,7 @@ class MessageController extends GetxController {
         // showCustomSnackbar(title: 'Success', message: response['message']);
       } else {
         logger.e(response);
-        if(kDebugMode){
+        if (kDebugMode) {
           showCustomSnackbar(
             title: 'Failed',
             message: response['message'],

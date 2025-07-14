@@ -57,8 +57,7 @@ class MessageCardItemWidget extends StatelessWidget {
             Get.toNamed(
               ChattingPage.routeName,
               arguments: {
-                "conversation_model": conversation,
-                "receive_user": receiverUser,
+                "conversationId": conversationId,
               },
             );
 

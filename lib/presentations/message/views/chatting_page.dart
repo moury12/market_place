@@ -6,9 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/components/custom_appbar.dart';
-import 'package:market_place/core/components/custom_button_tap.dart';
 import 'package:market_place/core/components/custom_network_image.dart';
-import 'package:market_place/core/components/custom_refresh_indicator.dart';
 import 'package:market_place/core/components/custom_text_button.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/core/constants/custom_space.dart';
@@ -18,7 +16,7 @@ import 'package:market_place/core/constants/image_constants.dart';
 import 'package:market_place/core/constants/pagination_loading_widget.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/core/helper/helper_function.dart';
-import 'package:market_place/presentations/product/widgets/image_list_widget.dart';
+import 'package:market_place/presentations/message/model/message_model.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../core/api-client/api_service.dart';
@@ -40,23 +38,20 @@ class ChattingPage extends StatefulWidget {
 
 class _ChattingPageState extends State<ChattingPage> {
   ScrollController messageScrollController = ScrollController();
-  final args = Get.arguments as Map<String, dynamic>;
-  Rx<ConversationModel> conversation = ConversationModel().obs;
-  Users? receiverUser;
+  final args = Get.arguments ;
+
   bool isFirstLoad = true;
 
   @override
   void initState() {
     super.initState();
-    conversation.value = args["conversation_model"];
-    receiverUser = args["receive_user"];
 
-    // Setup scroll controller to detect when we reach the top
+
     messageScrollController.addListener(() {
       if (messageScrollController.position.pixels ==
           messageScrollController.position.maxScrollExtent) {
         MessageController.to.getMessageListRequest(
-          conversationId: conversation.value.sId.toString(),
+          conversationId: args,
           loadMore: true,
         );
       }
@@ -70,7 +65,7 @@ class _ChattingPageState extends State<ChattingPage> {
 
   void _loadInitialMessages() async {
     await MessageController.to.getMessageListRequest(
-      conversationId: conversation.value.sId.toString(),
+      conversationId: args,
     );
 
     // Scroll to bottom after initial load
@@ -103,7 +98,7 @@ class _ChattingPageState extends State<ChattingPage> {
                   onPressed: () async {
                     bool isBlocked = await MessageController.to
                         .blockConversationRequest(
-                          conversationId: conversation.value.sId.toString(),
+                          conversationId: args,
                         );
                     if (isBlocked) {
                       conversation.update(
@@ -412,7 +407,7 @@ class _ChattingPageState extends State<ChattingPage> {
                         MessageController.to.img.isNotEmpty) {
                       MessageController.to
                           .createMessageRequest(
-                            conversationId: conversation.value.sId.toString(),
+                            conversationId: args,
                           )
                           .then((_) {
                             // After sending message, scroll to bottom

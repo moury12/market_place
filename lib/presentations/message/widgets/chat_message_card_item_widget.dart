@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:market_place/core/constants/custom_text.dart';
 import 'package:market_place/core/helper/helper_function.dart';
 import 'package:market_place/presentations/message/model/message_model.dart';
+import 'package:market_place/presentations/notification/model/notification_model.dart';
 import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
 
 import '../../../core/api-client/api_service.dart';
@@ -19,7 +20,7 @@ class ChatMessageCardItemWidget extends StatelessWidget {
   });
 
   final MessageModel message;
-  final Users receiverUser;
+  final ConversationUserModel receiverUser;
 
   @override
   Widget build(BuildContext context) {
