@@ -1,3 +1,37 @@
+class ChattingUserModel {
+  String? sId;
+  List<ConversationUserModel>? users;
+  bool? isBlocked;
+  String? blockedBy;
+
+  ChattingUserModel({this.sId, this.users, this.isBlocked, this.blockedBy});
+
+  ChattingUserModel.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    if (json['users'] != null) {
+      users = <ConversationUserModel>[];
+      json['users'].forEach((v) {
+        users!.add(new ConversationUserModel.fromJson(v));
+      });
+    }
+    isBlocked = json['isBlocked'];
+    blockedBy = json['blockedBy'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    if (this.users != null) {
+      data['users'] = this.users!.map((v) => v.toJson()).toList();
+    }
+    data['isBlocked'] = this.isBlocked;
+    data['blockedBy'] = this.blockedBy;
+    return data;
+  }
+}
+
+
+
 class MessageModel {
   String? sId;
   String? conversationId;
@@ -42,3 +76,29 @@ class MessageModel {
     return data;
   }
 }
+
+class ConversationUserModel {
+  String? sId;
+  String? name;
+  String? email;
+  String? img;
+
+  ConversationUserModel({this.sId, this.name, this.email, this.img});
+
+  ConversationUserModel.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    name = json['name'];
+    email = json['email'];
+    img = json['img'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['name'] = this.name;
+    data['email'] = this.email;
+    data['img'] = this.img;
+    return data;
+  }
+}
+

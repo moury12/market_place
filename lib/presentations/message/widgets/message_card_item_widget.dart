@@ -53,12 +53,11 @@ class MessageCardItemWidget extends StatelessWidget {
             MessageController.to.socket?.on('new-message::$conversationId-$userId', (data) {
               MessageController.to.getMessageListRequest(conversationId: conversationId);
             });
+            // ✅ Go instantly to Chat page
             Get.toNamed(
               ChattingPage.routeName,
-              arguments: {
-                "conversationId": conversationId,
-                "blockedBy": conversation.blockedBy,
-              },
+              arguments:  conversationId,
+
             );
 
             // ✅ Start loading messages in background

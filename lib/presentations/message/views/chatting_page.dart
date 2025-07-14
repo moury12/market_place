@@ -6,9 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/components/custom_appbar.dart';
-import 'package:market_place/core/components/custom_button_tap.dart';
 import 'package:market_place/core/components/custom_network_image.dart';
-import 'package:market_place/core/components/custom_refresh_indicator.dart';
 import 'package:market_place/core/components/custom_text_button.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/core/constants/custom_space.dart';
@@ -18,7 +16,8 @@ import 'package:market_place/core/constants/image_constants.dart';
 import 'package:market_place/core/constants/pagination_loading_widget.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/core/helper/helper_function.dart';
-import 'package:market_place/presentations/product/widgets/image_list_widget.dart';
+import 'package:market_place/presentations/message/model/message_model.dart';
+import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../core/api-client/api_service.dart';
@@ -40,23 +39,20 @@ class ChattingPage extends StatefulWidget {
 
 class _ChattingPageState extends State<ChattingPage> {
   ScrollController messageScrollController = ScrollController();
-  final args = Get.arguments as Map<String, dynamic>;
-  String? blockedBy;
-  String conversationId = "";
+  final args = Get.arguments;
+
   bool isFirstLoad = true;
 
   @override
   void initState() {
     super.initState();
-    conversationId = args["conversationId"];
-    blockedBy = args["blockedBy"];
 
-    // Setup scroll controller to detect when we reach the top
+
     messageScrollController.addListener(() {
       if (messageScrollController.position.pixels ==
           messageScrollController.position.maxScrollExtent) {
         MessageController.to.getMessageListRequest(
-          conversationId: conversationId.toString(),
+          conversationId: args,
           loadMore: true,
         );
       }
@@ -70,7 +66,7 @@ class _ChattingPageState extends State<ChattingPage> {
 
   void _loadInitialMessages() async {
     await MessageController.to.getMessageListRequest(
-      conversationId: conversationId,
+      conversationId: args,
     );
 
     // Scroll to bottom after initial load
@@ -89,54 +85,70 @@ class _ChattingPageState extends State<ChattingPage> {
     }
   }
 
+  ConversationUserModel? getOtherUser(ChattingUserModel? meta) {
+    final myId = AccountInformationController.to.userModel.value.sId;
+
+    if (meta == null || meta.users == null) return null;
+
+    return meta.users!.firstWhere(
+          (p) => p.sId != myId,
+      orElse: () => ConversationUserModel(name: "", img: null),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*resizeToAvoidBottomInset: true,
-      appBar: CustomDefaultAppbar(
-        title: blockedBy?.name ?? 'Chat',
-        action: [
-          Obx(() {
-            return conversation.value.isBlocked == true &&
-                    conversation.value.blockedBy == blockedBy?.sId
-                ? SizedBox.shrink()
-                : CustomTextButton(
-                  onPressed: () async {
-                    bool isBlocked = await MessageController.to
-                        .blockConversationRequest(
-                          conversationId: conversation.value.sId.toString(),
-                        );
-                    if (isBlocked) {
-                      conversation.update(
-                        (val) => val?.isBlocked = !(val.isBlocked ?? false),
-                      );
-                    }
-                  },
-                  title:
-                      conversation.value.isBlocked == true
-                          ? AppStaticStrings.unblock.tr
-                          : AppStaticStrings.block.tr,
-                );
-          }),
-          // ButtonTapWidget(
-          //   child: Padding(
-          //     padding: padding8.copyWith(left: 0),
-          //     child: Stack(
-          //       alignment: Alignment.center,
-          //       children: [
-          //         SvgPicture.asset(backgroundCircleIcon),
-          //         Image.asset(
-          //           height: 20.sp,
-          //           blockUserIcon,
-          //           color: AppColors.kPrimaryColor,
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // ),
-        ],
-      ),*/
-      body: /*Column(
+      resizeToAvoidBottomInset: true,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: Obx(() {
+          ConversationUserModel? convoUser = getOtherUser(
+              MessageController.to.chattingUser.value);
+          return CustomDefaultAppbar(
+            title: convoUser != null ? convoUser.name : 'User Name loading....',
+            action: [
+              MessageController.to.chattingUser.value.isBlocked == true &&
+                  MessageController.to.chattingUser.value.blockedBy ==
+                      convoUser?.sId
+                  ? SizedBox.shrink() : CustomTextButton(
+                onPressed: () async {
+                  bool isBlocked = await MessageController.to
+                      .blockConversationRequest(
+                    conversationId: args,
+                  );
+                  if (isBlocked) {
+                    MessageController.to.chattingUser.update(
+                          (val) => val?.isBlocked = !(val.isBlocked ?? false),
+                    );
+                  }
+                },
+                title:
+                MessageController.to.chattingUser.value.isBlocked == true
+                    ? AppStaticStrings.unblock.tr
+                    : AppStaticStrings.block.tr,
+              ),
+              // ButtonTapWidget(
+              //   child: Padding(
+              //     padding: padding8.copyWith(left: 0),
+              //     child: Stack(
+              //       alignment: Alignment.center,
+              //       children: [
+              //         SvgPicture.asset(backgroundCircleIcon),
+              //         Image.asset(
+              //           height: 20.sp,
+              //           blockUserIcon,
+              //           color: AppColors.kPrimaryColor,
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
+            ],
+          );
+        }),
+      ),
+      body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Obx(() {
@@ -160,24 +172,29 @@ class _ChattingPageState extends State<ChattingPage> {
                   itemCount: 6,
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   itemBuilder:
-                      (context, index) => ChatMessageSkeleton(
+                      (context, index) =>
+                      ChatMessageSkeleton(
                         isSender: index % 2 == 0 ? true : false,
                       ), // ⬅️ create this shimmer
                 );
               } else {
-                return ListView.builder(
-                  controller: messageScrollController,
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  reverse: true,
-                  itemCount: MessageController.to.messageList.length,
-                  itemBuilder: (context, index) {
-                    final message = MessageController.to.messageList[index];
-                    return ChatMessageCardItemWidget(
-                      message: message,
-                      receiverUser: blockedBy!,
-                    );
-                  },
-                );
+                return Obx(() {
+                  ConversationUserModel? convoUser = getOtherUser(
+                      MessageController.to.chattingUser.value);
+                  return ListView.builder(
+                    controller: messageScrollController,
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    reverse: true,
+                    itemCount: MessageController.to.messageList.length,
+                    itemBuilder: (context, index) {
+                      final message = MessageController.to.messageList[index];
+                      return ChatMessageCardItemWidget(
+                        message: message,
+                        receiverUser: convoUser!,
+                      );
+                    },
+                  );
+                });
               }
 
               // // Check if messages are loaded
@@ -210,80 +227,82 @@ class _ChattingPageState extends State<ChattingPage> {
           Obx(() {
             return MessageController.to.img.value.isNotEmpty
                 ? Stack(
-                  children: [
-                    Padding(
-                      padding: padding8.copyWith(bottom: 0),
-                      child: Image.file(
-                        height: 100.w,
-                        width: 100.w,
-                        fit: BoxFit.cover,
-                        File(MessageController.to.img.toString()),
-                      ),
+              children: [
+                Padding(
+                  padding: padding8.copyWith(bottom: 0),
+                  child: Image.file(
+                    height: 100.w,
+                    width: 100.w,
+                    fit: BoxFit.cover,
+                    File(MessageController.to.img.toString()),
+                  ),
+                ),
+                Positioned(
+                  right: 0,
+                  child: IconButton(
+                    onPressed: () {
+                      MessageController.to.img.value = "";
+                    },
+                    icon: Icon(
+                      CupertinoIcons.multiply_circle_fill,
+                      color: AppColors.kRedColor,
                     ),
-                    Positioned(
-                      right: 0,
-                      child: IconButton(
-                        onPressed: () {
-                          MessageController.to.img.value = "";
-                        },
-                        icon: Icon(
-                          CupertinoIcons.multiply_circle_fill,
-                          color: AppColors.kRedColor,
-                        ),
-                      ),
-                    ),
-                  ],
-                )
+                  ),
+                ),
+              ],
+            )
                 : SizedBox.shrink();
           }),
 
           // Message input section
           Obx(() {
-            return conversation.value.isBlocked == true
+            return MessageController.to.chattingUser.value.isBlocked == true
+
                 ? Padding(
-                  padding: padding12,
-                  child: CustomText(
-                    text: "Conversation Blocked!!",
-                    style: poppinsSemiBold,
-                  ),
-                )
+              padding: padding12,
+              child: CustomText(
+                text: "Conversation Blocked!!", style: poppinsSemiBold,),
+            )
                 : _buildMessageInput();
-          }),
+          },)
         ],
-      )*/
-          SizedBox.shrink(),
+      ),
     );
   }
 
-  // Widget _buildReceiverProfile() {
-  //   return Center(
-  //     child: Column(
-  //       // mainAxisAlignment: MainAxisAlignment.center,
-  //       crossAxisAlignment: CrossAxisAlignment.center,
-  //       children: [
-  //         CustomNetworkImage(
-  //           imageUrl: "${ApiService().baseUrl}/${blockedBy!.img}",
-  //           height: 75.w,
-  //           width: 75.w,
-  //           boxShape: BoxShape.circle,
-  //         ),
-  //         space4H,
-  //         CustomText(
-  //           text: blockedBy!.name ?? "Jane Cooper",
-  //           style: poppinsSemiBold,
-  //           fontSize: getFontSizeDefault(),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
+  Widget _buildReceiverProfile() {
+    return Center(
+      child: Obx(() {
+        ConversationUserModel? convoUser = getOtherUser(
+            MessageController.to.chattingUser.value);
+        return Column(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CustomNetworkImage(
+              imageUrl: "${ApiService().baseUrl}/${convoUser?.img}",
+              height: 75.w,
+              width: 75.w,
+              boxShape: BoxShape.circle,
+            ),
+            space4H,
+            CustomText(
+              text: convoUser?.name ?? "Jane Cooper",
+              style: poppinsSemiBold,
+              fontSize: getFontSizeDefault(),
+            ),
+          ],
+        );
+      }),
+    );
+  }
 
   Widget ChatMessageSkeleton({bool isSender = false}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 24),
       child: Row(
         mainAxisAlignment:
-            isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
+        isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!isSender)
@@ -297,7 +316,7 @@ class _ChattingPageState extends State<ChattingPage> {
           Expanded(
             child: Column(
               crossAxisAlignment:
-                  isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+              isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
               children: [
                 Shimmer.fromColors(
                   baseColor: AppColors.shimmerBase,
@@ -378,59 +397,59 @@ class _ChattingPageState extends State<ChattingPage> {
     );
   }
 
-  // Widget _buildMessageInput() {
-  //   return Padding(
-  //     padding: padding8,
-  //     child: Row(
-  //       children: [
-  //         IconButton(
-  //           onPressed: () {
-  //             pickImages(
-  //               context: context,
-  //               allowMultiple: false,
-  //               singleImagePath: MessageController.to.img,
-  //             );
-  //           },
-  //           icon: SvgPicture.asset(imgIcon),
-  //         ),
-  //         Expanded(
-  //           child: CustomTextField(
-  //             hintText: AppStaticStrings.typeMessage.tr,
-  //             textEditingController: MessageController.to.messageController,
-  //             borderColor: AppColors.kPrimaryColor,
-  //             fillColor: AppColors.kWhiteColor,
-  //             borderRadius: 16.r,
-  //             contentPadding: EdgeInsets.zero,
-  //           ),
-  //         ),
-  //         Obx(() {
-  //           return MessageController.to.isLoadingCreateMessage.value
-  //               ? PaginationLoadingWidget()
-  //               : IconButton(
-  //                 onPressed: () {
-  //                   if (MessageController
-  //                           .to
-  //                           .messageController
-  //                           .text
-  //                           .isNotEmpty ||
-  //                       MessageController.to.img.isNotEmpty) {
-  //                     MessageController.to
-  //                         .createMessageRequest(
-  //                           conversationId: conversation.value.sId.toString(),
-  //                         )
-  //                         .then((_) {
-  //                           // After sending message, scroll to bottom
-  //                           _scrollToBottom();
-  //                         });
-  //                   }
-  //                 },
-  //                 icon: SvgPicture.asset(sendMessageIcon),
-  //               );
-  //         }),
-  //       ],
-  //     ),
-  //   );
-  // }
+  Widget _buildMessageInput() {
+    return Padding(
+      padding: padding8,
+      child: Row(
+        children: [
+          IconButton(
+            onPressed: () {
+              pickImages(
+                context: context,
+                allowMultiple: false,
+                singleImagePath: MessageController.to.img,
+              );
+            },
+            icon: SvgPicture.asset(imgIcon),
+          ),
+          Expanded(
+            child: CustomTextField(
+              hintText: AppStaticStrings.typeMessage.tr,
+              textEditingController: MessageController.to.messageController,
+              borderColor: AppColors.kPrimaryColor,
+              fillColor: AppColors.kWhiteColor,
+              borderRadius: 16.r,
+              contentPadding: EdgeInsets.zero,
+            ),
+          ),
+          Obx(() {
+            return MessageController.to.isLoadingCreateMessage.value
+                ? PaginationLoadingWidget()
+                : IconButton(
+              onPressed: () {
+                if (MessageController
+                    .to
+                    .messageController
+                    .text
+                    .isNotEmpty ||
+                    MessageController.to.img.isNotEmpty) {
+                  MessageController.to
+                      .createMessageRequest(
+                    conversationId: args,
+                  )
+                      .then((_) {
+                    // After sending message, scroll to bottom
+                    _scrollToBottom();
+                  });
+                }
+              },
+              icon: SvgPicture.asset(sendMessageIcon),
+            );
+          }),
+        ],
+      ),
+    );
+  }
 
   @override
   void dispose() {
