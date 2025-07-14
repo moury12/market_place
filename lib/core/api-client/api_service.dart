@@ -9,7 +9,8 @@ import '../utils/variable.dart';
 
 class ApiService {
   // Base URL for your API
-  final String baseUrl = 'http://3.138.222.235:5000';
+  final String baseUrl = 'http://10.0.60.189:5000';
+  // final String baseUrl = 'http://3.138.222.235:5000';
   // final String baseUrl = 'http://10.0.60.189:5010';
 
   // Singleton pattern for API service

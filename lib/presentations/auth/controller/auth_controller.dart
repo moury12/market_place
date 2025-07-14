@@ -1,24 +1,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:market_place/presentations/navigation/controller/navigation_controller.dart';
-import 'package:market_place/presentations/profile/model/package_model.dart';
-import 'package:market_place/presentations/profile/views/subscription_page.dart';
 import 'package:market_place/presentations/auth/views/verify_otp_page.dart';
 
 import '../../../core/api-client/api_endpoints.dart';
 import '../../../core/api-client/api_service.dart';
-import '../../../core/constants/app_static_strings.dart';
 import '../../../core/helper/helper_function.dart';
-import '../../../core/utils/common_controller.dart';
 import '../../../core/utils/enum.dart';
 import '../../../core/utils/hive_boxes.dart';
 import '../../../core/utils/variable.dart';
 import '../../navigation/views/navigation_page.dart';
 import '../views/login_page.dart';
-import '../../profile/views/payment_page.dart';
 import '../views/set_new_password_page.dart';
-import '../../profile/widgets/subscription_plan_card_widget.dart';
 
 class AuthController extends GetxController {
   static AuthController get to => Get.find();
@@ -72,7 +65,7 @@ class AuthController extends GetxController {
         body: {
           "name": nameSignUpController.text,
           "email": emailSignUpController.value.text,
-          "phone": phoneSignUpController.value.text,
+          "phone": "000000000000",
           "password": passSignUpController.text,
           "confirm_password": confirmPassSignUpController.text,
         },
