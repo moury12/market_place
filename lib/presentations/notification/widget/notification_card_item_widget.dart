@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:market_place/core/api-client/api_service.dart';
+import 'package:market_place/core/components/custom_network_image.dart';
 import 'package:market_place/core/constants/color_constants.dart';
 import 'package:market_place/core/constants/image_constants.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/presentations/notification/model/notification_model.dart';
 
 import '../../../core/constants/custom_text.dart';
-import '../../../core/constants/padding_constant.dart';class NotificationCardItem extends StatelessWidget {
+import '../../../core/constants/padding_constant.dart';
+
+class NotificationCardItem extends StatelessWidget {
   final NotificationModel notificationModel;
 
-  const NotificationCardItem({
-    super.key, required this.notificationModel,
-  });
+  const NotificationCardItem({super.key, required this.notificationModel});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,12 @@ import '../../../core/constants/padding_constant.dart';class NotificationCardIte
         child: Row(
           spacing: 8.w,
           children: [
-            SvgPicture.asset(logoIcon, height: 40.w),
+            notificationModel.user==null || notificationModel.user?.img == null
+                ? SvgPicture.asset(logoIcon, height: 40.w)
+                : CustomNetworkImage(
+                  imageUrl:
+                      "${ApiService().baseUrl}/${notificationModel.user?.img}", height: 40.w,boxShape: BoxShape.circle,
+                ),
 
             ///------------------------dynamic title-------------------------///
             Expanded(
@@ -41,12 +48,11 @@ import '../../../core/constants/padding_constant.dart';class NotificationCardIte
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                    text: "Listing Marked as Sold",
+                    text: notificationModel.title.toString(),
                     style: poppinsSemiBold,
                   ),
                   CustomText(
-                    text:
-                    "You marked “Wooden Dining Table” as sold. Congrats on the successful sale!",
+                    text: notificationModel.message.toString(),
                     style: poppinsRegular,
                     color: AppColors.kExtraLightGreyTextColor,
                     fontSize: 10.sp,

@@ -21,11 +21,14 @@ class MessageCardItemWidget extends StatelessWidget {
   final ConversationModel conversation;
   final Users receiverUser; // ✅ Add this
 
-  const MessageCardItemWidget({super.key, required this.conversation, required this.receiverUser});
+  const MessageCardItemWidget({
+    super.key,
+    required this.conversation,
+    required this.receiverUser,
+  });
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       decoration: BoxDecoration(
         color: AppColors.kWhiteColor,
@@ -39,93 +42,54 @@ class MessageCardItemWidget extends StatelessWidget {
       ),
       child: ButtonTapWidget(
         radius: 16.r,
-          onTap: () {
-            final conversationId = conversation.sId.toString();
-            final userId = AccountInformationController.to.userModel.value.sId;
+        onTap: () {
+          final conversationId = conversation.sId.toString();
 
-            // ✅ Clear messages
-            MessageController.to.messageList.clear();
+          // ✅ Go instantly to Chat page
+          Get.toNamed(ChattingPage.routeName, arguments: conversationId);
+        },
 
-            // ✅ Set current conversationId in controller (optional)
-
-            // ✅ Start listening to socket (for real-time)
-            MessageController.to.socket?.off('new-message::$conversationId-$userId');
-            MessageController.to.socket?.on('new-message::$conversationId-$userId', (data) {
-              MessageController.to.getMessageListRequest(conversationId: conversationId);
-            });
-            // ✅ Go instantly to Chat page
-            Get.toNamed(
-              ChattingPage.routeName,
-              arguments:  conversationId,
-
-            );
-
-            // ✅ Start loading messages in background
-            MessageController.to.getMessageListRequest(conversationId: conversationId);
-            logger.d(conversationId);
-
-          },
-
-          // onTap: () async {
-        //   logger.d(
-        //     'new-message::${conversation.sId}-${AccountInformationController.to.userModel.value.sId}',
-        //   );
-        //   MessageController.to.messageList.clear();
-        //   MessageController.to.socket?.on(
-        //     'new-message::${conversation.sId}-${AccountInformationController.to.userModel.value.sId}',
-        //     (data) {
-        //       MessageController.to.getMessageListRequest(
-        //         conversationId: conversation.sId.toString(),
-        //       );
-        //     },
-        //   );
-        //   //  MessageController.to.getMessageListRequest(
-        //   //   conversationId: conversation.sId.toString(),
-        //   // );
-        //   Get.toNamed(
-        //     ChattingPage.routeName,
-        //     arguments: {"conversation_id":conversation.sId.toString(),
-        //     "receive_user":receiverUser},
-        //   );
-        // },
         child: Padding(
           padding: padding12,
-          child:  Row(
-              spacing: 12.w,
-              children: [
-                CustomNetworkImage(
-                  imageUrl:
-                      "${ApiService().baseUrl}/${receiverUser.img}",
-                  boxShape: BoxShape.circle,
-                  height: 50.w,
-                  width: 50.w,
-                ),
-                Expanded(
-                  child:conversation.isBlocked==true?
-                  CustomText(text:conversation.blockedBy==receiverUser.sId? AppStaticStrings.blockedByUser.tr :AppStaticStrings.youBlockedUser.tr,
-                 style: poppinsSemiBold,):Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ///=============================dynamic user name =============================///
-                      CustomText(
-                        text:
-                            receiverUser.name ??
-                            'User Name',
-                        style: poppinsSemiBold,
-                      ),
+          child: Row(
+            spacing: 12.w,
+            children: [
+              CustomNetworkImage(
+                imageUrl: "${ApiService().baseUrl}/${receiverUser.img}",
+                boxShape: BoxShape.circle,
+                height: 50.w,
+                width: 50.w,
+              ),
+              Expanded(
+                child:
+                    conversation.isBlocked == true
+                        ? CustomText(
+                          text:
+                              conversation.blockedBy == receiverUser.sId
+                                  ? AppStaticStrings.blockedByUser.tr
+                                  : AppStaticStrings.youBlockedUser.tr,
+                          style: poppinsSemiBold,
+                        )
+                        : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ///=============================dynamic user name =============================///
+                            CustomText(
+                              text: receiverUser.name ?? 'User Name',
+                              style: poppinsSemiBold,
+                            ),
 
-                      ///=============================dynamic message =============================///
-                      CustomText(
-                        text: 'New message',
-                        style: poppinsRegular,
-                        fontSize: getFontSizeSmall(),
-                      ),
-                    ],
-                  ),
-                ),
-
-              ],
-            )
+                            ///=============================dynamic message =============================///
+                            CustomText(
+                              text: 'New message',
+                              style: poppinsRegular,
+                              fontSize: getFontSizeSmall(),
+                            ),
+                          ],
+                        ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -47,7 +47,7 @@ class CustomTextField extends StatefulWidget {
       this.isEnable = true,
       this.height,
       this.isRequired = false,
-      this.borderRadius});
+      this.borderRadius, this.minLines});
 
   final TextEditingController? textEditingController;
   final FocusNode? focusNode;
@@ -59,6 +59,7 @@ class CustomTextField extends StatefulWidget {
   final TextAlignVertical? textAlignVertical;
   final TextAlign textAlign;
   final int? maxLines;
+  final int? minLines;
   final double? borderRadius;
   final void Function(String)? onChanged;
   final void Function(String)? onFieldSubmitted;
@@ -148,6 +149,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     fontSize: getFontSizeSemiSmall()),
             onChanged: widget.onChanged,
             maxLines: widget.maxLines,
+            minLines: widget.minLines,
             obscureText: widget.isPassword ? obscureText : false,
             validator: widget.validator,
             decoration: InputDecoration(

@@ -98,6 +98,7 @@ class ProductController extends GetxController {
     );
 
     logger.d(response);
+    logger.d(parentId);
     if (response['success'] == true) {
       showCustomSnackbar(title: "Success", message: response['message']);
       // getProductDetailsRequest(productID: parentId??"");

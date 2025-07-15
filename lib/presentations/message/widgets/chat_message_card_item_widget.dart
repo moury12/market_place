@@ -37,7 +37,7 @@ class ChatMessageCardItemWidget extends StatelessWidget {
           if (message.sender == receiverUser.sId)
             CustomNetworkImage(
               imageUrl:
-                  "${ApiService().baseUrl}/${AccountInformationController.to.userModel.value.img}",
+                  "${ApiService().baseUrl}/${receiverUser.img}",
               height: 50.w,
               boxShape: BoxShape.circle,
               width: 50.w,
@@ -120,7 +120,7 @@ class ChatMessageCardItemWidget extends StatelessWidget {
           // User avatar (only for user messages)
           if (message.sender != receiverUser.sId)
             CustomNetworkImage(
-              imageUrl: "${ApiService().baseUrl}/${receiverUser.img}",
+              imageUrl: "${ApiService().baseUrl}/${AccountInformationController.to.userModel.value.img}",
               height: 50.w,
               boxShape: BoxShape.circle,
               width: 50.w,

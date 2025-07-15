@@ -46,8 +46,12 @@ class _ChattingPageState extends State<ChattingPage> {
   @override
   void initState() {
     super.initState();
-
-
+    final userId = AccountInformationController.to.userModel.value.sId;
+    MessageController.to.messageList.clear();
+    MessageController.to.socket?.off('new-message::$args-$userId');
+    MessageController.to.socket?.on('new-message::$args-$userId', (data) {
+      MessageController.to.getMessageListRequest(conversationId: args);
+    });
     messageScrollController.addListener(() {
       if (messageScrollController.position.pixels ==
           messageScrollController.position.maxScrollExtent) {
@@ -65,9 +69,7 @@ class _ChattingPageState extends State<ChattingPage> {
   }
 
   void _loadInitialMessages() async {
-    await MessageController.to.getMessageListRequest(
-      conversationId: args,
-    );
+    await MessageController.to.getMessageListRequest(conversationId: args);
 
     // Scroll to bottom after initial load
     _scrollToBottom();
@@ -91,7 +93,7 @@ class _ChattingPageState extends State<ChattingPage> {
     if (meta == null || meta.users == null) return null;
 
     return meta.users!.firstWhere(
-          (p) => p.sId != myId,
+      (p) => p.sId != myId,
       orElse: () => ConversationUserModel(name: "", img: null),
     );
   }
@@ -104,30 +106,31 @@ class _ChattingPageState extends State<ChattingPage> {
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: Obx(() {
           ConversationUserModel? convoUser = getOtherUser(
-              MessageController.to.chattingUser.value);
+            MessageController.to.chattingUser.value,
+          );
           return CustomDefaultAppbar(
             title: convoUser != null ? convoUser.name : 'User Name loading....',
             action: [
               MessageController.to.chattingUser.value.isBlocked == true &&
-                  MessageController.to.chattingUser.value.blockedBy ==
-                      convoUser?.sId
-                  ? SizedBox.shrink() : CustomTextButton(
-                onPressed: () async {
-                  bool isBlocked = await MessageController.to
-                      .blockConversationRequest(
-                    conversationId: args,
-                  );
-                  if (isBlocked) {
-                    MessageController.to.chattingUser.update(
+                      MessageController.to.chattingUser.value.blockedBy ==
+                          convoUser?.sId
+                  ? SizedBox.shrink()
+                  : CustomTextButton(
+                    onPressed: () async {
+                      bool isBlocked = await MessageController.to
+                          .blockConversationRequest(conversationId: args);
+                      if (isBlocked) {
+                        MessageController.to.chattingUser.update(
                           (val) => val?.isBlocked = !(val.isBlocked ?? false),
-                    );
-                  }
-                },
-                title:
-                MessageController.to.chattingUser.value.isBlocked == true
-                    ? AppStaticStrings.unblock.tr
-                    : AppStaticStrings.block.tr,
-              ),
+                        );
+                      }
+                    },
+                    title:
+                        MessageController.to.chattingUser.value.isBlocked ==
+                                true
+                            ? AppStaticStrings.unblock.tr
+                            : AppStaticStrings.block.tr,
+                  ),
               // ButtonTapWidget(
               //   child: Padding(
               //     padding: padding8.copyWith(left: 0),
@@ -172,15 +175,15 @@ class _ChattingPageState extends State<ChattingPage> {
                   itemCount: 6,
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   itemBuilder:
-                      (context, index) =>
-                      ChatMessageSkeleton(
+                      (context, index) => ChatMessageSkeleton(
                         isSender: index % 2 == 0 ? true : false,
                       ), // ⬅️ create this shimmer
                 );
               } else {
                 return Obx(() {
                   ConversationUserModel? convoUser = getOtherUser(
-                      MessageController.to.chattingUser.value);
+                    MessageController.to.chattingUser.value,
+                  );
                   return ListView.builder(
                     controller: messageScrollController,
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -227,44 +230,45 @@ class _ChattingPageState extends State<ChattingPage> {
           Obx(() {
             return MessageController.to.img.value.isNotEmpty
                 ? Stack(
-              children: [
-                Padding(
-                  padding: padding8.copyWith(bottom: 0),
-                  child: Image.file(
-                    height: 100.w,
-                    width: 100.w,
-                    fit: BoxFit.cover,
-                    File(MessageController.to.img.toString()),
-                  ),
-                ),
-                Positioned(
-                  right: 0,
-                  child: IconButton(
-                    onPressed: () {
-                      MessageController.to.img.value = "";
-                    },
-                    icon: Icon(
-                      CupertinoIcons.multiply_circle_fill,
-                      color: AppColors.kRedColor,
+                  children: [
+                    Padding(
+                      padding: padding8.copyWith(bottom: 0),
+                      child: Image.file(
+                        height: 100.w,
+                        width: 100.w,
+                        fit: BoxFit.cover,
+                        File(MessageController.to.img.toString()),
+                      ),
                     ),
-                  ),
-                ),
-              ],
-            )
+                    Positioned(
+                      right: 0,
+                      child: IconButton(
+                        onPressed: () {
+                          MessageController.to.img.value = "";
+                        },
+                        icon: Icon(
+                          CupertinoIcons.multiply_circle_fill,
+                          color: AppColors.kRedColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
                 : SizedBox.shrink();
           }),
 
           // Message input section
           Obx(() {
             return MessageController.to.chattingUser.value.isBlocked == true
-
                 ? Padding(
-              padding: padding12,
-              child: CustomText(
-                text: "Conversation Blocked!!", style: poppinsSemiBold,),
-            )
+                  padding: padding12,
+                  child: CustomText(
+                    text: "Conversation Blocked!!",
+                    style: poppinsSemiBold,
+                  ),
+                )
                 : _buildMessageInput();
-          },)
+          }),
         ],
       ),
     );
@@ -274,7 +278,8 @@ class _ChattingPageState extends State<ChattingPage> {
     return Center(
       child: Obx(() {
         ConversationUserModel? convoUser = getOtherUser(
-            MessageController.to.chattingUser.value);
+          MessageController.to.chattingUser.value,
+        );
         return Column(
           // mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -302,7 +307,7 @@ class _ChattingPageState extends State<ChattingPage> {
       padding: const EdgeInsets.only(bottom: 24),
       child: Row(
         mainAxisAlignment:
-        isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
+            isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!isSender)
@@ -316,7 +321,7 @@ class _ChattingPageState extends State<ChattingPage> {
           Expanded(
             child: Column(
               crossAxisAlignment:
-              isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                  isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
               children: [
                 Shimmer.fromColors(
                   baseColor: AppColors.shimmerBase,
@@ -419,6 +424,10 @@ class _ChattingPageState extends State<ChattingPage> {
               borderColor: AppColors.kPrimaryColor,
               fillColor: AppColors.kWhiteColor,
               borderRadius: 16.r,
+              keyboardType: TextInputType.multiline,
+              textInputAction: TextInputAction.newline,
+              maxLines: 4,
+              minLines: 1,
               contentPadding: EdgeInsets.zero,
             ),
           ),
@@ -426,25 +435,23 @@ class _ChattingPageState extends State<ChattingPage> {
             return MessageController.to.isLoadingCreateMessage.value
                 ? PaginationLoadingWidget()
                 : IconButton(
-              onPressed: () {
-                if (MessageController
-                    .to
-                    .messageController
-                    .text
-                    .isNotEmpty ||
-                    MessageController.to.img.isNotEmpty) {
-                  MessageController.to
-                      .createMessageRequest(
-                    conversationId: args,
-                  )
-                      .then((_) {
-                    // After sending message, scroll to bottom
-                    _scrollToBottom();
-                  });
-                }
-              },
-              icon: SvgPicture.asset(sendMessageIcon),
-            );
+                  onPressed: () {
+                    if (MessageController
+                            .to
+                            .messageController
+                            .text
+                            .isNotEmpty ||
+                        MessageController.to.img.isNotEmpty) {
+                      MessageController.to
+                          .createMessageRequest(conversationId: args)
+                          .then((_) {
+                            // After sending message, scroll to bottom
+                            _scrollToBottom();
+                          });
+                    }
+                  },
+                  icon: SvgPicture.asset(sendMessageIcon),
+                );
           }),
         ],
       ),

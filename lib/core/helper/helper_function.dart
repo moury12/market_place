@@ -114,50 +114,53 @@ Future<void> showCredentialsDialog() async {
     Get.dialog(
       AlertDialog(
 
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+        content: SizedBox(
+          width: Get.width * .8,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
 
-            CustomText(
-              textAlign: TextAlign.center,
-              text: 'Email: ${credentials['email']}',
-              color: AppColors.kExtraLightTextColor,
-              fontSize: getFontSizeSemiSmall(),
-            ),
-            CustomText(
-              textAlign: TextAlign.center,
-              text:'Password: ${'•' * (credentials['password']?.length ?? 0)}',
-              color: AppColors.kExtraLightTextColor,
-              fontSize: getFontSizeSemiSmall(),
-            ),
-            space8H,
-            Row(
-              spacing: 8.w,
-              children: [
-                Expanded(
-                  child: CustomButton(
-                    textColor: AppColors.kPrimaryColor,
-                    fillColor: Colors.transparent,
-                    onTap: () => Get.back(),
-                    title: AppStaticStrings.cancel.tr,
+              CustomText(
+                textAlign: TextAlign.center,
+                text: 'Email: ${credentials['email']}',
+                color: AppColors.kExtraLightTextColor,
+                fontSize: getFontSizeSemiSmall(),
+              ),
+              CustomText(
+                textAlign: TextAlign.center,
+                text:'Password: ${'•' * (credentials['password']?.length ?? 0)}',
+                color: AppColors.kExtraLightTextColor,
+                fontSize: getFontSizeSemiSmall(),
+              ),
+              space8H,
+              Row(
+                spacing: 8.w,
+                children: [
+                  Expanded(
+                    child: CustomButton(
+                      textColor: AppColors.kPrimaryColor,
+                      fillColor: Colors.transparent,
+                      onTap: () => Get.back(),
+                      title: AppStaticStrings.cancel.tr,
+                    ),
                   ),
-                ),
-                Expanded(
-                  child:  CustomButton(
-                      onTap: () {
-                        AuthController.to.emailLoginController.text=credentials['email'];
-                        AuthController.to.passLoginController.text=credentials['password'];
+                  Expanded(
+                    child:  CustomButton(
+                        onTap: () {
+                          AuthController.to.emailLoginController.text=credentials['email'];
+                          AuthController.to.passLoginController.text=credentials['password'];
 
-                        Get.back();
-                      },
-                      title: AppStaticStrings.confirm.tr,
-                    )
-                ),
-              ],
-            ),
+                          Get.back();
+                        },
+                        title: AppStaticStrings.confirm.tr,
+                      )
+                  ),
+                ],
+              ),
 
-          ],
+            ],
+          ),
         ),
 
       ),
@@ -300,46 +303,49 @@ Future<dynamic> warningCustomDialog({
     AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
       contentPadding: padding12H.copyWith(bottom: 16.h),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SvgPicture.asset(warningIcon),
-          CustomText(
-            text: AppStaticStrings.warning.tr,
-            style: poppinsSemiBold,
-            fontSize: getFontSizeExtraLarge(),
-          ),
-          CustomText(
-            textAlign: TextAlign.center,
-            text: title,
-            color: AppColors.kExtraLightTextColor,
-            fontSize: getFontSizeSemiSmall(),
-          ),
-          widget??SizedBox.shrink(),
-          space8H,
-          Row(
-            spacing: 8.w,
-            children: [
-              Expanded(
-                child: CustomButton(
-                  textColor: AppColors.kPrimaryColor,
-                  fillColor: Colors.transparent,
-                  onTap: () => Get.back(),
-                  title: AppStaticStrings.cancel.tr,
+      content: SizedBox(
+        width: Get.width *.8,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SvgPicture.asset(warningIcon),
+            CustomText(
+              text: AppStaticStrings.warning.tr,
+              style: poppinsSemiBold,
+              fontSize: getFontSizeExtraLarge(),
+            ),
+            CustomText(
+              textAlign: TextAlign.center,
+              text: title,
+              color: AppColors.kExtraLightTextColor,
+              fontSize: getFontSizeSemiSmall(),
+            ),
+            widget??SizedBox.shrink(),
+            space8H,
+            Row(
+              spacing: 8.w,
+              children: [
+                Expanded(
+                  child: CustomButton(
+                    textColor: AppColors.kPrimaryColor,
+                    fillColor: Colors.transparent,
+                    onTap: () => Get.back(),
+                    title: AppStaticStrings.cancel.tr,
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Obx(() {
-                  return CustomButton(
-                    isLoading: loading.value,
-                    onTap: onTap,
-                    title: AppStaticStrings.confirm.tr,
-                  );
-                }),
-              ),
-            ],
-          ),
-        ],
+                Expanded(
+                  child: Obx(() {
+                    return CustomButton(
+                      isLoading: loading.value,
+                      onTap: onTap,
+                      title: AppStaticStrings.confirm.tr,
+                    );
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     ),
     barrierDismissible: false,

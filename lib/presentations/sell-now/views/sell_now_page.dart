@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -32,7 +33,7 @@ class SellNowPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopScope(
       onPopInvokedWithResult: (didPop, result) {
-      SellController.to.resetAddProductForm();
+        SellController.to.resetAddProductForm();
       },
       child: SingleChildScrollView(
         child: Padding(
@@ -45,7 +46,10 @@ class SellNowPage extends StatelessWidget {
                   children: [
                     titleBold(title: AppStaticStrings.uploadProductImages.tr),
                     space8H,
-                    ListOfImages(images: SellController.to.imgList,isNetworkImage: false,),
+                    ListOfImages(
+                      images: SellController.to.imgList,
+                      isNetworkImage: false,
+                    ),
                     ListOfImages(images: SellController.to.editImgList),
 
                     Container(
@@ -59,7 +63,9 @@ class SellNowPage extends StatelessWidget {
                       child: ButtonTapWidget(
                         radius: 8.r,
                         onTap: () {
-                          pickImages(context: context,                            allowMultiple: true,
+                          pickImages(
+                            context: context,
+                            allowMultiple: true,
                             uploadImages: SellController.to.imgList,
                           );
                         },
@@ -83,7 +89,11 @@ class SellNowPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Icon(Icons.warning_amber_rounded, color: Colors.orangeAccent, size: 20),
+                        Icon(
+                          Icons.warning_amber_rounded,
+                          color: Colors.orangeAccent,
+                          size: 20,
+                        ),
                         SizedBox(width: 6),
                         CustomText(
                           text: 'maxFiveImagesAllowed'.tr,
@@ -141,9 +151,12 @@ class SellNowPage extends StatelessWidget {
 
                       CustomDropdown<CategoryModel>(
                         isRequired: true,
+
                         validator:
                             (value) =>
-                                value == null
+                                (value == null ||
+                                        value.name == null ||
+                                        value.name!.isEmpty)
                                     ? AppStaticStrings.fieldRequired.tr
                                     : null,
                         isLoading: HomeController.to.isLoadingCategory.value,
@@ -160,7 +173,6 @@ class SellNowPage extends StatelessWidget {
 
                             // Set new category
                             SellController.to.selectedCategory.value = value;
-
                             // Load new subcategories
                             await HomeController.to.getSubCategoryListRequest(
                               catId: value.sId.toString(),
@@ -168,20 +180,26 @@ class SellNowPage extends StatelessWidget {
 
                             // Force UI update
                             HomeController.to.subCatList.refresh();
+                            logger.d(
+                              SellController.to.selectedSubCategory.value?.name,
+                            );
                           }
                         },
                         displayText: (cat) => cat.name.toString(),
-                        selectedValue:
-                            SellController.to.selectedCategory.value ,
+                        selectedValue: SellController.to.selectedCategory.value,
                       ),
                       CustomDropdown<SubCategoryModel>(
                         isRequired: true,
+                        // onTap: () {
+                        //   if( HomeController.to.subCatList.isEmpty)
+                        // },
                         onChanged: (value) {
                           SellController.to.selectedSubCategory.value = value;
                         },
                         validator: (value) {
-                          if ( /*HomeController.to.cityList.isNotEmpty &&*/ value ==
-                              null) {
+                          if (value == null ||
+                              value.name == null ||
+                              value.name!.isEmpty) {
                             return AppStaticStrings.fieldRequired.tr;
                           }
                           return null;
@@ -193,17 +211,7 @@ class SellNowPage extends StatelessWidget {
                         items: HomeController.to.subCatList,
 
                         selectedValue:
-                            SellController.to.selectedSubCategory.value == null
-                                ? null
-                                : HomeController.to.subCatList.firstWhereOrNull(
-                                  (e) =>
-                                      e.sId ==
-                                      SellController
-                                          .to
-                                          .selectedSubCategory
-                                          .value!
-                                          .sId,
-                                ),
+                            SellController.to.selectedSubCategory.value,
                       ),
                       CustomDropdown(
                         isRequired: true,
@@ -215,13 +223,17 @@ class SellNowPage extends StatelessWidget {
                         },
                         title: AppStaticStrings.condition.tr,
                         items: condition,
-                        selectedValue: SellController.to.selectedCondition.value,
+                        selectedValue:
+                            SellController.to.selectedCondition.value,
                         onChanged: (value) {
                           SellController.to.selectedCondition.value = value;
                         },
                       ),
                       CustomTextField(
                         fillColor: AppColors.kWhiteColor,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
                         textEditingController:
                             SellController.to.priceController.value,
                         title: AppStaticStrings.price.tr,
@@ -265,8 +277,50 @@ class SellNowPage extends StatelessWidget {
                             child: CustomButton(
                               onTap: () {
                                 if (_formKey.currentState!.validate()) {
-                                  SellController.to.addProductInfo.value = false;
-                                  SellController.to.addLocationInfo.value = true;
+                                  if (SellController
+                                              .to
+                                              .selectedCategory
+                                              .value !=
+                                          null &&
+                                      SellController
+                                              .to
+                                              .selectedSubCategory
+                                              .value !=
+                                          null &&
+                                      SellController
+                                              .to
+                                              .selectedCondition
+                                              .value !=
+                                          null &&
+                                      SellController
+                                          .to
+                                          .descriptionController
+                                          .value
+                                          .text
+                                          .isNotEmpty &&
+                                      SellController
+                                          .to
+                                          .priceController
+                                          .value
+                                          .text
+                                          .isNotEmpty &&
+                                      SellController
+                                          .to
+                                          .nameController
+                                          .value
+                                          .text
+                                          .isNotEmpty) {
+                                    SellController.to.addProductInfo.value =
+                                        false;
+                                    SellController.to.addLocationInfo.value =
+                                        true;
+                                  } else {
+                                    showCustomSnackbar(
+                                      title: "Validation Error",
+                                      message: "Must Fill the full form!!",
+                                      type: SnackBarType.failed,
+                                    );
+                                  }
                                 }
                               },
                               title: AppStaticStrings.next.tr,
@@ -363,10 +417,17 @@ class SellNowPage extends StatelessWidget {
 
                                 onTap: () {
                                   if (_formKeyForLocation.currentState!
-                                      .validate()) {
-                                    logger.d(SellController.to.isEditMode.value);
+                                          .validate() &&
+                                      SellController.to.selectedCity.value !=
+                                          null &&
+                                      SellController.to.selectedWilaya.value !=
+                                          null) {
+                                    logger.d(
+                                      SellController.to.isEditMode.value,
+                                    );
                                     if (SellController.to.isEditMode.value &&
-                                        SellController.to.product.value != null) {
+                                        SellController.to.product.value !=
+                                            null) {
                                       SellController.to.editProductRequest(
                                         productId:
                                             SellController.to.product.value!.sId
@@ -375,7 +436,12 @@ class SellNowPage extends StatelessWidget {
                                     } else {
                                       SellController.to.addProductRequest();
                                     }
-
+                                  } else {
+                                    showCustomSnackbar(
+                                      title: "Validation Error",
+                                      message: "Must Fill the full form!!",
+                                      type: SnackBarType.failed,
+                                    );
                                   }
                                 },
                                 title: AppStaticStrings.submit.tr,

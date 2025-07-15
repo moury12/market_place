@@ -41,11 +41,18 @@ class NavigationPage extends StatelessWidget {
       AppStaticStrings.messages.tr,
       AppStaticStrings.profile.tr,
     ];
-    return PopScope(
-      canPop: false,
+    return
+        PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, result) {
+            if (!didPop) {
+              NavigationController.to.existApp(); // This works only for physical back press
+            }
+          },
+  /*    canPop: false,
       onPopInvokedWithResult: (didPop, result) {
         NavigationController.to.existApp();
-      },
+      },*/
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight),
@@ -66,8 +73,8 @@ class NavigationPage extends StatelessWidget {
                 )
                 : CustomDefaultAppbar(
                   onLeading: () {
-                    NavigationController.to.existApp();
-                  },
+                    NavigationController.to.selectedNavIndex.value = 0;
+                   },
                   title:
                       appbarTitle[NavigationController
                               .to

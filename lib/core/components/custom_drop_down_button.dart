@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/components/custom_button.dart';
+import 'package:market_place/core/components/custom_button_tap.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/core/constants/custom_text.dart';
+import 'package:market_place/core/helper/helper_function.dart';
 
 import '../constants/color_constants.dart';
 import '../constants/custom_space.dart';
@@ -27,7 +29,7 @@ class CustomDropdown<T> extends StatefulWidget {
   final String Function(T)? displayText; // Dynamic list of items
   final ValueChanged<T?>? onChanged; // Callback for selected value
   final String? Function(T?)? validator;
-
+final Function()? onTap;
   const CustomDropdown({
     super.key,
     this.title,
@@ -43,7 +45,7 @@ class CustomDropdown<T> extends StatefulWidget {
     this.isRequired = false,
     this.isLoading = false,
     this.displayText,
-    this.validator, // Selected value managed externally
+    this.validator, this.onTap, // Selected value managed externally
   });
 
   @override
@@ -103,67 +105,74 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>> {
                   ),
                   borderRadius: BorderRadius.circular(widget.radius ?? 6.r),
                 ),
-                child: DropdownButton<T>(
-                  dropdownColor: AppColors.kWhiteColor,
-                  padding: EdgeInsets.zero,
-                  value: _getMatchedItem(widget.selectedValue, widget.items),
-                  isExpanded: true,
-                  underline: const SizedBox(), // Removes the default underline
-                  style: poppinsMedium.copyWith(
-                    color: widget.hintColor ?? AppColors.kLightTextColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: getFontSizeSemiSmall(),
-                  ),
-                  hint: Text(
-                    widget.hintText ?? AppStaticStrings.selectOne.tr,
+                child: ButtonTapWidget(
+                  onTap:widget.onTap??(){
+                    if(widget.items==null||widget.items!.isEmpty){
+                      showCustomSnackbar(title: "Not Found", message: "Drop down item List is Empty",type: SnackBarType.failed);
+                    }
+                  },
+                  child: DropdownButton<T>(
+                    dropdownColor: AppColors.kWhiteColor,
+                    padding: EdgeInsets.zero,
+                    value: _getMatchedItem(widget.selectedValue, widget.items),
+                    isExpanded: true,
+                    underline: const SizedBox(), // Removes the default underline
                     style: poppinsMedium.copyWith(
                       color: widget.hintColor ?? AppColors.kLightTextColor,
                       fontWeight: FontWeight.w400,
                       fontSize: getFontSizeSemiSmall(),
                     ),
-                  ),
-                  icon:
-                  widget.isLoading == true
-                      ? SizedBox(
-                    height: 12,
-                    width: 12,
-                    child: DefaultProgressIndicator(
-                      color: AppColors.kPrimaryColor,
-                      strokeWidth: 2,
-                    ),
-                  )
-                      : Icon(
-                    Icons.keyboard_arrow_down,
-                    color: widget.iconColor ?? AppColors.kBlackColor,
-                    size: 20.sp,
-                  ),
-                  items:
-                  (widget.items ?? []).map((e) {
-                    return DropdownMenuItem<T>(
-                      value: e,
-                      child: Text(
-                        _getDisplayText(e),
-                        style: poppinsMedium.copyWith(
-                          color: AppColors.kBlackColor,
-                          fontWeight: FontWeight.w400,
-                          fontSize: getFontSizeSemiSmall(),
-                        ),
+                    hint: Text(
+                      widget.hintText ?? AppStaticStrings.selectOne.tr,
+                      style: poppinsMedium.copyWith(
+                        color: widget.hintColor ?? AppColors.kLightTextColor,
+                        fontWeight: FontWeight.w400,
+                        fontSize: getFontSizeSemiSmall(),
                       ),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    // Call both the widget's onChanged callback and update the form field state
-                    // This is the critical change:
-                    state.didChange(value); // Notify FormField first
-                    if (widget.onChanged != null) {
-                      widget.onChanged!(value); // Then notify parent
-                    }
-                    // Trigger validation immediately
-                        if(value!=null){
-                      state.validate();
-                    }
+                    ),
+                    icon:
+                    widget.isLoading == true
+                        ? SizedBox(
+                      height: 12,
+                      width: 12,
+                      child: DefaultProgressIndicator(
+                        color: AppColors.kPrimaryColor,
+                        strokeWidth: 2,
+                      ),
+                    )
+                        : Icon(
+                      Icons.keyboard_arrow_down,
+                      color: widget.iconColor ?? AppColors.kBlackColor,
+                      size: 20.sp,
+                    ),
+                    items:
+                    (widget.items ?? []).map((e) {
+                      return DropdownMenuItem<T>(
+                        value: e,
+                        child: Text(
+                          _getDisplayText(e),
+                          style: poppinsMedium.copyWith(
+                            color: AppColors.kBlackColor,
+                            fontWeight: FontWeight.w400,
+                            fontSize: getFontSizeSemiSmall(),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      // Call both the widget's onChanged callback and update the form field state
+                      // This is the critical change:
+                      state.didChange(value); // Notify FormField first
+                      if (widget.onChanged != null) {
+                        widget.onChanged!(value); // Then notify parent
+                      }
+                      // Trigger validation immediately
+                          if(value!=null){
+                        state.validate();
+                      }
 
-                  },
+                    },
+                  ),
                 ),
               ),
               if (state.hasError)

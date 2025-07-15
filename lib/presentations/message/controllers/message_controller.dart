@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:market_place/presentations/message/model/conversation_model.dart';
+import 'package:market_place/presentations/message/views/chatting_page.dart';
 import 'package:market_place/presentations/navigation/controller/navigation_controller.dart';
 import 'package:market_place/presentations/navigation/views/navigation_page.dart';
 import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
@@ -50,8 +51,9 @@ class MessageController extends GetxController {
   RxBool isLoadingMoreMessages = false.obs;
 
   @override
-  void onInit() {
+  void onInit() async{
     super.onInit();
+   await AccountInformationController.to.getUserProfileRequest();
     if (AccountInformationController.to.userModel.value.sId != null &&
         AccountInformationController.to.userModel.value.sId!.isNotEmpty) {
       socket = IO.io(
@@ -80,6 +82,8 @@ class MessageController extends GetxController {
       socket?.onDisconnect((_) {
         logger.e('🔌 Socket disconnected');
       });
+    }else{
+      logger.d(AccountInformationController.to.userModel.value.sId);
     }
     getConversationListRequest();
   }
@@ -265,9 +269,8 @@ class MessageController extends GetxController {
 
         showCustomSnackbar(title: 'Success', message: response['message']);
         await getConversationListRequest();
-        NavigationController.to.selectedNavIndex.value = 3;
-        isLoadingCreateConversation.value = false;
-        Get.toNamed(NavigationPage.routeName);
+
+        Get.toNamed(ChattingPage.routeName, arguments:response['result']['_id'] );
       } else {
         logger.e(response);
 
@@ -361,6 +364,9 @@ class MessageController extends GetxController {
     } catch (e) {
       logger.e(e.toString());
       isLoadingCreateMessage.value = false;
+    }finally{
+      isLoadingCreateMessage.value = false;
+
     }
   }
 }

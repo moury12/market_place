@@ -295,7 +295,7 @@ class AuthController extends GetxController {
       phoneSignUpController.text = '01566026603';
       passSignUpController.text = '12345aA*';
       confirmPassSignUpController.text = '12345aA*';
-      emailLoginController.text = 'wocejom261@kimdyn.com';
+      emailLoginController.text = 'seloce4741@lhory.com';
       passLoginController.text = '12345aA*';
 
       emailForgetController.value.text =
