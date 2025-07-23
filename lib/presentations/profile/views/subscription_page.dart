@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:market_place/core/components/custom_button.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/presentations/auth/widgets/auth_title_widget.dart';
 import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
+import 'package:market_place/presentations/profile/views/purchase_page.dart';
 
 import '../../../core/components/custom_appbar.dart';
 import '../../../core/components/custom_loading_widget.dart';
@@ -54,6 +56,9 @@ class SubscriptionPage extends StatelessWidget {
           child: Column(
             spacing: 8.h,
             children: [
+              CustomButton(onTap: () {
+                Get.to(PaywallPage());
+              },),
               AuthTitleTextWidget(
                 title: AppStaticStrings.chooseSubscriptionPlan.tr,
               ),

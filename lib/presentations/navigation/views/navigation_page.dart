@@ -123,21 +123,18 @@ class NavigationPage extends StatelessWidget {
                           final isLoggedIn = NavigationController.to.isLoggedIn;
                           final isSubscribed =
                               NavigationController.to.isSubscribed;
-                          final showSubscriptionStatus =
-                              CommonController.to.showSubscriptionStatus.value;
+
 
                           logger.d("isLoggedIn------$isLoggedIn");
                           logger.d("isSubscribed------$isSubscribed");
-                          logger.d(
-                            "showSubscriptionStatus------$showSubscriptionStatus",
-                          );
+
                           if (!isLoggedIn) {
                             if (index != 0) {
                               Get.toNamed(LoginPage.routeName);
                               return;
                             }
                           } else {
-                            if (showSubscriptionStatus &&
+                            if (
                                 !isSubscribed &&
                                 (index == 1 || index == 2)) {
                               Get.toNamed(SubscriptionPage.routeName);

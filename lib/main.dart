@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -12,12 +14,20 @@ import 'package:market_place/core/routes/app_routes.dart';
 import 'package:market_place/core/theme/app_theme.dart';
 import 'package:market_place/core/utils/hive_boxes.dart';
 import 'package:market_place/presentations/splash/views/splash_page.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 import 'core/services/app_strings.dart';
 import 'core/utils/variable.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  const iosApiKey = 'appl_xbXZsEllxZGZumwzNAVzqAEWNuq';
+  const androidApiKey = 'goog_IoGFBfBmMJzBVoLJgkZiZmANXeB';
+
+  await Purchases.configure(PurchasesConfiguration(
+    Platform.isIOS ? iosApiKey : androidApiKey,
+  ));
   await ScreenUtil.ensureScreenSize();
   await Hive.initFlutter();
   await Hive.openBox(userBoxName);

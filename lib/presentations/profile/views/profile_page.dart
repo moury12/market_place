@@ -129,15 +129,12 @@ class ProfilePage extends StatelessWidget {
                       Get.toNamed(NotificationPage.routeName);
                     },
                   ),
-                  Obx(() => CommonController.to.showSubscriptionStatus.value
-                      ? ProfileActionItemWidget(
+                  ProfileActionItemWidget(
                     img: subscriptionIcon,
                     title: AppStaticStrings.subscriptionStatus.tr,
                     onTap: () {
                       Get.toNamed(MySubscriptionPage.routeName);
                     },
-                  )
-                      : SizedBox.shrink(),
                   ),
 
                   CustomText(

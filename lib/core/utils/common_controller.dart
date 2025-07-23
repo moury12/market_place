@@ -17,11 +17,8 @@ class CommonController extends GetxController {
  var isLoading = true.obs;
  RxString stripeUrl =''.obs;
  final RxString selectedLanguageCode = 'en'.obs;
- var showSubscriptionStatus = false.obs;
 
- Future<void> checkSubscriptionStatus() async {
-  showSubscriptionStatus.value = await getSubscriptionStatus();
- }
+
  @override
  void onInit() {
   super.onInit();
