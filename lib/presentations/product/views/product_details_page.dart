@@ -45,8 +45,18 @@ class ProductDetailsPage extends StatefulWidget {
 }
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
-  final fromSeller = Get.arguments;
+  Map<String, dynamic> args = Get.arguments;
+  bool fromSeller = false;
   TextEditingController reasonController = TextEditingController();
+  @override
+  void initState() {
+    fromSeller = args['fromSeller'];
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ProductController.to.getProductDetailsRequest(productID: args['id']);
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,17 +115,16 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     onTap: () {
                       warningCustomDialog(
                         title: "Are you sure to report this product?",
-                        onTap: () async{
-                        await  ProductController.to.reportProductRequest(
+                        onTap: () async {
+                          await ProductController.to.reportProductRequest(
                             parentId:
                                 ProductController.to.productModel.value.sId
                                     .toString(),
 
                             reason: reasonController.text,
                           );
-                        Navigator.pop(context);
-                        reasonController.clear();
-
+                          Navigator.pop(context);
+                          reasonController.clear();
                         },
                         loading: ProductController.to.isLoadingReport,
                         widget: Padding(
@@ -477,6 +486,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         )
                         : ViewAllRow(
                           title: AppStaticStrings.relatedProduct.tr,
+                          buttonText: "",
                           onPressed: () {},
                         ),
                     fromSeller

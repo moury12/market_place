@@ -41,13 +41,24 @@ class ProductCardItemWidget extends StatelessWidget {
       ),
       child: ButtonTapWidget(
         radius: 4.r,
-        onTap: () {
-          Get.put(ProductController());
-          ProductController.to.getProductDetailsRequest(
-            productID: product.sId.toString(),
-          );
-          Get.toNamed(ProductDetailsPage.routeName, arguments: fromSeller);
-        },
+          // lib/widgets/product_card_item_widget.dart
+
+          onTap: () {
+            // Correctly check the CURRENT route
+            if (Get.currentRoute == ProductDetailsPage.routeName) {
+              // If we're already on a details page, replace it
+              Get.offAndToNamed(ProductDetailsPage.routeName, arguments: {
+                "fromSeller": fromSeller,
+                "id": product.sId.toString()
+              });
+            } else {
+              // Otherwise, push a new details page
+              Get.toNamed(ProductDetailsPage.routeName, arguments: {
+                "fromSeller": fromSeller,
+                "id": product.sId.toString()
+              });
+            }
+          },
         child: Padding(
           padding: padding4,
           child: Column(

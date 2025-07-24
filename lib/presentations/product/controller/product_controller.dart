@@ -55,7 +55,7 @@ class ProductController extends GetxController {
                     : "${ApiService().baseUrl}/$img";
               }).toList();
 
-          await preloadImagesFromUrls(fullImageUrls);
+           preloadImagesFromUrls(fullImageUrls);
         }
         relatedProductList.value =
             (response['related_product'] as List)
@@ -68,7 +68,7 @@ class ProductController extends GetxController {
 
         preloadImagesFromUrls(imageUrls);
 
-        isLoadingProductDetails.value = false;
+
       } else {
         logger.e(response);
         if(kDebugMode){
@@ -78,11 +78,14 @@ class ProductController extends GetxController {
             type: SnackBarType.failed,
           );
         }
-        isLoadingProductDetails.value = false;
+
       }
     } catch (e) {
       logger.e(e.toString());
+
+    }finally{
       isLoadingProductDetails.value = false;
+
     }
   }
 
