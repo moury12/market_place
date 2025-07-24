@@ -812,10 +812,18 @@ packages:
     dependency: "direct main"
     description:
       name: purchases_flutter
-      sha256: "8fb612c4c4cc65bd8a66fb8b4e0e34c6141d73f1c91de0fd73ead5a1528e3413"
+      sha256: "8cc36087570e72e7ad00fae0148e5aaab209e0d2abc6e9ea673d98f110ffcc7a"
       url: "https://pub.dev"
     source: hosted
-    version: "9.0.0"
+    version: "9.0.1"
+  purchases_ui_flutter:
+    dependency: "direct main"
+    description:
+      name: purchases_ui_flutter
+      sha256: "65346993f1419b85ceff096c273a11d763c1a9ff276c139fe6ebb28e000af2d7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.0.1"
   rxdart:
     dependency: transitive
     description:

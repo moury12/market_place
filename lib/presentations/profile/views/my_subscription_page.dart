@@ -11,8 +11,7 @@ import 'package:market_place/core/constants/custom_space.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/helper/helper_function.dart';
 import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
-import 'package:market_place/presentations/profile/views/subscription_page.dart';
-
+ 
 class MySubscriptionPage extends StatelessWidget {
   static const String routeName = "/my-subscription";
 
@@ -81,7 +80,7 @@ class MySubscriptionPage extends StatelessWidget {
                     textColor: AppColors.kPrimaryColor,
 
                     onTap: () {
-                      Get.toNamed(SubscriptionPage.routeName);
+                      showPaywall();
                     },
                     title: AppStaticStrings.changeSubscription.tr,
                   ),

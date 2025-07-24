@@ -13,8 +13,7 @@ import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/core/helper/helper_function.dart';
 import 'package:market_place/core/utils/common_controller.dart';
 import 'package:market_place/presentations/auth/views/login_page.dart';
-import 'package:market_place/presentations/profile/views/subscription_page.dart';
-import 'package:market_place/presentations/notification/views/notification_page.dart';
+ import 'package:market_place/presentations/notification/views/notification_page.dart';
 
 import '../../../core/components/custom_appbar.dart';
 import '../../../core/constants/app_static_strings.dart';
@@ -137,7 +136,7 @@ class NavigationPage extends StatelessWidget {
                             if (
                                 !isSubscribed &&
                                 (index == 1 || index == 2)) {
-                              Get.toNamed(SubscriptionPage.routeName);
+                              showPaywall();
                               return;
                             }
                           }

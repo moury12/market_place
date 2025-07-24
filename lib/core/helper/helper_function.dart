@@ -20,6 +20,7 @@ import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/presentations/auth/controller/auth_controller.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../components/custom_button.dart';
 import '../components/custom_button_tap.dart';
@@ -64,7 +65,13 @@ Future<void> preloadImagesFromUrls(List<String> imageUrls) async {
     }
   }
 }
-
+Future<void> showPaywall() async {
+  try {
+    await RevenueCatUI.presentPaywall(displayCloseButton: true,);
+  } catch (e) {
+    print("Error presenting paywall: $e");
+  }
+}
 Locale getLocaleFromHive() {
   final localeString = Boxes.getSettingsData().get(
     languageKey,
