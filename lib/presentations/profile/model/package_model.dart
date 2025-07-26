@@ -53,47 +53,16 @@ class PackageModel {
   }
 }
 class MyPackageModel {
-  String? sId;
-  String? expiresIn;
-  bool? active;
-  String? type;
-  int? price;
-  String? name;
-  String? subscriptionId;
-  int? leftDays;
+  final String? type;
+  final String? price;
+  final String? expiresIn;
+  final String? subscriptionId;
 
-  MyPackageModel(
-      {this.sId,
-        this.expiresIn,
-        this.active,
-        this.type,
-        this.price,
-        this.name,
-        this.subscriptionId,
-        this.leftDays});
-
-  MyPackageModel.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    expiresIn = json['expires_in'];
-    active = json['active'];
-    type = json['type'];
-    price = json['price'];
-    name = json['name'];
-    subscriptionId = json['subscription_id'];
-    leftDays = json['left_days'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = sId;
-    data['expires_in'] = expiresIn;
-    data['active'] = active;
-    data['type'] = type;
-    data['price'] = price;
-    data['name'] = name;
-    data['subscription_id'] = subscriptionId;
-    data['left_days'] = leftDays;
-    return data;
-  }
+  MyPackageModel({
+    this.type,
+    this.price,
+    this.expiresIn,
+    this.subscriptionId,
+  });
 }
 

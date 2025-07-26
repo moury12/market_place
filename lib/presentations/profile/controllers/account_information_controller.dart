@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:market_place/presentations/auth/views/login_page.dart';
 import 'package:market_place/presentations/navigation/controller/navigation_controller.dart';
 import 'package:market_place/presentations/profile/model/profile_model.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../../core/api-client/api_endpoints.dart';
 import '../../../core/api-client/api_service.dart';
@@ -117,47 +118,30 @@ class AccountInformationController extends GetxController {
   }
 
   ///------------------------------ get my subscription method -------------------------///
-
   Future<void> getUserSubscriptionPackageRequest() async {
     try {
-      isLoadingMyPackage.value = true;
-      ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
+            isLoadingMyPackage.value  = true;
 
-      final response = await ApiService().request(
-        endpoint: mySubscriptionEndPoint,
-        method: 'GET',
-      );
-      isLoadingMyPackage.value = false;
-      if (response['success'] == true) {
-        logger.d(response);
-        packageModel.value = MyPackageModel.fromJson(response['data']);
-        Boxes.getUserData().put(subscribed, userModel.value.isSubscribed);
-        reinitializeProfileControllers();
-      } else if (response['message'] == AppStaticStrings.noInternet) {
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-          noInternet: true,
-          retryTap: () {
-            getUserProfileRequest();
-          },
+      final info = await Purchases.getCustomerInfo();
+      final entitlement = info.entitlements.all['seller_access'];
+
+      if (entitlement != null && entitlement.isActive) {
+        packageModel.value = MyPackageModel(
+          type: entitlement.periodType.name, // "trial", "intro", "normal"
+          price: entitlement.productIdentifier, // you can map this to price manually
+          expiresIn: entitlement.expirationDate?.toString(),
+          subscriptionId: entitlement.productIdentifier,
         );
       } else {
-        logger.e(response);
-        if(kDebugMode){
-          showCustomSnackbar(
-            title: 'Failed',
-            message: response['message'],
-            type: SnackBarType.failed,
-          );
-        }
+        packageModel.value = MyPackageModel(); // Empty if no active subscription
       }
     } catch (e) {
-      logger.e(e.toString());
-      isLoadingMyPackage.value = false;
+      print('Error fetching subscription info: $e');
+    } finally {
+            isLoadingMyPackage.value  = false;
     }
   }
+
 
   ///------------------------------ update profile method -------------------------///
 

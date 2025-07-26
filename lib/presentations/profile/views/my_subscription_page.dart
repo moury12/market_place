@@ -53,28 +53,28 @@ class MySubscriptionPage extends StatelessWidget {
                   ),
                   CustomTextField(
                     textEditingController: TextEditingController(
-                      text: dateFormateChange(date: AccountInformationController
+                      text:  AccountInformationController
                           .to.packageModel.value
-                          .expiresIn??'N/A'),
+                          .expiresIn??'N/A',
                     ),
                     fillColor: AppColors.kWhiteColor,
                     title: AppStaticStrings.subscriptionExpiryDate.tr,
                   ),
                   space8H,
-
-                  Obx(() {
-                    return CustomButton(
-                      isLoading: AccountInformationController.to
-                          .isLoadingRenewSubscribe.value,
-                      onTap: () {
-                        AccountInformationController.to.subscribeRenewRequest(
-                            subscribeId: AccountInformationController.to
-                                .packageModel.value
-                                .subscriptionId.toString());
-                      },
-                      title: AppStaticStrings.renewSubscription.tr,
-                    );
-                  }),
+                  //
+                  // Obx(() {
+                  //   return CustomButton(
+                  //     isLoading: AccountInformationController.to
+                  //         .isLoadingRenewSubscribe.value,
+                  //     onTap: () {
+                  //       AccountInformationController.to.subscribeRenewRequest(
+                  //           subscribeId: AccountInformationController.to
+                  //               .packageModel.value
+                  //               .subscriptionId.toString());
+                  //     },
+                  //     title: AppStaticStrings.renewSubscription.tr,
+                  //   );
+                  // }),
                   CustomButton(
                     fillColor: Colors.transparent,
                     textColor: AppColors.kPrimaryColor,
