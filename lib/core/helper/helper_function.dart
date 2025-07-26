@@ -20,6 +20,7 @@ import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/presentations/auth/controller/auth_controller.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../components/custom_button.dart';
@@ -65,6 +66,22 @@ Future<void> preloadImagesFromUrls(List<String> imageUrls) async {
     }
   }
 }
+
+Future<bool> isUserSubscribed() async {
+  try {
+    CustomerInfo customerInfo = await Purchases.getCustomerInfo();
+
+    // Replace with your actual entitlement ID
+    EntitlementInfo? entitlement = customerInfo.entitlements.all['seller_access'];
+    Boxes.getUserData().put(subscribed, entitlement?.isActive ?? false);
+
+    return entitlement?.isActive ?? false;
+  } catch (e) {
+    print("Error checking subscription: $e");
+    return false;
+  }
+}
+
 Future<void> showPaywall() async {
   try {
     await RevenueCatUI.presentPaywall(displayCloseButton: true,);

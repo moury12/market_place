@@ -25,7 +25,6 @@ class NavigationController extends GetxController {
     debugPrint("----------------token + login status---------------");
     logger.d(Boxes.getUserData().get(tokenKey));
     logger.d(Boxes.getUserData().get(subscribed));
-
     logger.d(isLoggedIn.toString());
     super.onInit();
   }
@@ -34,9 +33,21 @@ class NavigationController extends GetxController {
     return token != null && token.isNotEmpty;
   }
 
-  bool get isSubscribed {
-    return Boxes.getUserData().get(tokenKey) != null &&
-        Boxes.getUserData().get(subscribed);
+  Future<bool> isSubscribed() async {
+    // Check if tokenKey exists first
+    final tokenExists = Boxes.getUserData().get(tokenKey) != null;
+    if (!tokenExists) return false;
+
+    // Check local subscribed value
+    final localSubscribed = Boxes.getUserData().get('subscribed');
+
+    if (localSubscribed != null) {
+      return localSubscribed;
+    } else {
+      // If null, call async function to fetch and save subscription state
+      final subscribed = await isUserSubscribed();
+      return subscribed;
+    }
   }
 
   List<Widget> getPages() {

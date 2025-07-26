@@ -99,18 +99,7 @@ class AccountInformationController extends GetxController {
         if (userModel.value.img != null && userModel.value.img!.isNotEmpty) {
           await preloadImagesFromUrls([userModel.value.img.toString()]);
         }
-        Boxes.getUserData().put(subscribed, userModel.value.isSubscribed);
-        reinitializeProfileControllers();
-      } else if (response['message'] == AppStaticStrings.noInternet) {
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-          noInternet: true,
-          retryTap: () {
-            getUserProfileRequest();
-          },
-        );
+            reinitializeProfileControllers();
       } else {
         logger.e(response);
         if(kDebugMode){

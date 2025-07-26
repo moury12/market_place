@@ -118,10 +118,10 @@ class NavigationPage extends StatelessWidget {
                     (index) => Expanded(
                       // Add Expanded to distribute space evenly
                       child: ButtonTapWidget(
-                        onTap: () {
+                        onTap: () async{
                           final isLoggedIn = NavigationController.to.isLoggedIn;
-                          final isSubscribed =
-                              NavigationController.to.isSubscribed;
+                          bool isSubscribed = await NavigationController.to.isSubscribed();
+
 
 
                           logger.d("isLoggedIn------$isLoggedIn");
