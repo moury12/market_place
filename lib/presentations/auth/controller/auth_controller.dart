@@ -22,13 +22,10 @@ class AuthController extends GetxController {
     });
     reinitializeSignUpControllers();
 
-
     super.onInit();
   }
 
   RxBool isRememberMe = false.obs;
-
-
 
   var tabContent = <Widget>[].obs;
   Rx<AuthProcess> loadingProcess = AuthProcess.none.obs;
@@ -82,16 +79,17 @@ class AuthController extends GetxController {
       } else {
         logger.e(response);
 
-          showCustomSnackbar(
-            title: 'Failed',
-            message: response['message'],
-            type: SnackBarType.failed,
-          );
-
+        showCustomSnackbar(
+          title: 'Failed',
+          message: response['message'],
+          type: SnackBarType.failed,
+        );
       }
     } catch (e) {
       loadingProcess.value = AuthProcess.none;
       logger.e(e.toString());
+    } finally {
+      loadingProcess.value = AuthProcess.none;
     }
   }
 
@@ -99,8 +97,7 @@ class AuthController extends GetxController {
   Future<void> verifyEmailRequest({
     required String email,
     required bool isAccVerify,
-  })
-  async {
+  }) async {
     try {
       loadingProcess.value = AuthProcess.activateAccount;
 
@@ -118,9 +115,12 @@ class AuthController extends GetxController {
 
       if (response['success'] == true) {
         logger.d(response);
-        Boxes.getUserData().put(verifyTokenKey, response['data']['token']);
+        Boxes.getUserData().put(verifyTokenKey, response['data']['resetToken']);
         logger.d(
-          Boxes.getUserData().put(verifyTokenKey, response['data']['token']),
+          Boxes.getUserData().put(
+            verifyTokenKey,
+            response['data']['resetToken'],
+          ),
         );
         showCustomSnackbar(title: 'Success', message: response['message']);
 
@@ -131,23 +131,24 @@ class AuthController extends GetxController {
         }
       } else {
         logger.e(response);
-
-          showCustomSnackbar(
-            title: 'Failed',
-            message: response['message'],
-            type: SnackBarType.failed,
-          );
-
+        clearOtp();
+        showCustomSnackbar(
+          title: 'Failed',
+          message: response['message'],
+          type: SnackBarType.failed,
+        );
       }
     } catch (e) {
       loadingProcess.value = AuthProcess.none;
       logger.e(e.toString());
+      clearOtp();
+    } finally {
+      loadingProcess.value = AuthProcess.none;
     }
   }
 
   ///------------------------------ sign in method -------------------------///
-  Future<void> signInRequest() async
-  {
+  Future<void> signInRequest() async {
     try {
       loadingProcess.value = AuthProcess.login;
 
@@ -180,16 +181,17 @@ class AuthController extends GetxController {
       } else {
         logger.e(response);
 
-          showCustomSnackbar(
-            title: 'Failed',
-            message: response['message'],
-            type: SnackBarType.failed,
-          );
-
+        showCustomSnackbar(
+          title: 'Failed',
+          message: response['message'],
+          type: SnackBarType.failed,
+        );
       }
     } catch (e) {
       loadingProcess.value = AuthProcess.none;
       logger.e(e.toString());
+    } finally {
+      loadingProcess.value = AuthProcess.none;
     }
   }
 
@@ -213,16 +215,17 @@ class AuthController extends GetxController {
       } else {
         logger.e(response);
 
-          showCustomSnackbar(
-            title: 'Failed',
-            message: response['message'],
-            type: SnackBarType.failed,
-          );
-
+        showCustomSnackbar(
+          title: 'Failed',
+          message: response['message'],
+          type: SnackBarType.failed,
+        );
       }
     } catch (e) {
       loadingProcess.value = AuthProcess.none;
       logger.e(e.toString());
+    } finally {
+      loadingProcess.value = AuthProcess.none;
     }
   }
 
@@ -254,21 +257,19 @@ class AuthController extends GetxController {
       } else {
         logger.e(response);
 
-          showCustomSnackbar(
-            title: 'Failed',
-            message: response['message'],
-            type: SnackBarType.failed,
-          );
-
+        showCustomSnackbar(
+          title: 'Failed',
+          message: response['message'],
+          type: SnackBarType.failed,
+        );
       }
     } catch (e) {
       loadingProcess.value = AuthProcess.none;
       logger.e(e.toString());
+    } finally {
+      loadingProcess.value = AuthProcess.none;
     }
   }
-
-
-
 
   clearSignUpController() {
     emailSignUpController.value.clear();
@@ -298,14 +299,11 @@ class AuthController extends GetxController {
       emailLoginController.text = 'seloce4741@lhory.com';
       passLoginController.text = '12345aA*';
 
-      emailForgetController.value.text =
-          'calaga8422@bocapies.com' /*'pihoner651@eligou.com'*/;
+      emailForgetController.value.text = 'seloce4741@lhory.com';
       passNewController.text = '12345aA*';
       confirmPassNewController.text = '12345aA*';
     }
   }
-
-
 
   ///------------------------------- OTP section ------------------------------///
   final List<Rx<TextEditingController>> otpControllers = List.generate(

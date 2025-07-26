@@ -280,6 +280,9 @@ class MessageController extends GetxController {
     } catch (e) {
       isLoadingCreateConversation.value = false;
       logger.e(e.toString());
+    }finally{
+      isLoadingCreateConversation.value = false;
+
     }
   }
 
