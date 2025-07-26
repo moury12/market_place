@@ -108,7 +108,7 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>> {
                 ),
                 child: ButtonTapWidget(
                   onTap:widget.onTap??(){
-                    if(widget.items==null||widget.items!.isEmpty){
+                    if(widget.isLoading==false && (widget.items==null||widget.items!.isEmpty)){
                       showCustomSnackbar(title: "Not Found", message: "Drop down item List is Empty",type: SnackBarType.failed);
                     }
                   },

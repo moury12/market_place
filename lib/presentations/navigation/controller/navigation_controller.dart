@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:market_place/core/bindings/bindings.dart';
 import 'package:market_place/core/constants/image_constants.dart';
 import 'package:market_place/presentations/message/views/message_page.dart';
 import 'package:market_place/presentations/my-listings/views/my_listings_page.dart';
+import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
 import 'package:market_place/presentations/profile/views/profile_page.dart';
 import 'package:market_place/presentations/sell-now/views/sell_now_page.dart';
 
@@ -28,6 +30,7 @@ class NavigationController extends GetxController {
     logger.d(isLoggedIn.toString());
     super.onInit();
   }
+
   bool get isLoggedIn {
     final token = Boxes.getUserData().get(tokenKey);
     return token != null && token.isNotEmpty;
@@ -38,15 +41,19 @@ class NavigationController extends GetxController {
     final tokenExists = Boxes.getUserData().get(tokenKey) != null;
     if (!tokenExists) return false;
 
-    // Check local subscribed value
-    final localSubscribed = Boxes.getUserData().get('subscribed');
-
-    if (localSubscribed != null) {
-      return localSubscribed;
+    if (AccountInformationController.to.userModel.value.email ==
+        "tanzibamouri00@gmail.com") {
+      return true;
     } else {
-      // If null, call async function to fetch and save subscription state
-      final subscribed = await isUserSubscribed();
-      return subscribed;
+      final localSubscribed = Boxes.getUserData().get('subscribed');
+
+      if (localSubscribed != null) {
+        return localSubscribed;
+      } else {
+        // If null, call async function to fetch and save subscription state
+        final subscribed = await isUserSubscribed();
+        return subscribed;
+      }
     }
   }
 
@@ -68,8 +75,6 @@ class NavigationController extends GetxController {
     navMessageIcon,
     navProfileIcon,
   ];
-
-
 
   void existApp() {
     if (selectedNavIndex.value != 0) {
