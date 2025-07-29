@@ -21,11 +21,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.1.5</string>
+	<string>1.1.7</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>7</string>
+	<string>9</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>tel</string>
@@ -52,8 +52,7 @@
 	<string>This app uses the microphone for recording audio.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>This app saves photos or videos to your library.</string>
-	<key>NSUserTrackingUsageDescription</key>
-    <string>This identifier will be used to deliver personalized ads to you.</string>
+
 
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app needs access to your photo library to select and upload photos or videos.</string>
