@@ -98,7 +98,6 @@ Locale getLocaleFromHive() {
   if (localeString == "fr") return const Locale('fr');
   return const Locale('en', 'US');
 }
-
 Future<void> saveCredentials(
   String email,
   String password,
@@ -319,7 +318,11 @@ Future<dynamic> successDialogCustom({
 
 Future<dynamic> warningCustomDialog({
   required String title,
+   String? typeText,
+   String? fillButtonText,
+   String? outlineButtonText,
   required Function() onTap,
+   Function()? onCancel,
   required RxBool loading,
   Widget? widget
 }) {
@@ -334,7 +337,7 @@ Future<dynamic> warningCustomDialog({
           children: [
             SvgPicture.asset(warningIcon),
             CustomText(
-              text: AppStaticStrings.warning.tr,
+              text:typeText?? AppStaticStrings.warning.tr,
               style: poppinsSemiBold,
               fontSize: getFontSizeExtraLarge(),
             ),
@@ -353,8 +356,8 @@ Future<dynamic> warningCustomDialog({
                   child: CustomButton(
                     textColor: AppColors.kPrimaryColor,
                     fillColor: Colors.transparent,
-                    onTap: () => Get.back(),
-                    title: AppStaticStrings.cancel.tr,
+                    onTap:onCancel?? () => Get.back(),
+                    title:outlineButtonText?? AppStaticStrings.cancel.tr,
                   ),
                 ),
                 Expanded(
@@ -362,7 +365,7 @@ Future<dynamic> warningCustomDialog({
                     return CustomButton(
                       isLoading: loading.value,
                       onTap: onTap,
-                      title: AppStaticStrings.confirm.tr,
+                      title:fillButtonText?? AppStaticStrings.confirm.tr,
                     );
                   }),
                 ),
@@ -535,7 +538,14 @@ Future<String?> selectAndFormatTime({
     debugPrint('Error picking time: $e');
     return null;
   }
+}Future<bool> canAccessSellerFeatures(String createdAtStr, CustomerInfo customerInfo) async {
+  final DateTime createdAt = DateTime.parse(createdAtStr);
+  final bool isSubscribed = customerInfo.entitlements.all['seller_access']?.isActive ?? false;
+  final bool isInGracePeriod = DateTime.now().toUtc().isBefore(createdAt.add(Duration(days: 90)));
+
+  return isSubscribed || isInGracePeriod;
 }
+
 
 String dateFormateChange({required String date}) {
   DateTime utcTime = DateTime.parse(date).toLocal(); // Convert to local time

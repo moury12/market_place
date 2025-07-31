@@ -41,6 +41,9 @@ class AppStaticStrings {
   static  String productInformation = 'productInformation';
   static  String productDescription = 'productDescription';
   static  String previous = 'previous';
+  static  String skip = 'skip';
+  static  String freeAccessMessage= 'free_access_message';
+  static  String freeAccessTitle = 'free_access_title';
   static  String relatedProduct = 'relatedProduct';
   static String renewSubscription = 'renewSubscription';
   static String changeSubscription = 'changeSubscription';

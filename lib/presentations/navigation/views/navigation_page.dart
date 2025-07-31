@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:market_place/core/components/custom_button_tap.dart';
 import 'package:market_place/core/constants/color_constants.dart';
 import 'package:market_place/core/constants/custom_text.dart';
@@ -12,8 +13,11 @@ import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/constants/text_style_constant.dart';
 import 'package:market_place/core/helper/helper_function.dart';
 import 'package:market_place/core/utils/common_controller.dart';
+import 'package:market_place/core/utils/hive_boxes.dart';
 import 'package:market_place/presentations/auth/views/login_page.dart';
- import 'package:market_place/presentations/notification/views/notification_page.dart';
+import 'package:market_place/presentations/notification/views/notification_page.dart';
+import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../../core/components/custom_appbar.dart';
 import '../../../core/constants/app_static_strings.dart';
@@ -40,15 +44,15 @@ class NavigationPage extends StatelessWidget {
       AppStaticStrings.messages.tr,
       AppStaticStrings.profile.tr,
     ];
-    return
-        PopScope(
-          canPop: false,
-          onPopInvokedWithResult: (didPop, result) {
-            if (!didPop) {
-              NavigationController.to.existApp(); // This works only for physical back press
-            }
-          },
-  /*    canPop: false,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop) {
+          NavigationController.to
+              .existApp(); // This works only for physical back press
+        }
+      },
+      /*    canPop: false,
       onPopInvokedWithResult: (didPop, result) {
         NavigationController.to.existApp();
       },*/
@@ -73,7 +77,7 @@ class NavigationPage extends StatelessWidget {
                 : CustomDefaultAppbar(
                   onLeading: () {
                     NavigationController.to.selectedNavIndex.value = 0;
-                   },
+                  },
                   title:
                       appbarTitle[NavigationController
                               .to
@@ -118,31 +122,63 @@ class NavigationPage extends StatelessWidget {
                     (index) => Expanded(
                       // Add Expanded to distribute space evenly
                       child: ButtonTapWidget(
-                        onTap: () async{
+                        onTap: () async {
                           final isLoggedIn = NavigationController.to.isLoggedIn;
-                          bool isSubscribed = await NavigationController.to.isSubscribed();
+                          final indexToOpen = index;
 
+                          // Not logged in and trying to access premium tabs
+                          if (!isLoggedIn && indexToOpen != 0) {
+                            Get.toNamed(LoginPage.routeName);
+                            return;
+                          }
 
+                          // Check if subscription is required (index 1 or 2)
+                          if ((indexToOpen == 1 || indexToOpen == 2)) {
+                            final isSubscribed = await NavigationController.to.isSubscribed();
 
-                          logger.d("isLoggedIn------$isLoggedIn");
-                          logger.d("isSubscribed------$isSubscribed");
-
-                          if (!isLoggedIn) {
-                            if (index != 0) {
-                              Get.toNamed(LoginPage.routeName);
+                            if (isSubscribed) {
+                              NavigationController.to.selectedNavIndex.value = indexToOpen;
                               return;
                             }
-                          } else {
-                            if (
-                                !isSubscribed &&
-                                (index == 1 || index == 2)) {
+
+                            final createdAtStr = AccountInformationController.to.userModel.value.createdAt.toString();
+                            final createdAt = DateTime.parse(createdAtStr);
+                            final bool isInGrace = DateTime.now().toUtc().isBefore(createdAt.add(const Duration(days: 90)));
+
+
+                            final bool hasSeenPopup = Boxes.getAppBox().get('shownFreeTrialPopup', defaultValue: false);
+
+                            if (isInGrace && !hasSeenPopup) {
+                              warningCustomDialog(
+                                onCancel: () async{
+                                  await Boxes.getAppBox().put('shownFreeTrialPopup', true);
+                                  Get.back();
+
+                                },
+                                typeText: AppStaticStrings.freeAccessTitle.tr,
+                                title: AppStaticStrings.freeAccessMessage.tr,
+                                fillButtonText: AppStaticStrings.subscribeNow.tr,
+                                outlineButtonText: AppStaticStrings.skip.tr,
+                                onTap: () {
+                                  showPaywall();
+                                },
+                                loading: AccountInformationController.to.isLoadingLogout,
+                              );
+                              return;
+                            }
+
+                            if (!isInGrace) {
                               showPaywall();
                               return;
                             }
+
+                            NavigationController.to.selectedNavIndex.value = indexToOpen;
+                            return;
                           }
-                          NavigationController.to.selectedNavIndex.value =
-                              index;
+
+                          NavigationController.to.selectedNavIndex.value = indexToOpen;
                         },
+
                         child: Padding(
                           padding: padding6V,
                           child: Obx(() {

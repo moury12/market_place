@@ -422,6 +422,7 @@ class AccountInformationController extends GetxController {
         logger.d(response);
         showCustomSnackbar(title: 'Success', message: response['message']);
         Boxes.getUserData().delete(tokenKey);
+        Boxes.getAppBox().delete("shownFreeTrialPopup");
         NavigationController.to.isLoggedIn;
         Get.offAllNamed(LoginPage.routeName);
       } else {

@@ -17,6 +17,9 @@
   "ok": "OK",
   "block": "Bloquer",
   "unblock": "Débloquer",
+  "free_access_title": "Accès vendeur gratuit",
+  "free_access_message": "Vous bénéficiez actuellement d'un accès gratuit aux fonctionnalités vendeur.\n\nAprès 3 mois, un abonnement sera nécessaire pour continuer à les utiliser.",
+  "skip": "Ignorer",
 
   "blocked_by_user": "Cet utilisateur vous a bloqué",
   "you_blocked_user": "Vous avez bloqué cet utilisateur",

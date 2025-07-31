@@ -33,6 +33,7 @@ void main() async {
   await Hive.openBox(userBoxName);
   await Hive.openBox(settingBox);
   await Hive.openBox(authBox);
+  await Hive.openBox("appBox");
   final translations = AppTranslations();
   await translations.init();
   Get.put<AppTranslations>(translations);
