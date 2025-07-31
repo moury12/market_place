@@ -240,10 +240,18 @@ class SellNowPage extends StatelessWidget {
                         isRequired: true,
                         keyboardType: TextInputType.number,
                         validator: (value) {
+                          // Check if field is empty
                           if (value == null || value.isEmpty) {
                             return AppStaticStrings.fieldRequired.tr;
                           }
-                          return null;
+
+                          // Parse the string to number and check if it's greater than 0
+                          final price = int.tryParse(value);
+                          if (price == null || price <= 0) {
+                            return 'Price must be greater than 0'; // Or use your localized string
+                          }
+
+                          return null; // Valid input
                         },
                       ),
                       CustomTextField(
