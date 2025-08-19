@@ -231,6 +231,8 @@ class AppStaticStrings {
   static  String close = 'close';
   static  String applyFilter = 'applyFilter';
   static  String condition = 'condition';
+  static  String reportType = 'reportType';
+
   static  String sortBy = 'sortBy';
   static  String priceRange = 'priceRange';
   static  String selectOne = 'selectOne';  // New key for "Select One"

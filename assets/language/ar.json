@@ -144,6 +144,7 @@
   "passNotMatch": "كلمات المرور غير متطابقة.",
   "passMustContain": "يجب أن تحتوي كلمة المرور على حرف كبير على الأقل",
   "otp": "OTP",
+  "reportType": "نوع التقرير",
   "documentation": "المستندات:",
   "save": "حفظ",
   "buyNow": "اشتر الآن",

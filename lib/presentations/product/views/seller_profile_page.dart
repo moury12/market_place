@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/components/custom_appbar.dart';
+import 'package:market_place/core/components/custom_button_tap.dart';
+import 'package:market_place/core/components/custom_drop_down_button.dart';
+import 'package:market_place/core/components/custom_textfield.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
+import 'package:market_place/core/constants/color_constants.dart';
+import 'package:market_place/core/constants/image_constants.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/constants/pagination_loading_widget.dart';
+import 'package:market_place/core/helper/helper_function.dart';
+import 'package:market_place/core/utils/variable.dart';
+import 'package:market_place/presentations/auth/views/login_page.dart';
 import 'package:market_place/presentations/home/widgets/product_card_item_widget.dart';
 import 'package:market_place/presentations/home/widgets/view_all_row_widget.dart';
+import 'package:market_place/presentations/navigation/controller/navigation_controller.dart';
 import 'package:market_place/presentations/product/widgets/seller_profile_widgets.dart';
 
 import '../../../core/api-client/api_service.dart';
@@ -38,11 +48,85 @@ class _SellerProfilePageState extends State<SellerProfilePage> {
     });
     super.initState();
   }
+  TextEditingController reasonController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomDefaultAppbar(title: AppStaticStrings.sellerProfile.tr),
+      appBar: CustomDefaultAppbar(title: AppStaticStrings.sellerProfile.tr,action: [
+        ButtonTapWidget(
+          onTap: () {
+            if (NavigationController.to.isLoggedIn) {
+              warningCustomDialog(
+
+                title: "Are you sure to report this Seller?",
+                onTap: () async {
+                  if (reasonController.text.isNotEmpty &&
+                      ProductController.to.selectedReportType.value !=
+                          null) {
+                    await ProductController.to.reportSellerRequest(
+                      userId:ProductController.to.productModel.value.userId.toString(),
+
+                      reason: reasonController.text,
+                    );
+                    Navigator.pop(context);
+                    reasonController.clear();
+                  } else {
+                    showCustomSnackbar(
+                      title: AppStaticStrings.failed.tr,
+                      message: AppStaticStrings.fieldRequired.tr,
+                    );
+                  }
+                },
+                loading: ProductController.to.isLoadingReport,
+                widget: Padding(
+                  padding: padding8V,
+                  child: Column(
+                    children: [
+                      Obx(() {
+                        return CustomDropdown(
+                          title: AppStaticStrings.reportType.tr,
+                          items: reportType,
+                          onChanged: (value) {
+                            ProductController
+                                .to
+                                .selectedReportType
+                                .value = value;
+                          },
+                          selectedValue:
+                          ProductController
+                              .to
+                              .selectedReportType
+                              .value,
+                        );
+                      }),
+                      CustomTextField(
+                        title: "Reason",
+                        textEditingController: reasonController,
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            } else {
+              Get.toNamed(LoginPage.routeName);
+            }
+          },
+          child: Padding(
+            padding: padding8.copyWith(left: 0),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                SvgPicture.asset(backgroundCircleIcon),
+                Icon(
+                  Icons.report_outlined,
+                  color: AppColors.kPrimaryColor,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],),
       body: SingleChildScrollView(
         controller: scrollController,
         child: Padding(

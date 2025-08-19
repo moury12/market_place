@@ -138,6 +138,7 @@
   "yes": "Yes",
   "cancel": "Cancel",
   "no": "No",
+  "reportType": "Report Type",
   "confirmPass": "Confirm Password",
   "emailRequired": "Email is required.",
   "nameRequired": "Username is required.",
