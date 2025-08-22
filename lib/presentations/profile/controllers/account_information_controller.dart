@@ -25,8 +25,7 @@ import '../model/setting_model.dart';
 class AccountInformationController extends GetxController {
   static AccountInformationController get to => Get.find();
   RxString profileImgPath = "".obs;
-  Rx<SettingsModel> policyModel = SettingsModel().obs;
-  Rx<SettingsModel> termsModel = SettingsModel().obs;
+
   RxBool isLoadingSubscribe = false.obs;
   RxBool isLoadingDeleteAcc = false.obs;
   RxBool isLoadingRenewSubscribe = false.obs;
@@ -41,7 +40,6 @@ class AccountInformationController extends GetxController {
   TextEditingController newPasswordController = TextEditingController();
   TextEditingController currentPasswordController = TextEditingController();
   RxBool isLoadingChangePass = false.obs;
-  RxBool isLoadingPolicy = false.obs;
   RxList<ProductModel> favProductList = <ProductModel>[].obs;
   Rx<AuthProcess> loadingProcess = AuthProcess.none.obs;
 
@@ -74,7 +72,6 @@ class AccountInformationController extends GetxController {
     getFavProductListRequest();
     getPackagesRequest();
     reinitializeProfileControllers();
-    getPrivacyPolicyRequest();
     getUserSubscriptionPackageRequest();
     ever(packageList, (_) => updateTabContent());
 
@@ -373,41 +370,6 @@ class AccountInformationController extends GetxController {
     }
   }
 
-  Future<void> getPrivacyPolicyRequest() async {
-    try {
-      isLoadingPolicy.value = true;
-      ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
-
-      final response = await ApiService().request(
-        endpoint: settingPrivacyEndPoint,
-        method: 'GET',
-      );
-      isLoadingPolicy.value = false;
-      if (response['success'] == true) {
-        logger.d(response);
-        policyModel.value = SettingsModel.fromJson(response['data']);
-      } else if (response['message'] == AppStaticStrings.noInternet) {
-        showCustomSnackbar(
-          title: 'Failed',
-          message: response['message'],
-          type: SnackBarType.failed,
-          noInternet: true,
-        );
-      } else {
-        logger.e(response);
-        if(kDebugMode){
-          showCustomSnackbar(
-            title: 'Failed',
-            message: response['message'],
-            type: SnackBarType.failed,
-          );
-        }
-      }
-    } catch (e) {
-      logger.e(e.toString());
-      isLoadingPolicy.value = false;
-    }
-  }
   ///------------------------------ log out method -------------------------///
 
   Future<void> logoutRequest() async {
@@ -422,6 +384,7 @@ class AccountInformationController extends GetxController {
         logger.d(response);
         showCustomSnackbar(title: 'Success', message: response['message']);
         Boxes.getUserData().delete(tokenKey);
+        Boxes.getAppBox().delete("shownFreeTrialPopup");
         NavigationController.to.isLoggedIn;
         Get.offAllNamed(LoginPage.routeName);
       } else {

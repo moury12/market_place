@@ -12,6 +12,7 @@ class AppStaticStrings {
   static  String verifyEmail = 'verifyEmail';
   static  String logInToContinue = 'logInToContinue';
   static  String rememberMe = 'rememberMe';
+  static  String agreeToPrivacyPolicy = 'agreeToPrivacyPolicy';
   static  String signUpToGetStarted = 'signUpToGetStarted';
   static  String phoneNumber = 'phoneNumber';
   static  String weWillSendACode = 'weWillSendACode';
@@ -41,6 +42,9 @@ class AppStaticStrings {
   static  String productInformation = 'productInformation';
   static  String productDescription = 'productDescription';
   static  String previous = 'previous';
+  static  String skip = 'skip';
+  static  String freeAccessMessage= 'free_access_message';
+  static  String freeAccessTitle = 'free_access_title';
   static  String relatedProduct = 'relatedProduct';
   static String renewSubscription = 'renewSubscription';
   static String changeSubscription = 'changeSubscription';
@@ -228,6 +232,8 @@ class AppStaticStrings {
   static  String close = 'close';
   static  String applyFilter = 'applyFilter';
   static  String condition = 'condition';
+  static  String reportType = 'reportType';
+
   static  String sortBy = 'sortBy';
   static  String priceRange = 'priceRange';
   static  String selectOne = 'selectOne';  // New key for "Select One"

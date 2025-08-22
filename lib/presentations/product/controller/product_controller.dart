@@ -18,6 +18,7 @@ class ProductController extends GetxController {
   RxInt selectedImageIndex = 0.obs;
   RxBool isLoadingProduct = false.obs;
   RxBool isLoadingReport = false.obs;
+  var selectedReportType = Rx<String?>(null);
 
   ///====================product pagination variable========================///
 
@@ -118,33 +119,103 @@ class ProductController extends GetxController {
   }
 
 
-  ///---------------------------report method----------------------------///
+  ///---------------------------report product method----------------------------///
 
-  Future<void> reportProductRequest({required String parentId,required String reason,}) async {
-    ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
-isLoadingReport.value=true;
-    final response = await ApiService().request(
-      method: 'POST',
-      useAuth: true,
-      endpoint: productReportEndPoint,
-      body: {
-        "reason":reason,
-        "product":parentId
-      }
-    );
+  Future<void> reportProductRequest({
+    required String parentId,
+    required String reason,
+  })
+  async {
+    try {
+      ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
+      isLoadingReport.value = true;
 
-    logger.d(response);
-    if (response['success'] == true) {
-      showCustomSnackbar(title: "Success", message: response['message']);
-      isLoadingReport.value=false;
-
-    } else {
-      showCustomSnackbar(
-        title: 'Failed',
-        message: response['message'],
-        type: SnackBarType.failed,
+      final response = await ApiService().request(
+        method: 'POST',
+        useAuth: true,
+        endpoint: productReportEndPoint,
+        body: {
+          "report_for": "PRODUCT",
+          "reason": reason,
+          "product": parentId,
+          "type": selectedReportType.value
+        },
       );
-      isLoadingReport.value=false;
+
+      logger.d(response);
+
+      if (response['success'] == true) {
+        showCustomSnackbar(
+          title: "Success",
+          message: response['message'],
+        );
+      } else {
+        showCustomSnackbar(
+          title: 'Failed',
+          message: response['message'],
+          type: SnackBarType.failed,
+        );
+      }
+    } catch (e, s) {
+      logger.e("Report Product Error$e $s");
+      // showCustomSnackbar(
+      //   title: 'Error',
+      //   message: 'Something went wrong, please try again.',
+      //   type: SnackBarType.failed,
+      // );
+    } finally {
+      selectedReportType.value= null;
+      isLoadingReport.value = false;
+    }
+  }
+
+  ///---------------------------report user method----------------------------///
+
+  Future<void> reportSellerRequest({
+    required String userId,
+    required String reason,
+  })
+  async {
+    try {
+      ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
+      isLoadingReport.value = true;
+
+      final response = await ApiService().request(
+        method: 'POST',
+        useAuth: true,
+        endpoint: productReportEndPoint,
+        body: {
+          "reported_user":userId,
+          "report_for": "USER",
+          "reason": reason,
+          "type": selectedReportType.value
+        },
+      );
+
+      logger.d(response);
+
+      if (response['success'] == true) {
+        showCustomSnackbar(
+          title: "Success",
+          message: response['message'],
+        );
+      } else {
+        showCustomSnackbar(
+          title: 'Failed',
+          message: response['message'],
+          type: SnackBarType.failed,
+        );
+      }
+    } catch (e, s) {
+      logger.e("Report Product Error$e $s");
+      // showCustomSnackbar(
+      //   title: 'Error',
+      //   message: 'Something went wrong, please try again.',
+      //   type: SnackBarType.failed,
+      // );
+    } finally {
+      selectedReportType.value=null;
+      isLoadingReport.value = false;
     }
   }
 

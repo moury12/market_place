@@ -15,8 +15,13 @@
   "relistingForSale": "Reliste pour la vente",
   "repostListing": "Republiée annonce",
   "ok": "OK",
+  "reportType": "Type de rapport",
   "block": "Bloquer",
   "unblock": "Débloquer",
+  "free_access_title": "Accès vendeur gratuit",
+  "free_access_message": "Vous bénéficiez actuellement d'un accès gratuit aux fonctionnalités vendeur.\n\nAprès 3 mois, un abonnement sera nécessaire pour continuer à les utiliser.",
+  "skip": "Ignorer",
+  "agreeToPrivacyPolicy": "En continuant, vous acceptez la [Politique de confidentialité] et les [Conditions générales] de Bazarya.",
 
   "blocked_by_user": "Cet utilisateur vous a bloqué",
   "you_blocked_user": "Vous avez bloqué cet utilisateur",

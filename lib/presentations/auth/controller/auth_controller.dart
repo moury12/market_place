@@ -26,6 +26,7 @@ class AuthController extends GetxController {
   }
 
   RxBool isRememberMe = false.obs;
+  RxBool isCheckTermsCondition = false.obs;
 
   var tabContent = <Widget>[].obs;
   Rx<AuthProcess> loadingProcess = AuthProcess.none.obs;

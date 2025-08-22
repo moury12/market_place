@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
+import 'package:market_place/presentations/profile/controllers/privacy_policy_controlller.dart';
+import 'package:market_place/presentations/profile/controllers/privacy_policy_controlller.dart';
+import 'package:market_place/presentations/profile/controllers/privacy_policy_controlller.dart';
 
 import '../../../core/constants/fontsize_constant.dart';
 import '../../../core/constants/pagination_loading_widget.dart';
@@ -21,14 +24,14 @@ class TermsPolicyHelpPage extends StatelessWidget {
       body: Padding(
         padding: padding12,
         child: Obx(() {
-          return AccountInformationController.to.isLoadingPolicy.value
+          return PrivacyPolicyController.to.isLoadingPolicy.value
               ? PaginationLoadingWidget()
               : SingleChildScrollView(
                 child: HtmlWidget(
                   arg != null && arg == AppStaticStrings.termsAndCondition.tr
-                      ? '''${AccountInformationController.to.termsModel.value.desc}
+                      ? '''${PrivacyPolicyController.to.termsModel.value.desc}
                         '''
-                      : '''${AccountInformationController.to.policyModel.value.desc}
+                      : '''${PrivacyPolicyController.to.policyModel.value.desc}
                         ''',
                   textStyle: poppinsRegular.copyWith(
                     fontSize: getFontSizeDefault(),

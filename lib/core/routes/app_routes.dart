@@ -109,7 +109,7 @@ GetPage(
     ),
     GetPage(
       name: TermsPolicyHelpPage.routeName,
-      page: () => TermsPolicyHelpPage() /*binding: SettingsBinding()*/,
+      page: () => TermsPolicyHelpPage(), binding: PrivacyPolicyBinding(),
     ),
     GetPage(
       name: EditProfilePage.routeName,

@@ -27,6 +27,7 @@ final List<String> sortBy = [
   'Price: High to Low',
 
 ];
+final List<String> reportType =["SPAM", "INAPPROPRIATE", "OTHER", "FAKE", "HARASSMENT"];
 List<OnboardingModel> onboardingData = [
   OnboardingModel(
       title: AppStaticStrings.discoverUniqueFinds.tr,

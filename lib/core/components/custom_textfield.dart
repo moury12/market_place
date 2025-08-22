@@ -132,7 +132,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             textAlign: widget.textAlign,
             onTap: widget.onTap,
             enabled: widget.isEnable,
-            autovalidateMode: AutovalidateMode.disabled,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             inputFormatters: widget.inputFormatters,
             onFieldSubmitted: widget.onFieldSubmitted,
             readOnly: widget.readOnly,
@@ -142,6 +142,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
             keyboardType: widget.keyboardType,
             textInputAction: widget.textInputAction,
             cursorColor: widget.cursorColor,
+
+
             style: widget.inputTextStyle ??
                 TextStyle(
                     color: AppColors.kLightTextColor,

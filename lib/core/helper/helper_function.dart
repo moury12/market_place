@@ -98,7 +98,6 @@ Locale getLocaleFromHive() {
   if (localeString == "fr") return const Locale('fr');
   return const Locale('en', 'US');
 }
-
 Future<void> saveCredentials(
   String email,
   String password,
@@ -319,56 +318,64 @@ Future<dynamic> successDialogCustom({
 
 Future<dynamic> warningCustomDialog({
   required String title,
+   String? typeText,
+   String? fillButtonText,
+   String? outlineButtonText,
   required Function() onTap,
+   Function()? onCancel,
   required RxBool loading,
   Widget? widget
 }) {
   return Get.dialog(
+    
     AlertDialog(
+      
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
       contentPadding: padding12H.copyWith(bottom: 16.h),
       content: SizedBox(
         width: Get.width *.8,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SvgPicture.asset(warningIcon),
-            CustomText(
-              text: AppStaticStrings.warning.tr,
-              style: poppinsSemiBold,
-              fontSize: getFontSizeExtraLarge(),
-            ),
-            CustomText(
-              textAlign: TextAlign.center,
-              text: title,
-              color: AppColors.kExtraLightTextColor,
-              fontSize: getFontSizeSemiSmall(),
-            ),
-            widget??SizedBox.shrink(),
-            space8H,
-            Row(
-              spacing: 8.w,
-              children: [
-                Expanded(
-                  child: CustomButton(
-                    textColor: AppColors.kPrimaryColor,
-                    fillColor: Colors.transparent,
-                    onTap: () => Get.back(),
-                    title: AppStaticStrings.cancel.tr,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SvgPicture.asset(warningIcon),
+              CustomText(
+                text:typeText?? AppStaticStrings.warning.tr,
+                style: poppinsSemiBold,
+                fontSize: getFontSizeExtraLarge(),
+              ),
+              CustomText(
+                textAlign: TextAlign.center,
+                text: title,
+                color: AppColors.kExtraLightTextColor,
+                fontSize: getFontSizeSemiSmall(),
+              ),
+              widget??SizedBox.shrink(),
+              space8H,
+              Row(
+                spacing: 8.w,
+                children: [
+                  Expanded(
+                    child: CustomButton(
+                      textColor: AppColors.kPrimaryColor,
+                      fillColor: Colors.transparent,
+                      onTap:onCancel?? () => Get.back(),
+                      title:outlineButtonText?? AppStaticStrings.cancel.tr,
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: Obx(() {
-                    return CustomButton(
-                      isLoading: loading.value,
-                      onTap: onTap,
-                      title: AppStaticStrings.confirm.tr,
-                    );
-                  }),
-                ),
-              ],
-            ),
-          ],
+                  Expanded(
+                    child: Obx(() {
+                      return CustomButton(
+                        isLoading: loading.value,
+                        onTap: onTap,
+                        title:fillButtonText?? AppStaticStrings.confirm.tr,
+                      );
+                    }),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     ),
@@ -535,7 +542,14 @@ Future<String?> selectAndFormatTime({
     debugPrint('Error picking time: $e');
     return null;
   }
+}Future<bool> canAccessSellerFeatures(String createdAtStr, CustomerInfo customerInfo) async {
+  final DateTime createdAt = DateTime.parse(createdAtStr);
+  final bool isSubscribed = customerInfo.entitlements.all['seller_access']?.isActive ?? false;
+  final bool isInGracePeriod = DateTime.now().toUtc().isBefore(createdAt.add(Duration(days: 90)));
+
+  return isSubscribed || isInGracePeriod;
 }
+
 
 String dateFormateChange({required String date}) {
   DateTime utcTime = DateTime.parse(date).toLocal(); // Convert to local time

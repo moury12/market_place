@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:market_place/core/components/custom_button_tap.dart';
+import 'package:market_place/core/components/custom_checkbox_widget.dart';
 import 'package:market_place/core/constants/image_constants.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/utils/enum.dart';
 import 'package:market_place/presentations/auth/controller/auth_controller.dart';
 import 'package:market_place/presentations/auth/views/login_page.dart';
+import 'package:market_place/presentations/profile/views/term_policy_help_page.dart';
 
 import '../../../core/components/custom_appbar.dart';
 import '../../../core/components/custom_button.dart';
@@ -138,6 +141,26 @@ class SignUpPage extends StatelessWidget {
 
                     title: AppStaticStrings.confirmPassword.tr,
                     isPassword: true,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomCheckBoxWidget(
+                        isChecked: AuthController.to.isCheckTermsCondition,
+                      ),
+                      space6W,
+                      Expanded(
+                        child: ButtonTapWidget(
+                             onTap:  () {
+                               Get.toNamed(TermsPolicyHelpPage.routeName);
+                             },
+                          child: CustomText(
+                            text: AppStaticStrings.agreeToPrivacyPolicy.tr,
+                            // fontSize: getFontSizeSmall(),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   SvgPicture.asset(orImg, width: ScreenUtil().screenWidth),
                   Row(

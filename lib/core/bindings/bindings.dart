@@ -5,6 +5,7 @@ import 'package:market_place/core/utils/hive_boxes.dart';
 import 'package:market_place/core/utils/variable.dart';
 import 'package:market_place/presentations/navigation/controller/navigation_controller.dart';
 import 'package:market_place/presentations/notification/controller/notification_controller.dart';
+import 'package:market_place/presentations/profile/controllers/privacy_policy_controlller.dart';
 import 'package:market_place/presentations/splash/controller/onboarding_controller.dart';
 import 'package:market_place/presentations/splash/controller/onboarding_controller.dart';
 
@@ -89,6 +90,12 @@ class AccountInformationBinding extends Bindings {
   @override
   void dependencies() {
     Get.put(AccountInformationController());
+  }
+}
+class PrivacyPolicyBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.put(PrivacyPolicyController());
   }
 }
 

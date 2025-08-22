@@ -6,6 +6,7 @@ import 'package:market_place/core/api-client/api_service.dart';
 import 'package:market_place/core/components/custom_appbar.dart';
 import 'package:market_place/core/components/custom_button.dart';
 import 'package:market_place/core/components/custom_button_tap.dart';
+import 'package:market_place/core/components/custom_drop_down_button.dart';
 import 'package:market_place/core/components/custom_network_image.dart';
 import 'package:market_place/core/components/custom_textfield.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
@@ -48,6 +49,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   Map<String, dynamic> args = Get.arguments;
   bool fromSeller = false;
   TextEditingController reasonController = TextEditingController();
+
   @override
   void initState() {
     fromSeller = args['fromSeller'];
@@ -113,28 +115,63 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   ),
                   ButtonTapWidget(
                     onTap: () {
-                      warningCustomDialog(
-                        title: "Are you sure to report this product?",
-                        onTap: () async {
-                          await ProductController.to.reportProductRequest(
-                            parentId:
-                                ProductController.to.productModel.value.sId
-                                    .toString(),
+                      if (NavigationController.to.isLoggedIn) {
+                        warningCustomDialog(
 
-                            reason: reasonController.text,
-                          );
-                          Navigator.pop(context);
-                          reasonController.clear();
-                        },
-                        loading: ProductController.to.isLoadingReport,
-                        widget: Padding(
-                          padding: padding8V,
-                          child: CustomTextField(
-                            title: "Reason",
-                            textEditingController: reasonController,
+                          title: "Are you sure to report this product?",
+                          onTap: () async {
+                            if (reasonController.text.isNotEmpty &&
+                                ProductController.to.selectedReportType.value !=
+                                    null) {
+                              await ProductController.to.reportProductRequest(
+                                parentId:
+                                    ProductController.to.productModel.value.sId
+                                        .toString(),
+
+                                reason: reasonController.text,
+                              );
+                              Navigator.pop(context);
+                              reasonController.clear();
+                            } else {
+                              showCustomSnackbar(
+                                title: AppStaticStrings.failed.tr,
+                                message: AppStaticStrings.fieldRequired.tr,
+                              );
+                            }
+                          },
+                          loading: ProductController.to.isLoadingReport,
+                          widget: Padding(
+                            padding: padding8V,
+                            child: Column(
+                              children: [
+                                Obx(() {
+                                  return CustomDropdown(
+                                    title: AppStaticStrings.reportType.tr,
+                                    items: reportType,
+                                    onChanged: (value) {
+                                      ProductController
+                                          .to
+                                          .selectedReportType
+                                          .value = value;
+                                    },
+                                    selectedValue:
+                                        ProductController
+                                            .to
+                                            .selectedReportType
+                                            .value,
+                                  );
+                                }),
+                                CustomTextField(
+                                  title: "Reason",
+                                  textEditingController: reasonController,
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      );
+                        );
+                      } else {
+                        Get.toNamed(LoginPage.routeName);
+                      }
                     },
                     child: Padding(
                       padding: padding8.copyWith(left: 0),
@@ -505,5 +542,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         ),
       ),
     );
+  }
+  @override
+  void dispose() {
+    ProductController.to.selectedReportType.value=null;
+    super.dispose();
   }
 }
