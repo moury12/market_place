@@ -12,10 +12,16 @@ import 'package:market_place/core/constants/padding_constant.dart';
 import 'package:market_place/core/helper/helper_function.dart';
 import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
  
-class MySubscriptionPage extends StatelessWidget {
+class MySubscriptionPage extends StatefulWidget {
   static const String routeName = "/my-subscription";
 
   const MySubscriptionPage({super.key});
+
+  @override
+  State<MySubscriptionPage> createState() => _MySubscriptionPageState();
+}
+
+class _MySubscriptionPageState extends State<MySubscriptionPage> {
 
   @override
   Widget build(BuildContext context) {

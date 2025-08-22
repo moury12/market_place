@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:market_place/presentations/auth/views/verify_otp_page.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../../core/api-client/api_endpoints.dart';
 import '../../../core/api-client/api_service.dart';
@@ -164,6 +166,7 @@ class AuthController extends GetxController {
       );
 
       loadingProcess.value = AuthProcess.none;
+logger.d(response);
 
       if (response['success'] == true) {
         logger.d(response);
@@ -176,8 +179,9 @@ class AuthController extends GetxController {
         }
         showCustomSnackbar(title: 'Success', message: response['message']);
         Boxes.getUserData().put(tokenKey, response['token']);
-        // NavigationController.to.isLoggedIn;
+        Map<String, dynamic> decodedToken = JwtDecoder.decode(response['token']);
         ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
+      await Purchases.logIn(decodedToken["id"]);
         Get.offAllNamed(NavigationPage.routeName);
       } else {
         logger.e(response);
