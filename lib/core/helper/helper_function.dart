@@ -82,13 +82,13 @@ Future<bool> isUserSubscribed() async {
   }
 }
 
-Future<void> showPaywall() async {
-  try {
-    await RevenueCatUI.presentPaywall(displayCloseButton: true,);
-  } catch (e) {
-    print("Error presenting paywall: $e");
-  }
-}
+// Future<void> showPaywall() async {
+//   try {
+//     await RevenueCatUI.presentPaywall(displayCloseButton: true,);
+//   } catch (e) {
+//     print("Error presenting paywall: $e");
+//   }
+// }
 Locale getLocaleFromHive() {
   final localeString = Boxes.getSettingsData().get(
     languageKey,

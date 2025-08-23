@@ -17,6 +17,7 @@ import 'package:market_place/core/utils/hive_boxes.dart';
 import 'package:market_place/presentations/auth/views/login_page.dart';
 import 'package:market_place/presentations/notification/views/notification_page.dart';
 import 'package:market_place/presentations/profile/controllers/account_information_controller.dart';
+import 'package:market_place/presentations/profile/views/payment_page.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../../core/components/custom_appbar.dart';
@@ -160,7 +161,8 @@ class NavigationPage extends StatelessWidget {
                                 fillButtonText: AppStaticStrings.subscribeNow.tr,
                                 outlineButtonText: AppStaticStrings.skip.tr,
                                 onTap: () {
-                                  showPaywall();
+                                  
+                                  Get.toNamed(SubscriptionPage.routeName);
                                 },
                                 loading: AccountInformationController.to.isLoadingLogout,
                               );
@@ -168,7 +170,8 @@ class NavigationPage extends StatelessWidget {
                             }
 
                             if (!isInGrace) {
-                              showPaywall();
+                                                                Get.toNamed(SubscriptionPage.routeName);
+
                               return;
                             }
 

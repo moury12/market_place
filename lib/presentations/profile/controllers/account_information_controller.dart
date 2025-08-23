@@ -206,7 +206,7 @@ class AccountInformationController extends GetxController {
       if (response['success'] == true) {
         logger.d(response);
         CommonController.to.stripeUrl.value = response["url"];
-        Get.toNamed(PaymentScreen.routeName);
+        // Get.toNamed(PaymentScreen.routeName);
         showCustomSnackbar(title: 'Success', message: response['message']);
       } else {
         logger.e(response);
@@ -242,7 +242,7 @@ class AccountInformationController extends GetxController {
       if (response['success'] == true) {
         logger.d(response);
         CommonController.to.stripeUrl.value = response["url"];
-        Get.toNamed(PaymentScreen.routeName);
+        // Get.toNamed(PaymentScreen.routeName);
         showCustomSnackbar(title: 'Success', message: response['message']);
       } else {
         logger.e(response);

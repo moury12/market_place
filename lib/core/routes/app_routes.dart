@@ -66,8 +66,8 @@ GetPage(
       page: () => SetNewPasswordPage(),
       binding: AuthBinding(),
     ),GetPage(
-      name: PaymentScreen.routeName,
-      page: () => PaymentScreen(),
+      name: SubscriptionPage.routeName,
+      page: () => SubscriptionPage(),
       binding: AccountInformationBinding(),
     ),
     GetPage(
