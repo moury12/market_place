@@ -57,12 +57,13 @@ class MyPackageModel {
   final String? price;
   final String? expiresIn;
   final String? subscriptionId;
+  final String? isActive;
 
-  MyPackageModel({
+  MyPackageModel( {
     this.type,
     this.price,
     this.expiresIn,
-    this.subscriptionId,
+    this.subscriptionId,this.isActive,
   });
 }
 

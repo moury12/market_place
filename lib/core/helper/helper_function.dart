@@ -551,7 +551,8 @@ Future<String?> selectAndFormatTime({
 }
 
 
-String dateFormateChange({required String date}) {
+String dateFormateChange({ String? date}) {
+  if(date==null)return"n/a";
   DateTime utcTime = DateTime.parse(date).toLocal(); // Convert to local time
   String formatted = DateFormat('dd-MM-yyyy hh:mm a').format(utcTime);
 

@@ -6,6 +6,7 @@ import 'package:market_place/core/components/custom_button_tap.dart';
 import 'package:market_place/core/components/custom_checkbox_widget.dart';
 import 'package:market_place/core/constants/image_constants.dart';
 import 'package:market_place/core/constants/padding_constant.dart';
+import 'package:market_place/core/helper/helper_function.dart';
 import 'package:market_place/core/utils/enum.dart';
 import 'package:market_place/presentations/auth/controller/auth_controller.dart';
 import 'package:market_place/presentations/auth/views/login_page.dart';
@@ -188,7 +189,11 @@ class SignUpPage extends StatelessWidget {
                           AuthProcess.signUp,
                       onTap: () {
                         if (formKey.currentState!.validate()) {
-                          AuthController.to.signUpRequest();
+                          if(AuthController.to.isCheckTermsCondition.value){
+                            AuthController.to.signUpRequest();
+                          }else{
+                            showCustomSnackbar(title: AppStaticStrings.warning.tr, message: "Please agree to the Bazarya privacy policy");
+                          }
                         }
                       },
                       title: AppStaticStrings.createAccount.tr,

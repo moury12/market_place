@@ -52,16 +52,16 @@ class _MySubscriptionPageState extends State<MySubscriptionPage> {
                   CustomTextField(
                     textEditingController: TextEditingController(
                       text: (AccountInformationController.to.packageModel.value
-                          .price??'N/A').toString(),
+                          .isActive??'N/A').toString(),
                     ),
                     fillColor: AppColors.kWhiteColor,
-                    title: AppStaticStrings.price.tr,
+                    title: AppStaticStrings.subscriptionStatus.tr,
                   ),
                   CustomTextField(
                     textEditingController: TextEditingController(
-                      text:  AccountInformationController
+                      text:  dateFormateChange(date: AccountInformationController
                           .to.packageModel.value
-                          .expiresIn??'N/A',
+                          .expiresIn),
                     ),
                     fillColor: AppColors.kWhiteColor,
                     title: AppStaticStrings.subscriptionExpiryDate.tr,

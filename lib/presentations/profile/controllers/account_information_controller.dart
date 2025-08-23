@@ -123,9 +123,15 @@ class AccountInformationController extends GetxController {
       final entitlement = info.entitlements.all['seller_access'];
 
       if (entitlement != null && entitlement.isActive) {
+        // String productId = entitlement.productIdentifier.toString();
+        // final offerings = await Purchases.getOfferings();
+
+        // var package = offerings.current?.getPackage(productId);
+
         packageModel.value = MyPackageModel(
           type: entitlement.periodType.name, // "trial", "intro", "normal"
-          price: entitlement.productIdentifier, // you can map this to price manually
+          isActive: entitlement.isActive?"Active":"Expired", // you can map this to price manually
+          // price: package?.storeProduct.priceString,
           expiresIn: entitlement.expirationDate?.toString(),
           subscriptionId: entitlement.productIdentifier,
         );
