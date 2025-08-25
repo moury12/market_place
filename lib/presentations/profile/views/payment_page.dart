@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:market_place/core/components/custom_button.dart';
+import 'package:market_place/core/components/custom_loading_widget.dart';
 import 'package:market_place/core/components/custom_text_button.dart';
 import 'package:market_place/core/constants/app_static_strings.dart';
 import 'package:market_place/core/constants/color_constants.dart';
@@ -121,7 +122,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
       body: SafeArea(
         child:
             _loading
-                ? const Center(child: CircularProgressIndicator())
+                ? const Center(child: CustomLoadingWidget())
                 : SingleChildScrollView(
                   padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
                   child: Column(
