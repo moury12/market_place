@@ -498,7 +498,7 @@ class AccountInformationController extends GetxController {
         body: {"password": password},
       );
 
-      isLoadingDeleteAcc.value = false;
+
 
       if (response['success'] == true) {
         logger.d(response);
@@ -518,6 +518,8 @@ logoutRequest();
     } catch (e) {
       isLoadingDeleteAcc.value = false;
       logger.e(e.toString());
+    }finally{
+      isLoadingDeleteAcc.value = false;
     }
   }
 
