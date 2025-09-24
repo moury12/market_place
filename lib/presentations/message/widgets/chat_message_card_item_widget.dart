@@ -65,8 +65,8 @@ class ChatMessageCardItemWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomText(
-                        text: message.message.toString(),
+                      SelectableText(
+                         message.message.toString(),
                         style: TextStyle(
                           color: AppColors.kBlackColor,
                           fontSize: 15,

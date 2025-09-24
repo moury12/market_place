@@ -9,7 +9,7 @@ import 'package:market_place/presentations/profile/model/setting_model.dart';
 
 import '../../../core/utils/variable.dart';
 
-class PrivacyPolicyController extends GetxController{
+class PrivacyPolicyController extends GetxController {
   static PrivacyPolicyController get to => Get.find();
 
   Rx<SettingsModel> policyModel = SettingsModel().obs;
@@ -18,22 +18,24 @@ class PrivacyPolicyController extends GetxController{
 
   @override
   void onInit() {
-    getPrivacyPolicyRequest();
+    // getPrivacyPolicyRequest(endPoint: settingTermsEndPoint);
     super.onInit();
   }
-  Future<void> getPrivacyPolicyRequest() async {
+
+  Future<void> getPrivacyPolicyRequest({required String endPoint}) async {
     try {
       isLoadingPolicy.value = true;
       ApiService().setAuthToken(Boxes.getUserData().get(tokenKey).toString());
 
       final response = await ApiService().request(
-        endpoint: settingPrivacyEndPoint,
+        endpoint: endPoint,
         method: 'GET',
       );
-      isLoadingPolicy.value = false;
+
       if (response['success'] == true) {
         logger.d(response);
-        policyModel.value = SettingsModel.fromJson(response['data']);
+        // SettingsModel genecric = endPoint==settingTermsEndPoint?termsModel.value:policyModel.value;
+        policyModel.value= SettingsModel.fromJson(response['data']);
       } else if (response['message'] == AppStaticStrings.noInternet) {
         showCustomSnackbar(
           title: 'Failed',
@@ -43,7 +45,7 @@ class PrivacyPolicyController extends GetxController{
         );
       } else {
         logger.e(response);
-        if(kDebugMode){
+        if (kDebugMode) {
           showCustomSnackbar(
             title: 'Failed',
             message: response['message'],
@@ -54,7 +56,8 @@ class PrivacyPolicyController extends GetxController{
     } catch (e) {
       logger.e(e.toString());
       isLoadingPolicy.value = false;
+    }finally{
+      isLoadingPolicy.value = false;
     }
   }
-
 }

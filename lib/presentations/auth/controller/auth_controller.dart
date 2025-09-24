@@ -301,8 +301,11 @@ logger.d(response);
       phoneSignUpController.text = '01566026603';
       passSignUpController.text = '12345aA*';
       confirmPassSignUpController.text = '12345aA*';
+      ///test  subscribed acc
       // emailLoginController.text = 'kimij58616@namestal.com';
-      emailLoginController.text = 'seloce4741@lhory.com';
+      ///test expired subscription acc
+     // emailLoginController.text = 'bifilig760@skateru.com';
+       emailLoginController.text = 'seloce4741@lhory.com';
       passLoginController.text = '12345aA*';
 
       emailForgetController.value.text = 'seloce4741@lhory.com';

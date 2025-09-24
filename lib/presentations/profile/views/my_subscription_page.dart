@@ -57,6 +57,13 @@ class _MySubscriptionPageState extends State<MySubscriptionPage> {
                     ),
                     fillColor: AppColors.kWhiteColor,
                     title: AppStaticStrings.subscriptionStatus.tr,
+                  ), CustomTextField(
+                    textEditingController: TextEditingController(
+                      text: (AccountInformationController.to.packageModel.value
+                          .price??'0.00').toString(),
+                    ),
+                    fillColor: AppColors.kWhiteColor,
+                    title: AppStaticStrings.price.tr,
                   ),
                   CustomTextField(
                     textEditingController: TextEditingController(
@@ -90,7 +97,8 @@ class _MySubscriptionPageState extends State<MySubscriptionPage> {
                                                         Get.toNamed(SubscriptionPage.routeName);
 
                     },
-                    title: AppStaticStrings.changeSubscription.tr,
+                    title:AccountInformationController.to.packageModel.value
+                        .isActive=="Expired"?AppStaticStrings.renewSubscription.tr: AppStaticStrings.changeSubscription.tr,
                   ),
                 ],
               );

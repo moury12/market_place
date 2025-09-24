@@ -115,34 +115,74 @@ class AccountInformationController extends GetxController {
   }
 
   ///------------------------------ get my subscription method -------------------------///
+
+
   Future<void> getUserSubscriptionPackageRequest() async {
     try {
-            isLoadingMyPackage.value  = true;
+      isLoadingMyPackage.value = true;
 
+      // 1) Customer info + entitlement
       final info = await Purchases.getCustomerInfo();
-      final entitlement = info.entitlements.all['seller_access'];
+      final ent = info.entitlements.all['seller_access'];
 
-      if (entitlement != null && entitlement.isActive) {
-        // String productId = entitlement.productIdentifier.toString();
-        // final offerings = await Purchases.getOfferings();
-
-        // var package = offerings.current?.getPackage(productId);
-
-        packageModel.value = MyPackageModel(
-          type: entitlement.periodType.name, // "trial", "intro", "normal"
-          isActive: entitlement.isActive?"Active":"Expired", // you can map this to price manually
-          // price: package?.storeProduct.priceString,
-          expiresIn: entitlement.expirationDate?.toString(),
-          subscriptionId: entitlement.productIdentifier,
-        );
-      } else {
-        packageModel.value = MyPackageModel(); // Empty if no active subscription
+    logger.d(info);
+    logger.d(ent);
+      Offerings? offerings;
+      try {
+        offerings = await Purchases.getOfferings();
+      } catch (_) {
+        offerings = null;
       }
+      logger.d(offerings);
+
+
+      // 3) স্ট্যাটাস বের করা
+      final bool isActive = ent?.isActive == true;
+      final bool isExpired = (ent != null && !ent.isActive && ent.expirationDate != null);
+
+      // 4) প্রাইস নির্ধারণ (promo হলে productId ম্যাচ করবেন না)
+      String? priceString;
+      if (ent?.productIdentifier != null && ent?.store == Store.appStore) {
+        // প্রোডাক্ট আইডি App Store-এর হলে only then match
+        final pkg = _findPackageByProductId(offerings, ent!.productIdentifier);
+        priceString = pkg?.storeProduct.priceString;
+      }
+      // fallback: current offering থেকে কোন একটা প্রাইস দেখান
+      priceString ??= offerings?.current?.monthly?.storeProduct.priceString
+          ?? offerings?.current?.annual?.storeProduct.priceString;
+
+      // 5) UI মডেল সব অবস্থাতেই সেট করুন
+      packageModel.value = MyPackageModel(
+        type: ent?.periodType.name ?? 'N/A',        // trial / intro / normal
+        isActive: isActive ? 'Active' : (isExpired ? 'Expired' : 'No Subscription'),
+        price: priceString,                         // promo হলে reference price
+        expiresIn: ent?.expirationDate?.toString(),
+        // promo হলে productIdentifier অপ্রাসঙ্গিক, তাই null/খালি রাখুন
+        subscriptionId: (ent?.store == Store.promotional) ? null : ent?.productIdentifier,
+      );
     } catch (e) {
       print('Error fetching subscription info: $e');
+      packageModel.value = MyPackageModel(); // safe fallback
     } finally {
-            isLoadingMyPackage.value  = false;
+      isLoadingMyPackage.value = false;
     }
+  }
+
+  /// Offerings থেকে কোনো package খুঁজে আনে যার storeProduct.identifier == productId
+  Package? _findPackageByProductId(Offerings? offerings, String? productId) {
+    if (offerings == null || productId == null) return null;
+    // current
+    final cur = offerings.current;
+    for (final p in (cur?.availablePackages ?? const [])) {
+      if (p.storeProduct.identifier == productId) return p;
+    }
+    // all offerings
+    for (final off in offerings.all.values) {
+      for (final p in off.availablePackages) {
+        if (p.storeProduct.identifier == productId) return p;
+      }
+    }
+    return null;
   }
 
 
@@ -387,6 +427,7 @@ class AccountInformationController extends GetxController {
       );
       isLoadingLogout.value = false;
       if (response['success'] == true) {
+        await Purchases.logOut();
         logger.d(response);
         showCustomSnackbar(title: 'Success', message: response['message']);
         Boxes.getUserData().delete(tokenKey);
